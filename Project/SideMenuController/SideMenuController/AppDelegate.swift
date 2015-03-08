@@ -17,10 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         SideMenuController.menuButtonImage = UIImage(named: "menuButton")
+        SideMenuController.presentationStyle = .UnderCenterPanelLeft
+        
         
         UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().tintColor = UIColor.cyanColor()
-        UINavigationBar.appearance().barTintColor = UIColor.cyanColor()
+        UINavigationBar.appearance().barTintColor = UIColor(hue:0.56, saturation:0.88, brightness:0.95, alpha:1)
         
         return true
     }
