@@ -9,29 +9,26 @@
 import UIKit
 
 let CenterSegue = "CenterContainment"
-let SideSegue = "SideContainment"
-
-enum SideMenuControllerPresentationStyle {
-    case UnderCenterPanelLeft
-    case UnderCenterPanelRight
-    case AboveCenterPanelLeft
-    case AboveCenterPanelRight
-}
-
-enum ContainmentSegueType{
-    case Center
-    case Side
-}
+let SideSegue   = "SideContainment"
 
 class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
+    // MARK:- Custom types -
+    
+    enum SideMenuControllerPresentationStyle {
+        case UnderCenterPanelLeft
+        case UnderCenterPanelRight
+        case AboveCenterPanelLeft
+        case AboveCenterPanelRight
+    }
+    
     // MARK:- Constants -
     
-    let revealAnimationDuration : NSTimeInterval = 0.3
-    let hideAnimationDuration   : NSTimeInterval = 0.2
+    private let revealAnimationDuration : NSTimeInterval = 0.3
+    private let hideAnimationDuration   : NSTimeInterval = 0.2
     
-    var screenSize = UIScreen.mainScreen().bounds.size
-    let StatusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+    private var screenSize = UIScreen.mainScreen().bounds.size
+    private let StatusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
     
     // MARK: - Customizable properties -
     
@@ -249,10 +246,15 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK:- Containment -
     
-    func addNewController(controller : UIViewController, forSegueType type:ContainmentSegueType){
+    func addNewController(controller : UIViewController, forSegueType type:ContainmentSegue.ContainmentSegueType){
         
         if type == .Center{
-            self.addCenterController(controller)
+            
+            if let navController = controller as? UINavigationController{
+                self.addCenterController(navController)
+            } else {
+                fatalError("The center view controller must be a navigation controller!")
+            }
         }else{
             self.addSideController(controller)
         }
@@ -273,7 +275,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func addCenterController(controller : UIViewController){
+    private func addCenterController(controller : UINavigationController){
         
         self.prepareCenterControllerForContainment(controller)
         centerPanel.addSubview(controller.view)
@@ -323,7 +325,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func prepareCenterControllerForContainment (controller : UIViewController){
+    private func prepareCenterControllerForContainment (controller : UINavigationController){
         addMenuButtonToController(controller)
         
         var frame = CGRectMake(0, StatusBarHeight, CGRectGetWidth(self.centerPanel.frame), CGRectGetHeight(self.centerPanel.frame) - StatusBarHeight)
@@ -332,9 +334,9 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     
-    private func addMenuButtonToController (controller : UIViewController) {
+    private func addMenuButtonToController (controller : UINavigationController) {
         
-        if !(controller is UINavigationController) || controller.childViewControllers.count == 0 {
+        if controller.viewControllers.count == 0 {
             return
         }
         
@@ -348,7 +350,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             button.backgroundColor = UIColor.purpleColor()
         }
         
-        button.addTarget(self, action: "toggleSideController", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: "toggleSidePanel", forControlEvents: UIControlEvents.TouchUpInside)
         
         var item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
@@ -379,7 +381,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func toggleSideController () {
+    func toggleSidePanel () {
         
         if !transitionInProgress {
             if !sidePanelVisible {
@@ -678,7 +680,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK:- UIGestureRecognizerDelegate -
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    private func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if gestureRecognizer == self.panRecognizer {
             return SideMenuController.panningEnabled
         }else if gestureRecognizer == self.tapRecognizer{
@@ -727,6 +729,11 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
 @objc(ContainmentSegue)
 class ContainmentSegue : UIStoryboardSegue{
     
+    enum ContainmentSegueType{
+        case Center
+        case Side
+    }
+    
     private var type: ContainmentSegueType {
         get {
             if let id = self.identifier {
@@ -743,9 +750,8 @@ class ContainmentSegue : UIStoryboardSegue{
     
     override func perform() {
         
-        if self.sourceViewController is SideMenuController
-        {
-            (self.sourceViewController as! SideMenuController).addNewController(self.destinationViewController as! UIViewController, forSegueType: self.type)
+        if let sideController = self.sourceViewController as? SideMenuController {
+            sideController.addNewController(self.destinationViewController as! UIViewController, forSegueType: self.type)
         } else {
             fatalError("This type of segue must only be used from a MenuViewController")
         }
@@ -771,8 +777,8 @@ extension UIViewController {
     
     private func sideMenuControllerForViewController(controller : UIViewController) -> SideMenuController?
     {
-        if controller is SideMenuController {
-            return (controller as! SideMenuController)
+        if let sideController = controller as? SideMenuController {
+            return sideController
         }
         
         if controller.parentViewController != nil {

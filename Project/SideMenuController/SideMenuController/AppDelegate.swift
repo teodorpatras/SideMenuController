@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         SideMenuController.menuButtonImage = UIImage(named: "menuButton")
-        SideMenuController.presentationStyle = .UnderCenterPanelLeft
+        SideMenuController.presentationStyle = .AboveCenterPanelLeft
         
         
         UINavigationBar.appearance().translucent = false
