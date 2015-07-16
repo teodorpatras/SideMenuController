@@ -17,8 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         SideMenuController.menuButtonImage = UIImage(named: "menuButton")
-        SideMenuController.presentationStyle = .AboveCenterPanelLeft
-        
+        SideMenuController.presentationStyle = .UnderCenterPanelRight
+        SideMenuController.animationStyle = .CircleMaskAnimation
         
         UINavigationBar.appearance().translucent = false
         UINavigationBar.appearance().barTintColor = UIColor(hue:0.56, saturation:0.88, brightness:0.95, alpha:1)

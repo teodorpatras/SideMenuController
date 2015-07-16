@@ -16,10 +16,40 @@ Usage
 ![Example](/../master/images/segue_side.png)
 3. In you ``AppDelegate`` file, in the ``application:didFinishLaunchingWithOptions:`` method you can customize the ``SideMenuController``:
 
-	**These two customizations are required in order to set the image and the presentation style:**
+	**You should customize at least these three properties :**
 	
-	``SideMenuController.menuButtonImage = UIImage(named: "menuButton")``
-        ``SideMenuController.presentationStyle = .UnderCenterPanelLeft``
+	```swift
+  SideMenuController.menuButtonImage = UIImage(named: "menuButton")
+  SideMenuController.presentationStyle = .UnderCenterPanelLeft
+  SideMenuController.animationStyle = .FadeAnimation
+	```
+	
+Customization
+--------------
+
+SideMenuController has the following customizable properties:
+```swift
+class var menuButtonImage : UIImage?
+```
+The image object to be displayed on the button that will trigger the side panel. Button displayed either on the right or left side of the navigation bar.
+```swift
+class var panningEnabled : Bool
+```
+A boolean flag indicating wether or not panning is enabled for revealing/hiding the side panel.
+```swift
+class var presentationStyle : SideMenuControllerPresentationStyle
+```
+The presentation style of the side menu controller.
+
+```swift
+class var animationStyle : CenterContainmentAnimationStyle
+```
+The animation style for changin the center view controller.
+
+```swift
+class var useShadow: Bool
+```    
+A flag indicating wether or not the center panel should draw shadow around it.
 
 Supported OS & SDK Versions
 -----------------------------
@@ -30,7 +60,7 @@ Custom types
 --------------
 
 ```swift
-	enum SideMenuControllerPresentationStyle {
+enum SideMenuControllerPresentationStyle {
     case UnderCenterPanelLeft
     case UnderCenterPanelRight
     case AboveCenterPanelLeft
@@ -38,7 +68,16 @@ Custom types
 }
 ```
 
-This enum exposes the four different presentation styles for the side menu controller.
+This enum exposes the four different presentation styles for the side menu controller. **Default value is** ``UnderCenterPanelLeft``**.**
+
+```swift
+enum CenterContainmentAnimationStyle {
+    case CircleMaskAnimation
+    case FadeAnimation
+}
+```
+
+This enum exposes the two different animation styles for the change of the center view controller. **Default value is** ``CircleMaskAnimation``**.**
 
 ```swift
   class ContainmentSegue : UIStoryboardSegue
@@ -55,46 +94,25 @@ A custom ``UIStoryboardSegue`` subclass which makes this component work seamless
 
 This enum exposes the two types of the containment segue: for adding a new center view controller, or for adding a new side view controller.
 
-Properties
---------------
-
-SideMenuController has the following customizable properties:
-```swift
-	class var menuButtonImage : UIImage?
-```
-The image object to be displayed on the button that will trigger the side panel. Button displayed either on the right or left side of the navigation bar.
-```swift
-	class var panningEnabled : Bool
-```
-A boolean flag indicating wether or not panning is enabled for revealing/hiding the side panel.
-```swift
-    class var presentationStyle : SideMenuControllerPresentationStyle
-```
-The presentation style of the side menu controller.
-```swift
-    class var useShadow: Bool
-```    
-A flag indicating wether or not the center panel should draw shadow around it.
-
 Methods
 --------------
 
 SideMenuController implements an extension for the ``UIViewController`` which exposes the method:
 
 ```swift
-	func sideMenuController() 
+func sideMenuController() 
 ```
 
 This method goes up the parent view controller chain and searches for the ``SideMenuController``. You can use this method if you want to get a reference to the ``SideMenuController`` from within your custom view controller.
 
 ```swift
-  func addNewController(controller : UIViewController, forSegueType type:ContainmentSegueType)
+func addNewController(controller : UIViewController, forSegueType type:ContainmentSegueType)
 ```
 
 This method gets called when the ``ContainmentSegue`` gets performed. Normally you don't have to call this method yourself since it will get called automatically when the segue is performed. If you don't use storyboards or segues, you can use this method to add the center and side controllers.
 
 ```swift
-  func toggleSidePanel ()
+func toggleSidePanel ()
 ```
 
 This method gets called when the menu button in the navigation bar is pressed. You can call this method yourself from your view controller by using ``self.sideMenuController()?.toggleSidePanel()`` if you want to trigger the side pannel programmatically.
