@@ -176,6 +176,8 @@
 		132DF7D71AAB736A00386405 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0720;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Teodor Patras";
 				TargetAttributes = {
@@ -429,6 +431,7 @@
 				132DF8001AAB736A00386405 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		132DF8011AAB736A00386405 /* Build configuration list for PBXNativeTarget "SideMenuControllerTests" */ = {
 			isa = XCConfigurationList;
@@ -437,6 +440,7 @@
 				132DF8031AAB736A00386405 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

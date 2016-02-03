@@ -387,7 +387,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     private func prepareCenterControllerForContainment (controller : UINavigationController){
         addMenuButtonToController(controller)
         
-        var frame = CGRectMake(0, StatusBarHeight, CGRectGetWidth(self.centerPanel.frame), CGRectGetHeight(self.centerPanel.frame) - StatusBarHeight)
+        let frame = CGRectMake(0, StatusBarHeight, CGRectGetWidth(self.centerPanel.frame), CGRectGetHeight(self.centerPanel.frame) - StatusBarHeight)
         
         controller.view.frame = frame
     }
@@ -399,9 +399,9 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             return
         }
         
-        var shouldPlaceOnLeftSide = presentationStyle == .UnderCenterPanelLeft || presentationStyle == .AboveCenterPanelLeft
+        let shouldPlaceOnLeftSide = presentationStyle == .UnderCenterPanelLeft || presentationStyle == .AboveCenterPanelLeft
         
-        var button = UIButton(frame: CGRectMake(0, 0, 40, 40))
+        let button = UIButton(frame: CGRectMake(0, 0, 40, 40))
         
         if SideMenuController.menuButtonImage != nil {
             button.setImage(SideMenuController.menuButtonImage, forState: UIControlState.Normal)
@@ -411,10 +411,10 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         button.addTarget(self, action: "toggleSidePanel", forControlEvents: UIControlEvents.TouchUpInside)
         
-        var item:UIBarButtonItem = UIBarButtonItem()
+        let item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
         
-        var spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
+        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
         spacer.width = -10
         
         if shouldPlaceOnLeftSide {
@@ -562,10 +562,10 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             }
         case .Changed:
             
-            var translation = recognizer.translationInView(view).x
+            let translation = recognizer.translationInView(view).x
             
             // origin.x or origin.x + width
-            var xPoint : CGFloat = self.centerPanel.center.x + translation + ((presentationStyle == .UnderCenterPanelLeft) ? -1  : 1 ) * CGRectGetWidth(self.centerPanel.frame) / 2
+            let xPoint : CGFloat = self.centerPanel.center.x + translation + ((presentationStyle == .UnderCenterPanelLeft) ? -1  : 1 ) * CGRectGetWidth(self.centerPanel.frame) / 2
             
             
             if xPoint < CGRectGetMinX(self.sidePanel.frame) || xPoint > CGRectGetMaxX(self.sidePanel.frame){
@@ -632,8 +632,8 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             
         case .Changed:
             
-            var translation = recognizer.translationInView(view).x
-            var xPoint : CGFloat = self.sidePanel.center.x + translation + (presentationStyle == .AboveCenterPanelLeft ? 1 : -1) * sidePanelWidth / 2
+            let translation = recognizer.translationInView(view).x
+            let xPoint : CGFloat = self.sidePanel.center.x + translation + (presentationStyle == .AboveCenterPanelLeft ? 1 : -1) * sidePanelWidth / 2
             var alpha : CGFloat
             
             if presentationStyle == .AboveCenterPanelLeft {
@@ -661,7 +661,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             
         default:
             
-            var shouldClose = presentationStyle == .AboveCenterPanelLeft ? !leftToRight && CGRectGetMaxX(self.sidePanel.frame) < sidePanelWidth : leftToRight && CGRectGetMinX(self.sidePanel.frame) >  (screenSize.width - sidePanelWidth)
+            let shouldClose = presentationStyle == .AboveCenterPanelLeft ? !leftToRight && CGRectGetMaxX(self.sidePanel.frame) < sidePanelWidth : leftToRight && CGRectGetMinX(self.sidePanel.frame) >  (screenSize.width - sidePanelWidth)
             
             self.animateToReveal(!shouldClose)
             
@@ -670,7 +670,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     private func setAboveSidePanelHidden(hidden: Bool, completion : ((Void) -> Void)?){
         
-        var leftSidePositioned = presentationStyle == .AboveCenterPanelLeft
+        let leftSidePositioned = presentationStyle == .AboveCenterPanelLeft
         var destinationFrame = self.sidePanel.frame
         
         if leftSidePositioned {
@@ -810,7 +810,7 @@ class ContainmentSegue : UIStoryboardSegue{
     override func perform() {
         
         if let sideController = self.sourceViewController as? SideMenuController {
-            sideController.addNewController(self.destinationViewController as! UIViewController, forSegueType: self.type)
+            sideController.addNewController(self.destinationViewController , forSegueType: self.type)
         } else {
             fatalError("This type of segue must only be used from a MenuViewController")
         }
