@@ -228,12 +228,12 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         self.view.addSubview(sidePanel)
         sidePanel.clipsToBounds = true
         
-        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
+        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(SideMenuController.handleTap(_:)))
         tapRecognizer.delegate = self
         
         if presentationStyle == .UnderCenterPanelLeft || presentationStyle == .UnderCenterPanelRight {
             
-            panRecognizer = UIPanGestureRecognizer(target: self, action: "handleCenterPanelPan:")
+            panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(SideMenuController.handleCenterPanelPan(_:)))
             panRecognizer.delegate = self
             centerPanel.addGestureRecognizer(panRecognizer)
             
@@ -245,15 +245,15 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             centerShadowView = UIView(frame: UIScreen.mainScreen().bounds)
             centerShadowView.backgroundColor = UIColor(hue:0, saturation:0, brightness:0.02, alpha:0.8)
             
-            panRecognizer = UIPanGestureRecognizer(target: self, action: "handleSidePanelPan:")
+            panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(SideMenuController.handleSidePanelPan(_:)))
             panRecognizer.delegate = self
             self.sidePanel.addGestureRecognizer(panRecognizer)
             self.view.bringSubviewToFront(sidePanel)
             
-            leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: "handleLeftSwipe:")
+            leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(SideMenuController.handleLeftSwipe(_:)))
             leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.Left
             
-            rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: "handleRightSwipe:")
+            rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(SideMenuController.handleRightSwipe(_:)))
             rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.Right
             
             self.centerShadowView.addGestureRecognizer(tapRecognizer)
@@ -409,7 +409,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             button.backgroundColor = UIColor.purpleColor()
         }
         
-        button.addTarget(self, action: "toggleSidePanel", forControlEvents: UIControlEvents.TouchUpInside)
+        button.addTarget(self, action: #selector(SideMenuController.toggleSidePanel), forControlEvents: UIControlEvents.TouchUpInside)
         
         let item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
