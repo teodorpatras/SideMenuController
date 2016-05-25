@@ -272,6 +272,11 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK:- Containment -
     
+    func ifSidePanelVisible() -> Bool{
+        return self.sidePanelVisible
+    }
+    
+    
     func addNewController(controller : UIViewController, forSegueType type:ContainmentSegue.ContainmentSegueType){
         
         if type == .Center{
