@@ -15,7 +15,7 @@ public class CenterContainmentSegue: UIStoryboardSegue{
             guard let destinationController = destinationViewController as? UINavigationController else {
                 fatalError("Destination controller needs to be an instance of UINavigationController")
             }
-            sideController.addCenterController(destinationController)
+            sideController.embedCenterController(destinationController)
         } else {
             fatalError("This type of segue must only be used from a SideMenuController")
         }

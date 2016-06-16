@@ -12,7 +12,7 @@ public class SideContainmentSegue: UIStoryboardSegue{
     
     override public func perform() {
         if let sideController = self.sourceViewController as? SideMenuController {
-            sideController.addSideController(destinationViewController)
+            sideController.embedSideController(destinationViewController)
         } else {
             fatalError("This type of segue must only be used from a SideMenuController")
         }

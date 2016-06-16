@@ -17,7 +17,7 @@ extension UIView {
 }
 
 public extension UIViewController {
-    var sideMenuController: SideMenuController? {
+    public var sideMenuController: SideMenuController? {
         return sideMenuControllerForViewController(self)
     }
     

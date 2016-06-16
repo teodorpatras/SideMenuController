@@ -18,6 +18,5 @@ class ViewController: UIViewController {
     @IBAction func dismissAction() {
         dismissViewControllerAnimated(true, completion: nil)
     }
-
 }
 
