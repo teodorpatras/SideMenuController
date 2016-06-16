@@ -1,9 +1,9 @@
 //
 //  AppDelegate.swift
-//  SideMenuController
+//  Example
 //
-//  Created by Teodor Patras on 07.03.15.
-//  Copyright (c) 2015 Teodor Patras. All rights reserved.
+//  Created by Teodor Patras on 16/06/16.
+//  Copyright © 2016 teodorpatras. All rights reserved.
 //
 
 import UIKit
@@ -15,14 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
-        SideMenuController.menuButtonImage = UIImage(named: "menuButton")
-        SideMenuController.presentationStyle = .UnderCenterPanelRight
-        SideMenuController.animationStyle = .CircleMaskAnimation
-        
-        UINavigationBar.appearance().translucent = false
-        UINavigationBar.appearance().barTintColor = UIColor(hue:0.56, saturation:0.88, brightness:0.95, alpha:1)
-        
+        // Override point for customization after application launch.
         return true
     }
 

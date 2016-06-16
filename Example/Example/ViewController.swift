@@ -1,12 +1,13 @@
 //
 //  ViewController.swift
-//  SideMenuController
+//  Example
 //
-//  Created by Teodor Patras on 07.03.15.
-//  Copyright (c) 2015 Teodor Patras. All rights reserved.
+//  Created by Teodor Patras on 16/06/16.
+//  Copyright © 2016 teodorpatras. All rights reserved.
 //
 
 import UIKit
+import SideMenuController
 
 class ViewController: UIViewController {
 
