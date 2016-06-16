@@ -11,8 +11,11 @@
 		13A758041D12A2F5004488DA /* SideMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A758011D12A2F5004488DA /* SideMenuController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		13A758051D12A2F5004488DA /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758021D12A2F5004488DA /* SideMenuController.swift */; };
 		13A7580A1D12A32A004488DA /* SideMenuControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758071D12A303004488DA /* SideMenuControllerTests.swift */; };
-		13A7580B1D12A32F004488DA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13A758001D12A2F5004488DA /* Info.plist */; };
 		13A7580C1D12A33B004488DA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13A758061D12A303004488DA /* Info.plist */; };
+		13A7586D1D12A61B004488DA /* SideContainmentSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */; };
+		13A7586F1D12A633004488DA /* CenterContainmentSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A7586E1D12A633004488DA /* CenterContainmentSegue.swift */; };
+		13A758711D12C387004488DA /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758701D12C387004488DA /* TransitionAnimator.swift */; };
+		13A7587A1D12EC0F004488DA /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758791D12EC0F004488DA /* UIKitExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +36,10 @@
 		13A758021D12A2F5004488DA /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenuController.swift; path = Source/SideMenuController.swift; sourceTree = SOURCE_ROOT; };
 		13A758061D12A303004488DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		13A758071D12A303004488DA /* SideMenuControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenuControllerTests.swift; path = Tests/SideMenuControllerTests.swift; sourceTree = SOURCE_ROOT; };
+		13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideContainmentSegue.swift; path = Source/SideContainmentSegue.swift; sourceTree = SOURCE_ROOT; };
+		13A7586E1D12A633004488DA /* CenterContainmentSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterContainmentSegue.swift; sourceTree = SOURCE_ROOT; };
+		13A758701D12C387004488DA /* TransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = SOURCE_ROOT; };
+		13A758791D12EC0F004488DA /* UIKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,9 +82,9 @@
 		13A757E81D12A2A0004488DA /* SideMenuController */ = {
 			isa = PBXGroup;
 			children = (
+				13A7586A1D12A504004488DA /* Sources */,
 				13A758001D12A2F5004488DA /* Info.plist */,
 				13A758011D12A2F5004488DA /* SideMenuController.h */,
-				13A758021D12A2F5004488DA /* SideMenuController.swift */,
 			);
 			path = SideMenuController;
 			sourceTree = "<group>";
@@ -89,6 +96,26 @@
 				13A758071D12A303004488DA /* SideMenuControllerTests.swift */,
 			);
 			path = SideMenuControllerTests;
+			sourceTree = "<group>";
+		};
+		13A7586A1D12A504004488DA /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				13A7586B1D12A5E9004488DA /* Segues */,
+				13A758021D12A2F5004488DA /* SideMenuController.swift */,
+				13A758701D12C387004488DA /* TransitionAnimator.swift */,
+				13A758791D12EC0F004488DA /* UIKitExtensions.swift */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		13A7586B1D12A5E9004488DA /* Segues */ = {
+			isa = PBXGroup;
+			children = (
+				13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */,
+				13A7586E1D12A633004488DA /* CenterContainmentSegue.swift */,
+			);
+			name = Segues;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,7 +209,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				13A7580B1D12A32F004488DA /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +228,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				13A758051D12A2F5004488DA /* SideMenuController.swift in Sources */,
+				13A758711D12C387004488DA /* TransitionAnimator.swift in Sources */,
+				13A7586D1D12A61B004488DA /* SideContainmentSegue.swift in Sources */,
+				13A7586F1D12A633004488DA /* CenterContainmentSegue.swift in Sources */,
+				13A7587A1D12EC0F004488DA /* UIKitExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +355,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teodorpatras.SideMenuController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -343,6 +374,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teodorpatras.SideMenuController;
 				PRODUCT_NAME = "$(TARGET_NAME)";

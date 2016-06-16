@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SideMenuController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        SideMenuController.preferences.layout.menuButtonImage = UIImage(named: "menu")
+        SideMenuController.preferences.layout.sidePanelPosition = .UnderCenterPanelLeft
+        SideMenuController.preferences.layout.sidePanelWidth = 300
+        SideMenuController.preferences.layout.sideShadow = false
+        SideMenuController.preferences.animation.transitionAnimator = CircleMaskAnimator.self
+        
         return true
     }
 

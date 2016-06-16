@@ -8,310 +8,58 @@
 
 import UIKit
 
-let CenterSegue = "CenterContainment"
-let SideSegue   = "SideContainment"
-
-class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
+public extension SideMenuController {
     
-    // MARK:- Custom types -
-    
-    enum SideMenuControllerPresentationStyle {
-        case UnderCenterPanelLeft
-        case UnderCenterPanelRight
-        case AboveCenterPanelLeft
-        case AboveCenterPanelRight
-    }
-    
-    enum CenterContainmentAnimationStyle {
-        case CircleMaskAnimation
-        case FadeAnimation
-    }
-    
-    // MARK:- Constants -
-    
-    private let revealAnimationDuration : NSTimeInterval = 0.3
-    private let hideAnimationDuration   : NSTimeInterval = 0.2
-    
-    private var screenSize = UIScreen.mainScreen().bounds.size
-    /** 
-    If the SideMenuController is the root controller of the app and the
-    project target has the "Hide status bar" option enabled, the StatusBarHeight
-    constant will be 0. Therefore there is no other way of getting the height except
-    hardcoding it.
-    **/
-    private let StatusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height > 0 ? UIApplication.sharedApplication().statusBarFrame.size.height : 20
-    
-    // MARK: - Customizable properties -
-    
-    private struct PrefsStruct {
-        static var percentage: CGFloat  = 0.7
-        static var sideStyle            = SideMenuControllerPresentationStyle.UnderCenterPanelLeft
-        static var shadow: Bool         = true
-        static var panning : Bool       = true
-        static var animationStyle       = CenterContainmentAnimationStyle.CircleMaskAnimation
-        static var menuButtonImage : UIImage?
+    /**
+     Toggles the side pannel visible or not.
+     */
+    public func toggleSidePanel() {
         
-    }
-    
-    class var menuButtonImage : UIImage? {
-        get { return PrefsStruct.menuButtonImage }
-        set { PrefsStruct.menuButtonImage = newValue }
-    }
-    
-    class var panningEnabled : Bool {
-        get { return PrefsStruct.panning }
-        set { PrefsStruct.panning = newValue }
-    }
-    
-    class var presentationStyle : SideMenuControllerPresentationStyle {
-        get { return PrefsStruct.sideStyle }
-        set { PrefsStruct.sideStyle = newValue }
-    }
-    
-    class var animationStyle : CenterContainmentAnimationStyle
-    {
-        get { return PrefsStruct.animationStyle }
-        set { PrefsStruct.animationStyle = newValue }
-    }
-    
-    class var useShadow: Bool
-        {
-        get { return PrefsStruct.shadow }
-        set { PrefsStruct.shadow = newValue }
-    }
-    
-    /*
-    Side Controller Width = sidePercentage * Screen Width
-    */
-    
-    class var sidePercentage: CGFloat
-        {
-        get { return PrefsStruct.percentage }
-        set { PrefsStruct.percentage = newValue }
-    }
-    
-    
-    // MARK: -      Private properties -
-    
-    private var navigationBar           : UINavigationBar!
-    private var presentationStyle       : SideMenuControllerPresentationStyle!
-    private var animationStyle          : CenterContainmentAnimationStyle!
-    private var percentage              : CGFloat!
-    private var flickVelocity           : CGFloat = 0
-    
-    private var centerViewController    : UIViewController!
-    private var sideViewController      : UIViewController!
-    private var statusBarView           : UIView!
-    private var centerPanel             : UIView!
-    private var sidePanel               : UIView!
-    private var centerShadowView        : UIView!
-    
-    private var sidePanelVisible        : Bool     = false
-    private var transitionInProgress    : Bool     = false
-    private var landscapeOrientation    : Bool {
-        return screenSize.width > screenSize.height
-    }
-    
-    private var leftSwipeRecognizer     : UISwipeGestureRecognizer!
-    private var rightSwipeGesture       : UISwipeGestureRecognizer!
-    private var panRecognizer           : UIPanGestureRecognizer!
-    private var tapRecognizer           : UITapGestureRecognizer!
-    
-    private var canDisplaySideController : Bool{
-        get {
-            return sideViewController != nil
+        if !transitionInProgress {
+            if !sidePanelVisible {
+                prepareSidePanel(forDisplay: true)
+            }
+            
+            animate(toReveal: !self.sidePanelVisible)
         }
     }
     
-    // MARK:- View lifecycle -
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        /*
-        Because custom segue attributes cannot be edited in the Interface Builder,
-        the two initial segues from this controller need to have their ids set as
-        "CenterContainmentSegue" and "SideContainmentSegue".
-        
-        After that, the segues from this controller do not require an id anymore, unless you want
-        to change the side controller.
-        */
-        
-        self.configure()
-        
-        self.performSegueWithIdentifier(CenterSegue, sender: nil)
-        self.performSegueWithIdentifier(SideSegue, sender: nil)
-    }
-    
-    // MARK:- Orientation changes -
-    
-    // pre iOS 8
-    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        
-        if toInterfaceOrientation == .Portrait || toInterfaceOrientation == .PortraitUpsideDown {
-            screenSize = UIScreen.mainScreen().bounds.size
-        } else {
-            screenSize = CGSizeMake(screenSize.height, screenSize.width)
-        }
-        
-        UIView.animateWithDuration(duration, animations: { () -> Void in
-            // reposition navigation bar
-            self.navigationBar.frame = CGRectMake(0, 0, self.screenSize.width, self.StatusBarHeight)
-            // reposition center panel
-            self.centerPanel.frame = self.centerPanelFrame()
-            // reposition side panel
-            self.sidePanel.frame = self.sidePanelFrame()
+    /**
+     Embeds a new side controller
+     
+     - parameter controller: controller to be embedded
+     */
+    public func embedSideController(controller : UIViewController) {
+        if sideViewController == nil {
             
-            // hide or show the view under the status bar
-            if self.sidePanelVisible {
-                self.statusBarView.alpha = self.landscapeOrientation ? 0 : 1
-            }
-            
-            // reposition the center shadow view
-            if let shadow = self.centerShadowView {
-                shadow.frame = self.centerPanelFrame()
-            }
-            
-            self.view.layoutIfNeeded()
-        })
-
-    }
-    
-    //  iOS 8 and later
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-        
-        self.screenSize = size
-        
-        coordinator.animateAlongsideTransition({ _ in
-            // reposition navigation bar
-            self.navigationBar.frame = CGRectMake(0, 0, size.width, self.StatusBarHeight)
-            // reposition center panel
-            self.centerPanel.frame = self.centerPanelFrame()
-            // reposition side panel
-            self.sidePanel.frame = self.sidePanelFrame()
-            
-            // hide or show the view under the status bar
-            if self.sidePanelVisible {
-                self.statusBarView.alpha = self.landscapeOrientation ? 0 : 1
-            }
-            
-            // reposition the center shadow view
-            if let shadow = self.centerShadowView {
-                shadow.frame = self.centerPanelFrame()
-            }
-            
-            self.view.layoutIfNeeded()
-            
-            }, completion: nil)
-    }
-    
-    // MARK: - Configurations -
-    
-    private func configure(){
-        
-        presentationStyle = SideMenuController.presentationStyle
-        animationStyle = SideMenuController.animationStyle
-        percentage = SideMenuController.sidePercentage
-        
-        centerPanel = UIView(frame: CGRectMake(0, 0, screenSize.width, screenSize.height))
-        self.view.addSubview(centerPanel)
-        
-        navigationBar = UINavigationBar(frame: CGRectMake(0, 0, screenSize.width, StatusBarHeight))
-        self.centerPanel.addSubview(navigationBar)
-        
-        statusBarView = UIView(frame: CGRectMake(0, 0, screenSize.width, StatusBarHeight))
-        self.view.addSubview(statusBarView)
-        statusBarView.backgroundColor = UIApplication.sharedApplication().statusBarStyle == UIStatusBarStyle.LightContent ? UIColor.blackColor() : UIColor.whiteColor()
-        statusBarView.alpha = 0
-        
-        sidePanel = UIView(frame: self.sidePanelFrame())
-        self.view.addSubview(sidePanel)
-        sidePanel.clipsToBounds = true
-        
-        tapRecognizer = UITapGestureRecognizer(target: self, action: "handleTap:")
-        tapRecognizer.delegate = self
-        
-        if presentationStyle == .UnderCenterPanelLeft || presentationStyle == .UnderCenterPanelRight {
-            
-            panRecognizer = UIPanGestureRecognizer(target: self, action: "handleCenterPanelPan:")
-            panRecognizer.delegate = self
-            centerPanel.addGestureRecognizer(panRecognizer)
-            
-            self.view.sendSubviewToBack(sidePanel)
-            self.centerPanel.addGestureRecognizer(tapRecognizer)
-            
-        } else {
-            
-            centerShadowView = UIView(frame: UIScreen.mainScreen().bounds)
-            centerShadowView.backgroundColor = UIColor(hue:0, saturation:0, brightness:0.02, alpha:0.8)
-            
-            panRecognizer = UIPanGestureRecognizer(target: self, action: "handleSidePanelPan:")
-            panRecognizer.delegate = self
-            self.sidePanel.addGestureRecognizer(panRecognizer)
-            self.view.bringSubviewToFront(sidePanel)
-            
-            leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: "handleLeftSwipe:")
-            leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.Left
-            
-            rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: "handleRightSwipe:")
-            rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.Right
-            
-            self.centerShadowView.addGestureRecognizer(tapRecognizer)
-            
-            if presentationStyle == .AboveCenterPanelLeft {
-                self.centerPanel.addGestureRecognizer(rightSwipeGesture)
-                self.centerShadowView.addGestureRecognizer(leftSwipeRecognizer)
-            }else{
-                self.centerPanel.addGestureRecognizer(leftSwipeRecognizer)
-                self.centerShadowView.addGestureRecognizer(rightSwipeGesture)
-            }
-        }
-        
-        self.view.bringSubviewToFront(self.statusBarView)
-    }
-    
-    // MARK:- Containment -
-    
-    func addNewController(controller : UIViewController, forSegueType type:ContainmentSegue.ContainmentSegueType){
-        
-        if type == .Center{
-            
-            if let navController = controller as? UINavigationController{
-                self.addCenterController(navController)
-            } else {
-                fatalError("The center view controller must be a navigation controller!")
-            }
-        }else{
-            self.addSideController(controller)
-        }
-    }
-    
-    private func addSideController(controller : UIViewController){
-        if (sideViewController == nil) {
             sideViewController = controller
+            sideViewController.view.frame = sidePanel.bounds
             
-            sideViewController.view.frame = self.sidePanel.bounds
+            sidePanel.addSubview(sideViewController.view)
             
-            self.sidePanel.addSubview(sideViewController.view)
-            
-            self.addChildViewController(sideViewController)
+            addChildViewController(sideViewController)
             sideViewController.didMoveToParentViewController(self)
             
-            self.sidePanel.hidden = true
+            sidePanel.hidden = true
         }
     }
     
-    private func addCenterController(controller : UINavigationController){
+    /**
+     Embeds a new center controller.
+     
+     - parameter controller: controller to be embedded
+     */
+    public func embedCenterController(controller : UINavigationController) {
         
-        self.prepareCenterControllerForContainment(controller)
+        prepareCenterControllerForContainment(controller)
         centerPanel.addSubview(controller.view)
         
-        if (centerViewController == nil) {
+        if centerViewController == nil {
             centerViewController = controller
             self.addChildViewController(centerViewController)
             centerViewController.didMoveToParentViewController(self)
+            self.statusBarView.backgroundColor = controller.navigationBar.barTintColor
         }else{
-            
             centerViewController.willMoveToParentViewController(nil)
             self.addChildViewController(controller)
             
@@ -320,96 +68,216 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 self.centerViewController.removeFromParentViewController()
                 controller.didMoveToParentViewController(self)
                 self.centerViewController = controller
+                self.statusBarView.backgroundColor = controller.navigationBar.barTintColor
             }
             
-            var transitionMethod = self.triggerMaskAnimationForNewCenterController
-            
-            if self.animationStyle == .FadeAnimation {
-                transitionMethod = self.triggerFadeAnimationForNewCenterController
-            }
-            
-            transitionMethod(controller, completion: completion)
+            let animator = self.dynamicType.preferences.animation.transitionAnimator
+            animator.animateTransition(forViewController: controller, completion: completion)
             
             if (self.sidePanelVisible){
-                animateToReveal(false)
+                animate(toReveal: false)
+            }
+        }
+    }
+}
+
+public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
+    
+    // MARK:- Custom types -
+    
+    public enum SidePanelPosition {
+        case UnderCenterPanelLeft
+        case UnderCenterPanelRight
+        case AboveCenterPanelLeft
+        case AboveCenterPanelRight
+    }
+    
+    public struct Preferences {
+        public struct Layout {
+            public var sidePanelPercentage: CGFloat = 0.4
+            public var sidePanelWidth: CGFloat?
+            public var menuButtonImage: UIImage?
+            public var sidePanelPosition = SidePanelPosition.UnderCenterPanelLeft
+            public var panningEnabled = true
+            public var sideShadow = true
+        }
+        
+        public struct Animation {
+            public var reavealDuration = 0.3
+            public var hideDuration = 0.2
+            public var transitionAnimator: TransitionAnimatable.Type = FadeInAnimator.self
+        }
+        
+        public var layout = Layout()
+        public var animation = Animation()
+        
+        public init() {}
+    }
+    
+    // MARK:- Constants -
+    
+    private lazy var screenSize: CGSize = {
+       return UIScreen.mainScreen().bounds.size
+    }()
+    
+    private var statusBarHeight: CGFloat {
+       return UIApplication.sharedApplication().statusBarFrame.size.height > 0 ? UIApplication.sharedApplication().statusBarFrame.size.height : 20
+    }
+    
+    // MARK: - Properties -
+    
+    public static var preferences: Preferences = Preferences()
+    private(set) public var sidePanelVisible = false
+    
+    private var percentage: CGFloat {
+        if let width = self.dynamicType.preferences.layout.sidePanelWidth {
+            return width / screenSize.width
+        }
+        return self.dynamicType.preferences.layout.sidePanelPercentage
+    }
+    
+    private var flickVelocity: CGFloat = 0
+    private var sidePanelPosition: SidePanelPosition!
+    private var centerViewController: UIViewController!
+    private var sideViewController: UIViewController!
+    private var statusBarView: UIView!
+    private var centerPanel: UIView!
+    private var sidePanel: UIView!
+    private var centerShadowView: UIView!
+    
+    private var transitionInProgress = false
+    private var landscapeOrientation: Bool {
+        return screenSize.width > screenSize.height
+    }
+    
+    private var leftSwipeRecognizer: UISwipeGestureRecognizer!
+    private var rightSwipeGesture: UISwipeGestureRecognizer!
+    private var panRecognizer: UIPanGestureRecognizer!
+    private var tapRecognizer: UITapGestureRecognizer!
+    
+    private var canDisplaySideController: Bool {
+        get {
+            return sideViewController != nil
+        }
+    }
+    
+    // MARK:- View lifecycle -
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        configureViews()
+    }
+    
+    // MARK:- Orientation changes -
+    
+    override public func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        screenSize = size
+        
+        coordinator.animateAlongsideTransition({ _ in
+            // reposition center panel
+            self.centerPanel.frame = self.centerPanelFrame
+            // reposition side panel
+            self.sidePanel.frame = self.sidePanelFrame
+            
+            // hide or show the view under the status bar
+            if self.sidePanelVisible {
+                self.statusBarView.alpha = self.landscapeOrientation ? 0 : 1
+            }
+            
+            // reposition the center shadow view
+            if let shadow = self.centerShadowView {
+                shadow.frame = self.centerPanelFrame
+            }
+            
+            self.view.layoutIfNeeded()
+            
+        }, completion: nil)
+    }
+    
+    // MARK: - Configurations -
+    
+    private func configureViews(){
+        
+        sidePanelPosition = self.dynamicType.preferences.layout.sidePanelPosition
+        
+        centerPanel = UIView(frame: CGRectMake(0, 0, screenSize.width, screenSize.height))
+        view.addSubview(centerPanel)
+        
+        statusBarView = UIView(frame: CGRectMake(0, 0, screenSize.width, statusBarHeight))
+        view.addSubview(statusBarView)
+        statusBarView.backgroundColor = UIApplication.sharedApplication().statusBarStyle == UIStatusBarStyle.LightContent ? UIColor.blackColor() : UIColor.whiteColor()
+        statusBarView.alpha = 0
+        
+        sidePanel = UIView(frame: sidePanelFrame)
+        view.addSubview(sidePanel)
+        sidePanel.clipsToBounds = true
+        
+        configureGestureRecognizers()
+        view.bringSubviewToFront(statusBarView)
+    }
+    
+    private func configureGestureRecognizers() {
+    
+        tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        tapRecognizer.delegate = self
+        
+        if self.dynamicType.preferences.layout.sidePanelPosition == .UnderCenterPanelLeft ||
+           self.dynamicType.preferences.layout.sidePanelPosition == .UnderCenterPanelRight {
+            
+            panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCenterPanelPan))
+            panRecognizer.delegate = self
+            centerPanel.addGestureRecognizer(panRecognizer)
+            
+            view.sendSubviewToBack(sidePanel)
+            centerPanel.addGestureRecognizer(tapRecognizer)
+        } else {
+            centerShadowView = UIView(frame: UIScreen.mainScreen().bounds)
+            centerShadowView.backgroundColor = UIColor(hue:0.15, saturation:0.21, brightness:0.17, alpha:0.6)
+            
+            panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleSidePanelPan))
+            panRecognizer.delegate = self
+            sidePanel.addGestureRecognizer(panRecognizer)
+            view.bringSubviewToFront(sidePanel)
+            
+            leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe))
+            leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+            
+            rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleRightSwipe))
+            rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.Right
+            
+            centerShadowView.addGestureRecognizer(tapRecognizer)
+            
+            if self.dynamicType.preferences.layout.sidePanelPosition == .AboveCenterPanelLeft {
+                centerPanel.addGestureRecognizer(rightSwipeGesture)
+                centerShadowView.addGestureRecognizer(leftSwipeRecognizer)
+            }else{
+                centerPanel.addGestureRecognizer(leftSwipeRecognizer)
+                centerShadowView.addGestureRecognizer(rightSwipeGesture)
             }
         }
     }
     
-    private func triggerFadeAnimationForNewCenterController(controller : UINavigationController, completion: (()->())) {
-        
-        CATransaction.begin()
-        CATransaction.setCompletionBlock (completion)
-        
-        let fadeAnimation = CABasicAnimation(keyPath: "opacity")
-        fadeAnimation.duration = 0.7
-        fadeAnimation.fromValue = 0
-        fadeAnimation.toValue = 1
-        
-        fadeAnimation.fillMode = kCAFillModeBoth
-        fadeAnimation.removedOnCompletion = true
-        
-        controller.view.layer.addAnimation(fadeAnimation, forKey: "fadeInAnimation")
-        
-        CATransaction.commit()
-    }
-    
-    private func triggerMaskAnimationForNewCenterController(controller : UINavigationController, completion: (()->())) {
-       
-        
-        
-        CATransaction.begin()
-        CATransaction.setCompletionBlock(completion)
-        
-        let dim = max(screenSize.width, screenSize.height)
-        let circleDiameter : CGFloat = 50.0
-        let circleFrame = CGRectMake((screenSize.width - circleDiameter) / 2, (screenSize.height - circleDiameter) / 2, circleDiameter, circleDiameter)
-        let circleCenter = CGPointMake(circleFrame.origin.x + circleDiameter / 2, circleFrame.origin.y + circleDiameter / 2)
-        
-        let circleMaskPathInitial = UIBezierPath(ovalInRect: circleFrame)
-        let extremePoint = CGPoint(x: circleCenter.x - dim, y: circleCenter.y - dim)
-        let radius = sqrt((extremePoint.x * extremePoint.x) + (extremePoint.y * extremePoint.y))
-        let circleMaskPathFinal = UIBezierPath(ovalInRect: CGRectInset(circleFrame, -radius, -radius))
-        
-        let maskLayer = CAShapeLayer()
-        maskLayer.path = circleMaskPathFinal.CGPath
-        controller.view.layer.mask = maskLayer
-        
-        let maskLayerAnimation = CABasicAnimation(keyPath: "path")
-        maskLayerAnimation.fromValue = circleMaskPathInitial.CGPath
-        maskLayerAnimation.toValue = circleMaskPathFinal.CGPath
-        maskLayerAnimation.duration = 0.75
-        maskLayer.addAnimation(maskLayerAnimation, forKey: "path")
-        
-        CATransaction.commit()
-    }
+    // MARK:- Containment -
     
     private func prepareCenterControllerForContainment (controller : UINavigationController){
         addMenuButtonToController(controller)
-        
-        let frame = CGRectMake(0, StatusBarHeight, CGRectGetWidth(self.centerPanel.frame), CGRectGetHeight(self.centerPanel.frame) - StatusBarHeight)
-        
+        let frame = CGRectMake(0, 0, CGRectGetWidth(self.centerPanel.frame), CGRectGetHeight(self.centerPanel.frame))
         controller.view.frame = frame
     }
     
-    
-    private func addMenuButtonToController (controller : UINavigationController) {
+    private func addMenuButtonToController(controller: UINavigationController) {
         
-        if controller.viewControllers.count == 0 {
+        guard let image = self.dynamicType.preferences.layout.menuButtonImage else {
             return
         }
         
-        let shouldPlaceOnLeftSide = presentationStyle == .UnderCenterPanelLeft || presentationStyle == .AboveCenterPanelLeft
+        let shouldPlaceOnLeftSide = sidePanelPosition == .UnderCenterPanelLeft || sidePanelPosition == .AboveCenterPanelLeft
         
         let button = UIButton(frame: CGRectMake(0, 0, 40, 40))
-        
-        if SideMenuController.menuButtonImage != nil {
-            button.setImage(SideMenuController.menuButtonImage, forState: UIControlState.Normal)
-        }else{
-            button.backgroundColor = UIColor.purpleColor()
-        }
-        
-        button.addTarget(self, action: "toggleSidePanel", forControlEvents: UIControlEvents.TouchUpInside)
+        button.setImage(image, forState: UIControlState.Normal)
+        button.addTarget(self, action: #selector(toggleSidePanel), forControlEvents: UIControlEvents.TouchUpInside)
         
         let item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
@@ -424,80 +292,54 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func prepareSidePanelForDisplay(display: Bool){
-        self.sidePanel.hidden = !display
-        if presentationStyle == .AboveCenterPanelLeft || presentationStyle == .AboveCenterPanelRight {
+    private func prepareSidePanel(forDisplay display: Bool){
+        
+        sidePanel.hidden = !display
+        
+        if sidePanelPosition == .AboveCenterPanelLeft || sidePanelPosition == .AboveCenterPanelRight {
             if display {
-                if (self.centerShadowView.superview == nil){
-                    self.centerShadowView.alpha = 0
-                    self.view.insertSubview(self.centerShadowView, belowSubview: self.sidePanel)
+                if centerShadowView.superview == nil {
+                    centerShadowView.alpha = 0
+                    view.insertSubview(self.centerShadowView, belowSubview: self.sidePanel)
                 }
             }else{
-                self.centerShadowView.removeFromSuperview()
+                centerShadowView.removeFromSuperview()
             }
         }else{
             showShadowForCenterPanel(true)
         }
     }
     
-    func toggleSidePanel () {
-        
-        if !transitionInProgress {
-            if !sidePanelVisible {
-                prepareSidePanelForDisplay(true)
-            }
-            
-            self.animateToReveal(!self.sidePanelVisible)
-        }
-    }
-    
-    private func animateToReveal(reveal : Bool){
+    private func animate(toReveal reveal: Bool){
         
         transitionInProgress = true
         
         self.sidePanelVisible = reveal
+        let above = sidePanelPosition == .AboveCenterPanelLeft || sidePanelPosition == .AboveCenterPanelRight
         
-        if (reveal) {
-            
-            if presentationStyle == .AboveCenterPanelLeft || presentationStyle == .AboveCenterPanelRight {
-                self.setAboveSidePanelHidden(false, completion: { () -> Void in
-                    self.transitionInProgress = false
-                    self.centerViewController.view.userInteractionEnabled = false
-                })
-            }else{
-                
-                self.setUnderSidePanelHidden(false, completion: { () -> () in
-                    self.transitionInProgress = false
-                    self.centerViewController.view.userInteractionEnabled = false
-                })
+        let hide = above ? setAboveSidePanelHidden : setUnderSidePanelHidden
+        hide(!reveal) { _ in
+            if !reveal {
+                self.prepareSidePanel(forDisplay: false)
             }
-        } else {
-            if presentationStyle == .AboveCenterPanelLeft || presentationStyle == .AboveCenterPanelRight {
-                self.setAboveSidePanelHidden(true, completion: { () -> Void in
-                    self.prepareSidePanelForDisplay(false)
-                    self.transitionInProgress = false
-                    self.centerViewController.view.userInteractionEnabled = true
-                })
-            }else{
-                
-                self.setUnderSidePanelHidden(true, completion: { () -> () in
-                    self.prepareSidePanelForDisplay(false)
-                    self.transitionInProgress = false
-                    self.centerViewController.view.userInteractionEnabled = true
-                })
-            }
-            
+            self.transitionInProgress = false
+            self.centerViewController.view.userInteractionEnabled = !reveal
         }
     }
     
     func handleTap(gesture : UITapGestureRecognizer) {
-        self.animateToReveal(false)
+        animate(toReveal: false)
     }
     
     // MARK:- .UnderCenterPanelLeft & Right -
     
     private func showShadowForCenterPanel(shouldShowShadow: Bool) {
-        if (shouldShowShadow) {
+        
+        guard self.dynamicType.preferences.layout.sideShadow else {
+            return
+        }
+        
+        if shouldShowShadow {
             centerPanel.layer.shadowOpacity = 0.8
         } else {
             centerPanel.layer.shadowOpacity = 0.0
@@ -507,7 +349,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     private func setUnderSidePanelHidden (hidden : Bool, completion : (() -> ())?) {
         var centerPanelFrame = self.centerPanel.frame
         if !hidden {
-            if presentationStyle == .UnderCenterPanelLeft {
+            if sidePanelPosition == .UnderCenterPanelLeft {
                 centerPanelFrame.origin.x = CGRectGetMaxX(self.sidePanel.frame)
             }else{
                 centerPanelFrame.origin.x = CGRectGetMinX(self.sidePanel.frame) - CGRectGetWidth(self.centerPanel.frame)
@@ -516,10 +358,10 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             centerPanelFrame.origin = CGPointZero
         }
         
-        var duration = hidden ? hideAnimationDuration : revealAnimationDuration
+        var duration = hidden ? self.dynamicType.preferences.animation.hideDuration : self.dynamicType.preferences.animation.reavealDuration
         
         if abs(flickVelocity) > 0 {
-            let newDuration = NSTimeInterval (self.sidePanel.frame.size.width / abs(flickVelocity))
+            let newDuration = NSTimeInterval(self.sidePanel.frame.size.width / abs(flickVelocity))
             flickVelocity = 0
             
             if newDuration < duration {
@@ -546,66 +388,73 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     func handleCenterPanelPan(recognizer : UIPanGestureRecognizer){
         
-        if !self.canDisplaySideController {
+        if !canDisplaySideController {
             return
         }
         
         self.flickVelocity = recognizer.velocityInView(recognizer.view).x
-        let leftToRight = self.flickVelocity > 0
-        
+        let leftToRight = flickVelocity > 0
+    
         switch(recognizer.state) {
+        
         case .Began:
-            if (!sidePanelVisible) {
+            if !sidePanelVisible {
                 sidePanelVisible = true
-                prepareSidePanelForDisplay(true)
+                prepareSidePanel(forDisplay: true)
                 showShadowForCenterPanel(true)
             }
-        case .Changed:
             
+        case .Changed:
             let translation = recognizer.translationInView(view).x
+            let sidePanelFrame = sidePanel.frame
             
             // origin.x or origin.x + width
-            let xPoint : CGFloat = self.centerPanel.center.x + translation + ((presentationStyle == .UnderCenterPanelLeft) ? -1  : 1 ) * CGRectGetWidth(self.centerPanel.frame) / 2
+            let xPoint: CGFloat = centerPanel.center.x + translation + (sidePanelPosition == .UnderCenterPanelLeft ? -1  : 1 ) * CGRectGetWidth(centerPanel.frame) / 2
             
             
-            if xPoint < CGRectGetMinX(self.sidePanel.frame) || xPoint > CGRectGetMaxX(self.sidePanel.frame){
+            if xPoint < CGRectGetMinX(sidePanelFrame) || xPoint > CGRectGetMaxX(sidePanelFrame){
                 return
             }
             
             if !landscapeOrientation {
-                if presentationStyle == .UnderCenterPanelLeft {
-                    self.statusBarView.alpha = xPoint / CGRectGetWidth(self.sidePanel.frame)
+                if sidePanelPosition == .UnderCenterPanelLeft {
+                    statusBarView.alpha = xPoint / CGRectGetWidth(sidePanelFrame)
                 }else{
-                    self.statusBarView.alpha =  1 - (xPoint - CGRectGetMinX(self.sidePanel.frame)) / CGRectGetWidth(self.sidePanel.frame)
+                    statusBarView.alpha =  1 - (xPoint - CGRectGetMinX(sidePanelFrame)) / CGRectGetWidth(sidePanelFrame)
                 }
             }
-            centerPanel.center.x = self.centerPanel.center.x + translation
+            centerPanel.center.x = centerPanel.center.x + translation
             recognizer.setTranslation(CGPointZero, inView: view)
+            
         default:
-            if (sidePanelVisible) {
+            if sidePanelVisible {
                 
                 var shouldOpen = true
+                let centerFrame = centerPanel.frame
+                let sideFrame = sidePanel.frame
                 
-                if presentationStyle == .UnderCenterPanelLeft {
+                let shouldOpenPercentage = CGFloat(0.2)
+                let shouldHidePercentage = CGFloat(0.8)
+                
+                if sidePanelPosition == .UnderCenterPanelLeft {
                     if leftToRight {
                         // opening
-                        shouldOpen = CGRectGetMinX(self.centerPanel.frame) > CGRectGetWidth(self.sidePanel.frame) * 0.2
+                        shouldOpen = CGRectGetMinX(centerFrame) > CGRectGetWidth(sideFrame) * shouldOpenPercentage
                     } else{
                         // closing
-                        shouldOpen = CGRectGetMinX(self.centerPanel.frame) > CGRectGetWidth(self.sidePanel.frame) * 0.8
+                        shouldOpen = CGRectGetMinX(centerFrame) > CGRectGetWidth(sideFrame) * shouldHidePercentage
                     }
                 }else{
                     if leftToRight {
                         //closing
-                        shouldOpen = CGRectGetMaxX(self.centerPanel.frame) < CGRectGetMinX(self.sidePanel.frame) + 0.2 * CGRectGetWidth(self.sidePanel.frame)
+                        shouldOpen = CGRectGetMaxX(centerFrame) < CGRectGetMinX(sideFrame) + shouldOpenPercentage * CGRectGetWidth(sideFrame)
                     }else{
                         // opening
-                        shouldOpen = CGRectGetMaxX(self.centerPanel.frame) < CGRectGetMinX(self.sidePanel.frame) + 0.8 * CGRectGetWidth(self.sidePanel.frame)
+                        shouldOpen = CGRectGetMaxX(centerFrame) < CGRectGetMinX(sideFrame) + shouldHidePercentage * CGRectGetWidth(sideFrame)
                     }
                 }
                 
-                
-                animateToReveal(shouldOpen)
+                animate(toReveal: shouldOpen)
             }
         }
     }
@@ -614,36 +463,32 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     func handleSidePanelPan(recognizer : UIPanGestureRecognizer){
         
-        if !self.canDisplaySideController {
+        if !canDisplaySideController {
             return
         }
         
-        self.flickVelocity = recognizer.velocityInView(recognizer.view).x
+        flickVelocity = recognizer.velocityInView(recognizer.view).x
         
         let leftToRight = self.flickVelocity > 0
         let sidePanelWidth = CGRectGetWidth(self.sidePanel.frame)
         
         switch recognizer.state {
         case .Began:
-            
-            self.prepareSidePanelForDisplay(true)
-            
-            break
-            
+            prepareSidePanel(forDisplay: true)
+        
         case .Changed:
             
             let translation = recognizer.translationInView(view).x
-            let xPoint : CGFloat = self.sidePanel.center.x + translation + (presentationStyle == .AboveCenterPanelLeft ? 1 : -1) * sidePanelWidth / 2
+            let xPoint : CGFloat = self.sidePanel.center.x + translation + (sidePanelPosition == .AboveCenterPanelLeft ? 1 : -1) * sidePanelWidth / 2
             var alpha : CGFloat
             
-            if presentationStyle == .AboveCenterPanelLeft {
+            if sidePanelPosition == .AboveCenterPanelLeft {
                 if xPoint <= 0 || xPoint > CGRectGetWidth(self.sidePanel.frame) {
                     return
                 }
                 alpha = xPoint / CGRectGetWidth(self.sidePanel.frame)
             }else{
-                if xPoint <= screenSize.width - sidePanelWidth || xPoint >= screenSize.width
-                {
+                if xPoint <= screenSize.width - sidePanelWidth || xPoint >= screenSize.width {
                     return
                 }
                 alpha = 1 - (xPoint - (screenSize.width - sidePanelWidth)) / sidePanelWidth
@@ -661,16 +506,16 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             
         default:
             
-            let shouldClose = presentationStyle == .AboveCenterPanelLeft ? !leftToRight && CGRectGetMaxX(self.sidePanel.frame) < sidePanelWidth : leftToRight && CGRectGetMinX(self.sidePanel.frame) >  (screenSize.width - sidePanelWidth)
+            let shouldClose = sidePanelPosition == .AboveCenterPanelLeft ? !leftToRight && CGRectGetMaxX(self.sidePanel.frame) < sidePanelWidth : leftToRight && CGRectGetMinX(self.sidePanel.frame) >  (screenSize.width - sidePanelWidth)
             
-            self.animateToReveal(!shouldClose)
+            animate(toReveal: !shouldClose)
             
         }
     }
     
     private func setAboveSidePanelHidden(hidden: Bool, completion : ((Void) -> Void)?){
         
-        let leftSidePositioned = presentationStyle == .AboveCenterPanelLeft
+        let leftSidePositioned = sidePanelPosition == .AboveCenterPanelLeft
         var destinationFrame = self.sidePanel.frame
         
         if leftSidePositioned {
@@ -689,7 +534,7 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             }
         }
         
-        var duration = hidden ? hideAnimationDuration : revealAnimationDuration
+        var duration = hidden ? self.dynamicType.preferences.animation.hideDuration : self.dynamicType.preferences.animation.reavealDuration
         
         if abs(flickVelocity) > 0 {
             let newDuration = NSTimeInterval (destinationFrame.size.width / abs(flickVelocity))
@@ -712,36 +557,33 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func handleLeftSwipe(recognizer : UIGestureRecognizer){
-        if presentationStyle == .AboveCenterPanelLeft {
-            if self.sidePanelVisible{
-                self.animateToReveal(false)
-            }
-        }else{
-            if !self.sidePanelVisible {
-                self.prepareSidePanelForDisplay(true)
-                self.animateToReveal(true)
-            }
-        }
+        handleHorizontalSwipe(toLeft: true)
     }
     
     func handleRightSwipe(recognizer : UIGestureRecognizer){
-        if presentationStyle == .AboveCenterPanelLeft {
-            if !self.sidePanelVisible {
-                self.prepareSidePanelForDisplay(true)
-                self.animateToReveal(true)
-            }
-        }else{
+        handleHorizontalSwipe(toLeft: false)
+    }
+    
+    
+    func handleHorizontalSwipe(toLeft left: Bool) {
+        if (left && sidePanelPosition == .AboveCenterPanelLeft) ||
+            (!left && sidePanelPosition == .AboveCenterPanelRight) {
             if sidePanelVisible {
-                self.animateToReveal(false)
+                animate(toReveal: false)
+            }
+        } else {
+            if !sidePanelVisible {
+                prepareSidePanel(forDisplay: true)
+                animate(toReveal: true)
             }
         }
     }
     
     // MARK:- UIGestureRecognizerDelegate -
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
+    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldReceiveTouch touch: UITouch) -> Bool {
         if gestureRecognizer == self.panRecognizer {
-            return SideMenuController.panningEnabled
+            return self.dynamicType.preferences.layout.panningEnabled
         }else if gestureRecognizer == self.tapRecognizer{
             return self.sidePanelVisible
         } else {
@@ -749,102 +591,37 @@ class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    // MARK:- Helper methods -
+    // MARK:- Helpers -
     
-    private func centerPanelFrame() -> CGRect {
+    private var centerPanelFrame: CGRect {
         
-        if (presentationStyle == .UnderCenterPanelLeft || presentationStyle == .UnderCenterPanelRight) && sidePanelVisible {
+        if (sidePanelPosition == .UnderCenterPanelLeft || sidePanelPosition == .UnderCenterPanelRight) && sidePanelVisible {
             
             let sidePanelWidth = percentage * min(screenSize.width, screenSize.height)
             
-            return CGRectMake(presentationStyle == .UnderCenterPanelLeft ? sidePanelWidth : -sidePanelWidth, 0, screenSize.width, screenSize.height)
+            return CGRectMake(sidePanelPosition == .UnderCenterPanelLeft ? sidePanelWidth : -sidePanelWidth, 0, screenSize.width, screenSize.height)
         } else {
             return CGRectMake(0, 0, screenSize.width, screenSize.height)
         }
     }
     
-    private func sidePanelFrame() -> CGRect {
+    private var sidePanelFrame: CGRect {
         var sidePanelFrame : CGRect
         
         let panelWidth = percentage * min(screenSize.width, screenSize.height)
         
-        if presentationStyle == .UnderCenterPanelLeft || presentationStyle == .UnderCenterPanelRight {
-            sidePanelFrame = CGRectMake(presentationStyle == .UnderCenterPanelLeft ? 0 :
+        if sidePanelPosition == .UnderCenterPanelLeft || sidePanelPosition == .UnderCenterPanelRight {
+            sidePanelFrame = CGRectMake(sidePanelPosition == .UnderCenterPanelLeft ? 0 :
                 screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
         } else {
             if sidePanelVisible {
 
-                sidePanelFrame = CGRectMake(presentationStyle == .AboveCenterPanelLeft ? 0 : screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
+                sidePanelFrame = CGRectMake(sidePanelPosition == .AboveCenterPanelLeft ? 0 : screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
             } else {
-                sidePanelFrame = CGRectMake(presentationStyle == .AboveCenterPanelLeft ? -panelWidth : screenSize.width, 0, panelWidth, screenSize.height)
+                sidePanelFrame = CGRectMake(sidePanelPosition == .AboveCenterPanelLeft ? -panelWidth : screenSize.width, 0, panelWidth, screenSize.height)
             }
         }
         
         return sidePanelFrame
     }
 }
-
-// MARK:- Custom segue  -
-@objc(ContainmentSegue)
-class ContainmentSegue : UIStoryboardSegue{
-    
-    enum ContainmentSegueType{
-        case Center
-        case Side
-    }
-    
-    private var type: ContainmentSegueType {
-        get {
-            if let id = self.identifier {
-                if id == SideSegue {
-                    return .Side
-                }else{
-                    return .Center
-                }
-            }else{
-                return .Center
-            }
-        }
-    }
-    
-    override func perform() {
-        
-        if let sideController = self.sourceViewController as? SideMenuController {
-            sideController.addNewController(self.destinationViewController , forSegueType: self.type)
-        } else {
-            fatalError("This type of segue must only be used from a MenuViewController")
-        }
-    }
-}
-
-// MARK:-  Extensions -
-
-extension UIView {
-    class func panelAnimation(duration : NSTimeInterval, animations : (()->()), completion : (()->())?) {
-        UIView.animateWithDuration(duration, animations: animations) { _ -> Void in
-            if completion != nil {
-                completion!()
-            }
-        }
-    }
-}
-
-extension UIViewController {
-    func sideMenuController() -> SideMenuController? {
-        return sideMenuControllerForViewController(self)
-    }
-    
-    private func sideMenuControllerForViewController(controller : UIViewController) -> SideMenuController?
-    {
-        if let sideController = controller as? SideMenuController {
-            return sideController
-        }
-        
-        if controller.parentViewController != nil {
-            return sideMenuControllerForViewController(controller.parentViewController!)
-        }else{
-            return nil
-        }
-    }
-}
-
