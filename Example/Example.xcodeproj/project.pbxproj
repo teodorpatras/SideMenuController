@@ -105,7 +105,6 @@
 			children = (
 				13A758741D12D130004488DA /* View Controllers */,
 				13A758401D12A3F5004488DA /* AppDelegate.swift */,
-				13A758421D12A3F5004488DA /* ViewController.swift */,
 				13A758441D12A3F5004488DA /* Main.storyboard */,
 				13A758471D12A3F5004488DA /* Assets.xcassets */,
 				13A758491D12A3F5004488DA /* LaunchScreen.storyboard */,
@@ -126,6 +125,7 @@
 		13A758741D12D130004488DA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				13A758421D12A3F5004488DA /* ViewController.swift */,
 				13A758721D12D10B004488DA /* CustomSideMenuController.swift */,
 				13A758751D12D161004488DA /* ContentViewController.swift */,
 				13A758771D12D176004488DA /* MenuController.swift */,
@@ -358,6 +358,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teodorpatras.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -370,6 +371,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				INFOPLIST_FILE = Example/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teodorpatras.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
