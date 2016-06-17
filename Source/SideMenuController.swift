@@ -72,7 +72,7 @@ public extension SideMenuController {
             }
             
             let animator = self.dynamicType.preferences.animation.transitionAnimator
-            animator.animateTransition(forViewController: controller, completion: completion)
+            animator.animateTransition(forView: controller.view, completion: completion)
             
             if (self.sidePanelVisible){
                 animate(toReveal: false)
@@ -140,6 +140,9 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     private var centerShadowView: UIView!
     
     private var transitionInProgress = false
+    private var hidesStatusBar: Bool {
+        return !self.dynamicType.preferences.layout.statusBarUnderlayEnabled
+    }
     private var statusBarUnderlayEnabled: Bool {
         let setting = self.dynamicType.preferences.layout.statusBarUnderlayEnabled
         let isiPad = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad
@@ -148,7 +151,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             return setting
         }
         
-        return screenSize.width > screenSize.height
+        return screenSize.width < screenSize.height
     }
     
     private var leftSwipeRecognizer: UISwipeGestureRecognizer!
@@ -320,6 +323,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         self.sidePanelVisible = reveal
         let above = sidePanelPosition == .AboveCenterPanelLeft || sidePanelPosition == .AboveCenterPanelRight
         
+        self.setStatusBar(hidden: reveal)
         let hide = above ? setAboveSidePanelHidden : setUnderSidePanelHidden
         hide(!reveal) { _ in
             if !reveal {
@@ -407,6 +411,8 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 showShadowForCenterPanel(true)
             }
             
+            setStatusBar(hidden: true)
+            
         case .Changed:
             let translation = recognizer.translationInView(view).x
             let sidePanelFrame = sidePanel.frame
@@ -477,7 +483,9 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         switch recognizer.state {
         case .Began:
+            
             prepareSidePanel(forDisplay: true)
+            setStatusBar(hidden: true)
         
         case .Changed:
             
@@ -512,7 +520,6 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             let shouldClose = sidePanelPosition == .AboveCenterPanelLeft ? !leftToRight && CGRectGetMaxX(self.sidePanel.frame) < sidePanelWidth : leftToRight && CGRectGetMinX(self.sidePanel.frame) >  (screenSize.width - sidePanelWidth)
             
             animate(toReveal: !shouldClose)
-            
         }
     }
     
@@ -580,6 +587,13 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 animate(toReveal: true)
             }
         }
+    }
+    
+    func setStatusBar(hidden hidden: Bool) {
+        let size = UIScreen.mainScreen().applicationFrame.size
+        self.view.window?.frame = CGRectMake(0, 0, size.width, size.height)
+        UIApplication.sharedApplication().setStatusBarHidden(hidden, withAnimation: .Slide)
+        
     }
     
     // MARK:- UIGestureRecognizerDelegate -

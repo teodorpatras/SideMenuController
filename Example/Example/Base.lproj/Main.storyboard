@@ -39,10 +39,10 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="menuCell" id="DRt-4r-tyL">
-                                <rect key="frame" x="0.0" y="50" width="300" height="44"/>
+                                <rect key="frame" x="0.0" y="49.5" width="300" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DRt-4r-tyL" id="xs6-AI-spU">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -254,10 +254,11 @@
                             <constraint firstItem="ag6-4V-eJh" firstAttribute="centerX" secondItem="weK-i3-uda" secondAttribute="centerX" id="O1T-Qc-9t3"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Bm6-Qb-7Sl"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KaU-VX-NMK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2372" y="149"/>
+            <point key="canvasLocation" x="3184" y="149"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fZ2-jq-G5r">

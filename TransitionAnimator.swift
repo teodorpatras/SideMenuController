@@ -8,14 +8,18 @@
 
 import Foundation
 
-
+/**
+ *  Protocol for defining custom animations for when switching the center view controller.
+ *  By the time this method is called, the view of the new center view controller has been
+ *  added to the center panel and resized. You only need to implement a custom animation.
+ */
 public protocol TransitionAnimatable {
-    static func animateTransition(forViewController controller: UIViewController, completion: () -> Void)
+    static func animateTransition(forView view: UIView, completion: () -> Void)
 }
 
 
 public struct FadeInAnimator: TransitionAnimatable {
-    public static func animateTransition(forViewController controller: UIViewController, completion: () -> Void) {
+    public static func animateTransition(forView view: UIView, completion: () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         
@@ -27,15 +31,14 @@ public struct FadeInAnimator: TransitionAnimatable {
         fadeAnimation.fillMode = kCAFillModeBoth
         fadeAnimation.removedOnCompletion = true
         
-        controller.view.layer.addAnimation(fadeAnimation, forKey: "fadeInAnimation")
+        view.layer.addAnimation(fadeAnimation, forKey: "fadeInAnimation")
         
         CATransaction.commit()
     }
 }
 
-
 public struct CircleMaskAnimator: TransitionAnimatable {
-    public static func animateTransition(forViewController controller: UIViewController, completion: () -> Void) {
+    public static func animateTransition(forView view: UIView, completion: () -> Void) {
         
         let screenSize = UIScreen.mainScreen().bounds.size
         
@@ -54,7 +57,7 @@ public struct CircleMaskAnimator: TransitionAnimatable {
         
         let maskLayer = CAShapeLayer()
         maskLayer.path = circleMaskPathFinal.CGPath
-        controller.view.layer.mask = maskLayer
+        view.layer.mask = maskLayer
         
         let maskLayerAnimation = CABasicAnimation(keyPath: "path")
         maskLayerAnimation.fromValue = circleMaskPathInitial.CGPath
