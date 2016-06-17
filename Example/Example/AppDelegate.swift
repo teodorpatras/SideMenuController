@@ -18,12 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        SideMenuController.preferences.layout.menuButtonImage = UIImage(named: "menu")
-        SideMenuController.preferences.layout.sidePanelPosition = .UnderCenterPanelLeft
-        SideMenuController.preferences.layout.statusBarUnderlayEnabled = false
-        SideMenuController.preferences.layout.sidePanelWidth = 300
-        SideMenuController.preferences.layout.sideShadow = false
-        SideMenuController.preferences.animation.transitionAnimator = CircleMaskAnimator.self
+        SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
+        SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelWidth = 300
+        SideMenuController.preferences.drawing.drawSideShadow = true
+        SideMenuController.preferences.drawing.centerShadowOverlayColor = UIColor(hue:0.10, saturation:0.64, brightness:0.85, alpha:0.7)
+        SideMenuController.preferences.animating.statusBarBehaviour = .SlideOut
+        SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self
         
         return true
     }
