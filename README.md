@@ -1,5 +1,5 @@
 
-<img src="./assets/logo.png" alt="EasyTipView: fully customisable tooltip view written in Swift" style="width: 500px;"/>
+<img src="./assets/logo.png" alt="SideMenuController" style="width: 500px;"/>
 
 Description
 --------------
@@ -7,9 +7,9 @@ Description
 `SideMenuController` is a custom container view controller written in Swift which will display the main content within a center panel and the secondary content (option menu, navigation menu, etc.) within a side panel when triggered. The side panel can be displayed either on the left or on the right side, under or over the center panel.
 
 
-| ![Example](./assets/under-left.gif)|    ![Example](./assets/under-right.gif)      |
+| <img src="./assets/under-left.gif" alt="SideMenuController" style="width: 300px;"/>|    <img src="./assets/under-right.gif" alt="SideMenuController" style="width: 300px;"/>      |
 |----------|:-------------:|
-| ![Example](./assets/over-left.gif)   |    ![Example](./assets/over-right.gif) |
+| <img src="./assets/over-left.gif" alt="SideMenuController" style="width: 300px;"/>   |   <img src="./assets/over-right.gif" alt="SideMenuController" style="width: 300px;"/> |
 
 # Table of Contents
 1. [Features](#features)
