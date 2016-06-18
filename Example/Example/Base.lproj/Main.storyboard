@@ -19,7 +19,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="8io-ks-WSW" kind="custom" identifier="embedSideController" customClass="SideContainmentSegue" customModule="SideMenuController" id="FUe-Gc-64d"/>
+                        <segue destination="8io-ks-WSW" kind="custom" identifier="containSideMenu" customClass="SideContainmentSegue" customModule="SideMenuController" id="FUe-Gc-64d"/>
                         <segue destination="CVi-rj-cH2" kind="custom" identifier="showCenterController2" customClass="CenterContainmentSegue" customModule="SideMenuController" id="bYB-J5-ffA"/>
                         <segue destination="thz-H5-xnH" kind="custom" identifier="showCenterController3" customClass="CenterContainmentSegue" customModule="SideMenuController" id="LvT-Rx-mZn"/>
                         <segue destination="22K-a2-nlp" kind="custom" identifier="showCenterController1" customClass="CenterContainmentSegue" customModule="SideMenuController" id="QFA-KK-41T"/>
