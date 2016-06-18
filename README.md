@@ -1,6 +1,13 @@
 
 <img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/smc_logo.png" alt="SideMenuController" width=900/>
 
+[![Version](https://img.shields.io/cocoapods/v/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![License](https://img.shields.io/cocoapods/l/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
+[![Platform](https://img.shields.io/cocoapods/p/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
+[![Build Status](https://travis-ci.org/teodorpatras/SideMenuController.svg)](https://travis-ci.org/teodorpatras/SideMenuController)
+
+
 Description
 --------------
 
