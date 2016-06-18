@@ -1,5 +1,5 @@
 
-<img src="./assets/smc_logo.png" alt="SideMenuController" width=900/>
+<img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/smc_logo.png" alt="SideMenuController" width=900/>
 
 Description
 --------------
@@ -9,12 +9,12 @@ Description
 
 <table style="width:100%">
   <tr>
-    <td><img src="./assets/under-left.gif" alt="SideMenuController" height=500/></td>
-    <td><img src="./assets/under-right.gif" alt="SideMenuController" height=500/></td> 
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/under-left.gif" alt="SideMenuController" height=500/></td>
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/under-right.gif" alt="SideMenuController" height=500/></td> 
   </tr>
   <tr>
-    <td><img src="./assets/over-left.gif" alt="SideMenuController" height=500/></td>
-    <td><img src="./assets/over-right.gif" alt="SideMenuController" height=500/></td> 
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/over-left.gif" alt="SideMenuController" height=500/></td>
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/over-right.gif" alt="SideMenuController" height=500/></td> 
   </tr>
 </table>
 
@@ -132,7 +132,7 @@ Remember to set all the appropriate attributes of each segue in the Attributes I
 
 | SideContainmentSegue   |      CenterContainmentSegue     | 
 |----------|:-------------:|------:|
-| ![Example](./assets/side_settings.png) |  ![Example](./assets/center_settings.png) |
+| ![Example](https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/side_settings.png) |  ![Example](https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/center_settings.png) |
 
 In order to embed the inital view controlles inside the `SideMenuController` you will have to call `performSegue(withIdentifier:sender:)`. Easiest way is to subclass `SideMenuController` and override `viewDidLoad`:
 
