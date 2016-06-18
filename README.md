@@ -1,5 +1,5 @@
 
-<img src="./assets/smc_logo.png" alt="SideMenuController" style="width: 500px;"/>
+<img src="./assets/smc_logo.png" alt="SideMenuController" width=900/>
 
 Description
 --------------

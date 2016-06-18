@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		134E94E11D159C4B001C1F7D /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134E94DF1D159C4B001C1F7D /* TransitionAnimator.swift */; };
+		134E94E21D159C4B001C1F7D /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134E94E01D159C4B001C1F7D /* UIKitExtensions.swift */; };
+		134E94E51D159C56001C1F7D /* CenterContainmentSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134E94E31D159C56001C1F7D /* CenterContainmentSegue.swift */; };
 		13A757F11D12A2A0004488DA /* SideMenuController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13A757E61D12A2A0004488DA /* SideMenuController.framework */; };
 		13A758041D12A2F5004488DA /* SideMenuController.h in Headers */ = {isa = PBXBuildFile; fileRef = 13A758011D12A2F5004488DA /* SideMenuController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		13A758051D12A2F5004488DA /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758021D12A2F5004488DA /* SideMenuController.swift */; };
 		13A7580A1D12A32A004488DA /* SideMenuControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758071D12A303004488DA /* SideMenuControllerTests.swift */; };
 		13A7580C1D12A33B004488DA /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13A758061D12A303004488DA /* Info.plist */; };
 		13A7586D1D12A61B004488DA /* SideContainmentSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */; };
-		13A7586F1D12A633004488DA /* CenterContainmentSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A7586E1D12A633004488DA /* CenterContainmentSegue.swift */; };
-		13A758711D12C387004488DA /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758701D12C387004488DA /* TransitionAnimator.swift */; };
-		13A7587A1D12EC0F004488DA /* UIKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758791D12EC0F004488DA /* UIKitExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		134E94DF1D159C4B001C1F7D /* TransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransitionAnimator.swift; path = Source/TransitionAnimator.swift; sourceTree = SOURCE_ROOT; };
+		134E94E01D159C4B001C1F7D /* UIKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIKitExtensions.swift; path = Source/UIKitExtensions.swift; sourceTree = SOURCE_ROOT; };
+		134E94E31D159C56001C1F7D /* CenterContainmentSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenterContainmentSegue.swift; path = Source/CenterContainmentSegue.swift; sourceTree = SOURCE_ROOT; };
 		13A757E61D12A2A0004488DA /* SideMenuController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SideMenuController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13A757F01D12A2A0004488DA /* SideMenuControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SideMenuControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		13A758001D12A2F5004488DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Source/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -37,9 +40,6 @@
 		13A758061D12A303004488DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Tests/Info.plist; sourceTree = SOURCE_ROOT; };
 		13A758071D12A303004488DA /* SideMenuControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenuControllerTests.swift; path = Tests/SideMenuControllerTests.swift; sourceTree = SOURCE_ROOT; };
 		13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideContainmentSegue.swift; path = Source/SideContainmentSegue.swift; sourceTree = SOURCE_ROOT; };
-		13A7586E1D12A633004488DA /* CenterContainmentSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterContainmentSegue.swift; sourceTree = SOURCE_ROOT; };
-		13A758701D12C387004488DA /* TransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = SOURCE_ROOT; };
-		13A758791D12EC0F004488DA /* UIKitExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitExtensions.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,10 +101,10 @@
 		13A7586A1D12A504004488DA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				134E94DF1D159C4B001C1F7D /* TransitionAnimator.swift */,
+				134E94E01D159C4B001C1F7D /* UIKitExtensions.swift */,
 				13A7586B1D12A5E9004488DA /* Segues */,
 				13A758021D12A2F5004488DA /* SideMenuController.swift */,
-				13A758701D12C387004488DA /* TransitionAnimator.swift */,
-				13A758791D12EC0F004488DA /* UIKitExtensions.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -112,8 +112,8 @@
 		13A7586B1D12A5E9004488DA /* Segues */ = {
 			isa = PBXGroup;
 			children = (
+				134E94E31D159C56001C1F7D /* CenterContainmentSegue.swift */,
 				13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */,
-				13A7586E1D12A633004488DA /* CenterContainmentSegue.swift */,
 			);
 			name = Segues;
 			sourceTree = "<group>";
@@ -228,10 +228,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				13A758051D12A2F5004488DA /* SideMenuController.swift in Sources */,
-				13A758711D12C387004488DA /* TransitionAnimator.swift in Sources */,
+				134E94E11D159C4B001C1F7D /* TransitionAnimator.swift in Sources */,
 				13A7586D1D12A61B004488DA /* SideContainmentSegue.swift in Sources */,
-				13A7586F1D12A633004488DA /* CenterContainmentSegue.swift in Sources */,
-				13A7587A1D12EC0F004488DA /* UIKitExtensions.swift in Sources */,
+				134E94E21D159C4B001C1F7D /* UIKitExtensions.swift in Sources */,
+				134E94E51D159C56001C1F7D /* CenterContainmentSegue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
