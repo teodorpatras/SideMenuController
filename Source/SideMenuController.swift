@@ -90,7 +90,7 @@ public extension SideMenuController {
             animator.animateTransition(forView: controller.view, completion: completion)
             
             if sidePanelVisible {
-                animate(toReveal: false)
+                animate(toReveal: false, statusUpdateAnimated: false)
             }
         }
     }
@@ -123,10 +123,10 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     public struct Preferences {
         public struct Drawing {
-            public var sidePanelWidth: CGFloat = 300
             public var menuButtonImage: UIImage?
+            public var sidePanelWidth: CGFloat = 300
             public var sidePanelPosition = SidePanelPosition.UnderCenterPanelLeft
-            public var centerShadowOverlayColor = UIColor(hue:0.15, saturation:0.21, brightness:0.17, alpha:0.6)
+            public var centerPanelOverlayColor = UIColor(hue:0.15, saturation:0.21, brightness:0.17, alpha:0.6)
             public var panningEnabled = true
             public var swipingEnabled = true
             public var drawSideShadow = true
@@ -136,7 +136,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             public var statusBarBehaviour = StatusBarBehaviour.SlideOut
             public var reavealDuration = 0.3
             public var hideDuration = 0.2
-            public var transitionAnimator: TransitionAnimatable.Type = FadeInAnimator.self
+            public var transitionAnimator: TransitionAnimatable.Type = FadeAnimator.self
         }
         
         public var drawing = Drawing()
@@ -159,7 +159,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     private var statusBarUnderlay: UIView!
     private var centerPanel: UIView!
     private var sidePanel: UIView!
-    private var centerShadowOverlay: UIView!
+    private var centerPanelOverlay: UIView!
     private var leftSwipeRecognizer: UISwipeGestureRecognizer!
     private var rightSwipeGesture: UISwipeGestureRecognizer!
     private var panRecognizer: UIPanGestureRecognizer!
@@ -264,8 +264,8 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             self.setStatusUnderlay(alpha: self.sidePanelVisible ? 1 : 0)
             
             // reposition the center shadow view
-            if let shadow = self.centerShadowOverlay {
-                shadow.frame = self.centerPanelFrame
+            if let overlay = self.centerPanelOverlay {
+                overlay.frame = self.centerPanelFrame
             }
             
             self.view.layoutIfNeeded()
@@ -291,8 +291,8 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         if sidePanelPosition.isPositionedUnder {
             view.sendSubviewToBack(sidePanel)
         } else {
-            centerShadowOverlay = UIView(frame: UIScreen.mainScreen().bounds)
-            centerShadowOverlay.backgroundColor = self.dynamicType.preferences.drawing.centerShadowOverlayColor
+            centerPanelOverlay = UIView(frame: centerPanel.frame)
+            centerPanelOverlay.backgroundColor = self.dynamicType.preferences.drawing.centerPanelOverlayColor
             view.bringSubviewToFront(sidePanel)
         }
         
@@ -324,26 +324,26 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             rightSwipeGesture.delegate = self
             rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.Right
             
-            centerShadowOverlay.addGestureRecognizer(tapRecognizer)
+            centerPanelOverlay.addGestureRecognizer(tapRecognizer)
             
             if sidePanelPosition.isPositionedLeft {
                 centerPanel.addGestureRecognizer(rightSwipeGesture)
-                centerShadowOverlay.addGestureRecognizer(leftSwipeRecognizer)
+                centerPanelOverlay.addGestureRecognizer(leftSwipeRecognizer)
             }else{
                 centerPanel.addGestureRecognizer(leftSwipeRecognizer)
-                centerShadowOverlay.addGestureRecognizer(rightSwipeGesture)
+                centerPanelOverlay.addGestureRecognizer(rightSwipeGesture)
             }
         }
     }
     
-    private func setStatusBar(hidden hidden: Bool) {
+    private func setStatusBar(hidden hidden: Bool, animated: Bool = true) {
         
         guard hidesStatusBar else {
             return
         }
         
         let setting = self.dynamicType.preferences.animating.statusBarBehaviour
-        let animation: UIStatusBarAnimation = setting == .FadeOut ? .Fade : .Slide
+        let animation: UIStatusBarAnimation = animated ? (setting == .FadeOut ? .Fade : .Slide) : .None
         
         let size = UIScreen.mainScreen().applicationFrame.size
         self.view.window?.frame = CGRectMake(0, 0, size.width, size.height)
@@ -364,11 +364,10 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     // MARK:- Containment -
-    
+
     private func prepareCenterControllerForContainment (controller: UINavigationController){
         addMenuButtonToController(controller)
-        let frame = CGRectMake(0, 0, CGRectGetWidth(centerPanel.frame), CGRectGetHeight(centerPanel.frame))
-        controller.view.frame = frame
+        controller.view.frame = centerPanel.bounds
     }
     
     private func addMenuButtonToController(controller: UINavigationController) {
@@ -399,22 +398,22 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         sidePanel.hidden = !display
         
         if !sidePanelPosition.isPositionedUnder {
-            if display && centerShadowOverlay.superview == nil {
-                centerShadowOverlay.alpha = 0
-                view.insertSubview(self.centerShadowOverlay, belowSubview: self.sidePanel)
-            }else{
-                centerShadowOverlay.removeFromSuperview()
+            if display && centerPanelOverlay.superview == nil {
+                centerPanelOverlay.alpha = 0
+                view.insertSubview(self.centerPanelOverlay, belowSubview: self.sidePanel)
+            }else if !display {
+                centerPanelOverlay.removeFromSuperview()
             }
         } else {
             setSideShadow(hidden: display)
         }
     }
     
-    private func animate(toReveal reveal: Bool){
+    private func animate(toReveal reveal: Bool, statusUpdateAnimated: Bool = true){
         
         transitionInProgress = true
         sidePanelVisible = reveal
-        setStatusBar(hidden: reveal)
+        setStatusBar(hidden: reveal, animated: statusUpdateAnimated)
         
         let hide = sidePanelPosition.isPositionedUnder ? setUnderSidePanelHidden : setAboveSidePanelHidden
         hide(!reveal) { _ in
@@ -596,7 +595,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             }
             
             setStatusUnderlay(alpha: alpha)
-            centerShadowOverlay.alpha = alpha
+            centerPanelOverlay.alpha = alpha
             sidePanel.center.x = sidePanel.center.x + translation
             recognizer.setTranslation(CGPointZero, inView: view)
             
@@ -644,7 +643,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         UIView.panelAnimation(duration, animations: { () -> () in
             
-            self.centerShadowOverlay.alpha = hidden ? 0 : 1
+            self.centerPanelOverlay.alpha = hidden ? 0 : 1
             self.setStatusUnderlay(alpha: hidden ? 0 : 1)
             self.sidePanel.frame = destinationFrame
             

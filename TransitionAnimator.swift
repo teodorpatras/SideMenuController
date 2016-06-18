@@ -33,17 +33,17 @@ public protocol TransitionAnimatable {
 }
 
 
-public struct FadeInAnimator: TransitionAnimatable {
+public struct FadeAnimator: TransitionAnimatable {
     public static func animateTransition(forView view: UIView, completion: () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         
         let fadeAnimation = CABasicAnimation(keyPath: "opacity")
-        fadeAnimation.duration = 0.7
+        fadeAnimation.duration = 0.35
         fadeAnimation.fromValue = 0
         fadeAnimation.toValue = 1
         
-        fadeAnimation.fillMode = kCAFillModeBoth
+        fadeAnimation.fillMode = kCAFillModeForwards
         fadeAnimation.removedOnCompletion = true
         
         view.layer.addAnimation(fadeAnimation, forKey: "fadeInAnimation")
