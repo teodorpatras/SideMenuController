@@ -104,7 +104,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         case UnderCenterPanelLeft
         case UnderCenterPanelRight
         case OverCenterPanelLeft
-        case OvereCenterPanelRight
+        case OverCenterPanelRight
         
         var isPositionedUnder: Bool {
             return self == UnderCenterPanelLeft || self == UnderCenterPanelRight
@@ -116,7 +116,6 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     public enum StatusBarBehaviour {
-        case None
         case SlideOut
         case FadeOut
         case ShowUnderlay

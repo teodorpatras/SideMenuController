@@ -19,11 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
-        SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
         SideMenuController.preferences.drawing.sidePanelWidth = 300
         SideMenuController.preferences.drawing.drawSideShadow = true
-        SideMenuController.preferences.drawing.centerShadowOverlayColor = UIColor(hue:0.10, saturation:0.64, brightness:0.85, alpha:0.7)
-        SideMenuController.preferences.animating.statusBarBehaviour = .SlideOut
+        //SideMenuController.preferences.drawing.centerShadowOverlayColor = UIColor(hue:0.10, saturation:0.64, brightness:0.85, alpha:0.7)
+        SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
         SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self
         
         return true

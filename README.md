@@ -5,7 +5,9 @@ Purpose
 
 SideMenuController is a custom container view controller written in Swift which will display the main content within a center panel and the secondary content (option menu, navigation menu, etc.) within a side panel when triggered. The side panel can be displayed either on the left or on the right side, under or above the center panel.
 
-![Example](/../master/images/preview.gif)
+| <br><br><img src="https://raw.githubusercontent.com/teodorpatras/EasyTipView/master/assets/animation.gif" width="200">  |    ![Example](./assets/under-right.gif)      |
+|----------|:-------------:|
+| ![Example](./assets/over-left.gif)   |    ![Example](./assets/over-right.gif) |
 
 Usage
 --------------
