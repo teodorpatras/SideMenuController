@@ -1,5 +1,5 @@
 
-<img src="./assets/logo.png" alt="SideMenuController" style="width: 500px;"/>
+<img src="./assets/smc_logo.png" alt="SideMenuController" style="width: 500px;"/>
 
 Description
 --------------
@@ -7,9 +7,16 @@ Description
 `SideMenuController` is a custom container view controller written in Swift which will display the main content within a center panel and the secondary content (option menu, navigation menu, etc.) within a side panel when triggered. The side panel can be displayed either on the left or on the right side, under or over the center panel.
 
 
-| <img src="./assets/under-left.gif" alt="SideMenuController" style="width: 300px;"/>|    <img src="./assets/under-right.gif" alt="SideMenuController" style="width: 300px;"/>      |
-|----------|:-------------:|
-| <img src="./assets/over-left.gif" alt="SideMenuController" style="width: 300px;"/>   |   <img src="./assets/over-right.gif" alt="SideMenuController" style="width: 300px;"/> |
+<table style="width:100%">
+  <tr>
+    <td><img src="./assets/under-left.gif" alt="SideMenuController" height=500/></td>
+    <td><img src="./assets/under-right.gif" alt="SideMenuController" height=500/></td> 
+  </tr>
+  <tr>
+    <td><img src="./assets/over-left.gif" alt="SideMenuController" height=500/></td>
+    <td><img src="./assets/over-right.gif" alt="SideMenuController" height=500/></td> 
+  </tr>
+</table>
 
 # Table of Contents
 1. [Features](#features)
