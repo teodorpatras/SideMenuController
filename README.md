@@ -39,12 +39,22 @@ Description
 ##<a name="features"> Features </a>
 
 
-- [x] Easy to use, fully customizable
+- [x] Easy to use, fully customisable
 - [x] Left and Right side positioning
 - [x] Over and Under center positioning
 - [x] Automatic orientation change adjustments.
-- [x] Custom status bar behaviour
-- [x] Fully customizable transition animations
+- [x] Fully customisable transition animations
+- [x] Custom status bar **behaviour** (see [Customisation](#customisation) for details):
+
+<table style="width:100%">
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/slide.gif" alt="SideMenuController"/></td>
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/fade.gif" alt="SideMenuController"/></td> 
+  </tr>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/underlay.gif" alt="SideMenuController"/></td>
+  </tr>
+</table>
 
 <a name="installation"> Installation </a>
 --------------
@@ -110,7 +120,7 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 
 You can get started using `SideMenuController` in 3 basic steps:
 
-**Step 1.**  First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customize other preferences as well:
+**Step 1.**  First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well:
 
 ```
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -184,7 +194,7 @@ override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPat
 
 <a name="customisation"> Customisation </a>
 --------------
-In order to customize the `SideMenuController` appearance and behaviour, you can play with the `SideMenuController .Preferences` structure. It is split into two sub structures:
+In order to customise the `SideMenuController` appearance and behaviour, you can play with the `SideMenuController .Preferences` structure. It is split into two sub structures:
 
 * ```Drawing``` - encapsulates customisable properties specifying how ```SideMenuController``` will adjust its layout, positioning on screen.
 * ```Animating``` - encapsulates customisable properties specifying which animations will be used for different components.
