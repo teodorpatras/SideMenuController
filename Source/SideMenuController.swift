@@ -505,7 +505,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             self.setStatusUnderlay(alpha: hidden ? 0 : 1)
         }) { _ in
             if hidden {
-                self.setSideShadow(hidden: false)
+                self.setSideShadow(hidden: hidden)
             }
             completion?()
         }
@@ -526,7 +526,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             if !sidePanelVisible {
                 sidePanelVisible = true
                 prepareSidePanel(forDisplay: true)
-                setSideShadow(hidden: true)
+                setSideShadow(hidden: false)
             }
             
             setStatusBar(hidden: true)
