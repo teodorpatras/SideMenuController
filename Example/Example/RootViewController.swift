@@ -10,7 +10,17 @@ import UIKit
 import SideMenuController
 
 class RootViewController: UIViewController {
-
+    
+    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
+        if motion == .MotionShake {
+            dismissViewControllerAnimated(true, completion: { 
+                if self.presentedViewController != nil {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
+            })
+        }
+    }
+    
     @IBAction func programmaticAction() {
         
         let sideMenuViewController = SideMenuController()

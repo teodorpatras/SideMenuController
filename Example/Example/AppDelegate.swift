@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        application.applicationSupportsShakeToEdit = true
         // Override point for customization after application launch.
         
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
@@ -23,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SideMenuController.preferences.drawing.sidePanelWidth = 300
         SideMenuController.preferences.drawing.drawSideShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
+        SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self
         
         return true
     }

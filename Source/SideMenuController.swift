@@ -75,7 +75,7 @@ public extension SideMenuController {
             centerViewController = controller
             addChildViewController(centerViewController)
             centerViewController.didMoveToParentViewController(self)
-        }else{
+        } else {
             centerViewController.willMoveToParentViewController(nil)
             addChildViewController(controller)
             
@@ -86,13 +86,8 @@ public extension SideMenuController {
                 self.centerViewController = controller
             }
             
-            if let animation = _preferences.animating.transitionAnimator?.animation {
-                
-                CATransaction.begin()
-                CATransaction.setCompletionBlock(completion)
-                controller.view.layer.addAnimation(animation, forKey: nil)
-                CATransaction.commit()
-                
+            if let animator = _preferences.animating.transitionAnimator {
+                animator.performTransition(forView: controller.view, completion: completion)
             } else {
                 completion()
             }

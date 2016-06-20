@@ -42,10 +42,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIn-9m-edW">
-                                <rect key="frame" x="201" y="246" width="198" height="108"/>
+                                <rect key="frame" x="201" y="206" width="198" height="187"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TpW-3R-PDd">
-                                        <rect key="frame" x="20" y="70" width="158" height="30"/>
+                                        <rect key="frame" x="20" y="78" width="158" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Programmatic example"/>
                                         <connections>
@@ -53,25 +53,31 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Rq-pD-AtB">
-                                        <rect key="frame" x="30" y="8" width="138" height="30"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <rect key="frame" x="11" y="32" width="176" height="30"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
                                         <state key="normal" title="Storyboard example"/>
                                         <connections>
                                             <segue destination="BYZ-38-t0r" kind="show" id="oXn-qK-eX4"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Shake to get back here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOr-47-4lM">
+                                        <rect key="frame" x="11" y="153" width="177" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="108" id="9yZ-UA-ewy"/>
-                                    <constraint firstAttribute="width" constant="198" id="bTL-QR-Asz"/>
+                                    <constraint firstAttribute="width" constant="198" id="P4v-qJ-3ba"/>
+                                    <constraint firstAttribute="height" constant="187" id="ssA-Wn-K5A"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="UIn-9m-edW" firstAttribute="centerY" secondItem="MY1-uk-Kyk" secondAttribute="centerY" id="13O-eC-dYz"/>
-                            <constraint firstItem="UIn-9m-edW" firstAttribute="centerX" secondItem="MY1-uk-Kyk" secondAttribute="centerX" id="bvv-WG-tTF"/>
+                            <constraint firstItem="UIn-9m-edW" firstAttribute="centerY" secondItem="MY1-uk-Kyk" secondAttribute="centerY" id="b81-jQ-2e4"/>
+                            <constraint firstItem="UIn-9m-edW" firstAttribute="centerX" secondItem="MY1-uk-Kyk" secondAttribute="centerX" id="tbH-T4-ado"/>
                         </constraints>
                     </view>
                 </viewController>
