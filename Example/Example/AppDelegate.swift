@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SideMenuController.preferences.drawing.sidePanelWidth = 300
         SideMenuController.preferences.drawing.drawSideShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
-        SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
         
         return true
     }

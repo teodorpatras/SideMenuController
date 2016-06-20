@@ -267,8 +267,18 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK:- View lifecycle -
 
-    override public func viewDidLoad() {
-        super.viewDidLoad()
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setUpViewHierarchy()
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setUpViewHierarchy()
+    }
+    
+    private func setUpViewHierarchy() {
+        view = UIView(frame: UIScreen.mainScreen().bounds)
         configureViews()
     }
     
@@ -299,7 +309,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Configurations -
     
     private func configureViews(){
-
+        
         centerPanel = UIView(frame: CGRectMake(0, 0, screenSize.width, screenSize.height))
         view.addSubview(centerPanel)
         

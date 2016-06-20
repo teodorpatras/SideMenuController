@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1379ACDA1D18793300FD3629 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1379ACD91D18793300FD3629 /* RootViewController.swift */; };
 		13A758411D12A3F5004488DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758401D12A3F5004488DA /* AppDelegate.swift */; };
 		13A758431D12A3F5004488DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758421D12A3F5004488DA /* ViewController.swift */; };
 		13A758461D12A3F5004488DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13A758441D12A3F5004488DA /* Main.storyboard */; };
@@ -58,6 +59,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1379ACD91D18793300FD3629 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		13A7583D1D12A3F5004488DA /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13A758401D12A3F5004488DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13A758421D12A3F5004488DA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				13A758721D12D10B004488DA /* CustomSideMenuController.swift */,
 				13A758751D12D161004488DA /* ContentViewController.swift */,
 				13A758771D12D176004488DA /* MenuController.swift */,
+				1379ACD91D18793300FD3629 /* RootViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 			files = (
 				13A758781D12D176004488DA /* MenuController.swift in Sources */,
 				13A758761D12D161004488DA /* ContentViewController.swift in Sources */,
+				1379ACDA1D18793300FD3629 /* RootViewController.swift in Sources */,
 				13A758731D12D10B004488DA /* CustomSideMenuController.swift in Sources */,
 				13A758431D12A3F5004488DA /* ViewController.swift in Sources */,
 				13A758411D12A3F5004488DA /* AppDelegate.swift in Sources */,
