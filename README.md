@@ -118,9 +118,16 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 <a name="usage"> Usage </a>
 --------------
 
-You can get started using `SideMenuController` in 3 basic steps:
+You can get started using `SideMenuController` in 4 basic steps:
 
-**Step 1.**  First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well:
+**Step 1.** In case you want the status bar to be automatically hidden when the side panel is revealed, you should append the following to your `Info.plist`:
+
+```
+<key>UIViewControllerBasedStatusBarAppearance</key>
+<false/>
+```
+
+**Step 2.**  First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well:
 
 ```
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -135,7 +142,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 ```
 _If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
 
-**Step 2.** `SideMenuController` can be used with storyboard segues, or you can programmatically transition to a new center view controller. 
+**Step 3.** `SideMenuController` can be used with storyboard segues, or you can programmatically transition to a new center view controller. 
 
 ####Using storyboard segues####
 
@@ -170,7 +177,7 @@ public func embedSideController(controller: UIViewController)
 public func embedCenterController(controller: UINavigationController)
 ```
 
-**Step 3.** You're almost set now. Last step is to know how to transition to new center view controllers.
+**Step 4.** You're almost set now. Last step is to know how to transition to new center view controllers.
 
 **Important Note:** `SideMenuController` defines an extension to `UIViewController` in order to make it more accessible via the computed property `public var sideMenuController: SideMenuController?`. From any `UIViewController` instance, you can access the `SideMenuController` by typing: `self.sideMenuController`. This will return the `SideMenuController` if the caller is one of its child view controllers or otherwise `nil`. 
 

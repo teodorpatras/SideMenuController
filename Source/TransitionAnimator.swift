@@ -29,37 +29,33 @@ import Foundation
  *  added to the center panel and resized. You only need to implement a custom animation.
  */
 public protocol TransitionAnimatable {
-    static func animateTransition(forView view: UIView, completion: () -> Void)
+    static func performTransition(forView view: UIView, completion: () -> Void)
 }
 
 
 public struct FadeAnimator: TransitionAnimatable {
-    public static func animateTransition(forView view: UIView, completion: () -> Void) {
+    
+    public static func performTransition(forView view: UIView, completion: () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
-        
         let fadeAnimation = CABasicAnimation(keyPath: "opacity")
         fadeAnimation.duration = 0.35
         fadeAnimation.fromValue = 0
         fadeAnimation.toValue = 1
-        
         fadeAnimation.fillMode = kCAFillModeForwards
         fadeAnimation.removedOnCompletion = true
-        
-        view.layer.addAnimation(fadeAnimation, forKey: "fadeInAnimation")
-        
+        view.layer.addAnimation(fadeAnimation, forKey: "fade")
         CATransaction.commit()
     }
 }
 
 public struct CircleMaskAnimator: TransitionAnimatable {
-    public static func animateTransition(forView view: UIView, completion: () -> Void) {
-        
-        let screenSize = UIScreen.mainScreen().bounds.size
-        
+    
+    public static func performTransition(forView view: UIView, completion: () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         
+        let screenSize = UIScreen.mainScreen().bounds.size
         let dim = max(screenSize.width, screenSize.height)
         let circleDiameter : CGFloat = 50.0
         let circleFrame = CGRectMake((screenSize.width - circleDiameter) / 2, (screenSize.height - circleDiameter) / 2, circleDiameter, circleDiameter)
@@ -77,9 +73,9 @@ public struct CircleMaskAnimator: TransitionAnimatable {
         let maskLayerAnimation = CABasicAnimation(keyPath: "path")
         maskLayerAnimation.fromValue = circleMaskPathInitial.CGPath
         maskLayerAnimation.toValue = circleMaskPathFinal.CGPath
-        maskLayerAnimation.duration = 0.75
-        maskLayer.addAnimation(maskLayerAnimation, forKey: "path")
+        maskLayerAnimation.duration = 0.6
         
+        view.layer.mask?.addAnimation(maskLayerAnimation, forKey: "circleMask")
         CATransaction.commit()
     }
 }
