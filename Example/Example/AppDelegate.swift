@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
         SideMenuController.preferences.drawing.sidePanelWidth = 300
         SideMenuController.preferences.drawing.drawSideShadow = true
-        SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
-        SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
+        SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalSlide
+        SideMenuController.preferences.animating.transitionAnimator = nil
         
         return true
     }

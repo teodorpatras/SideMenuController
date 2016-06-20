@@ -31,6 +31,26 @@ extension UIView {
     }
 }
 
+extension UINavigationBar {
+    
+    func removeHairline() {
+        hairline(inView: self)?.hidden = true
+    }
+    
+    private func hairline(inView view: UIView) -> UIImageView? {
+        if let iv = view as? UIImageView where CGRectGetHeight(view.bounds) <= 1 {
+            return iv
+        }
+        
+        for subview in view.subviews {
+            if let iv = hairline(inView: subview) {
+                return iv
+            }
+        }
+        return nil
+    }
+}
+
 public extension UIViewController {
     public var sideMenuController: SideMenuController? {
         return sideMenuControllerForViewController(self)

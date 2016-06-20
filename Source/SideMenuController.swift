@@ -79,18 +79,24 @@ public extension SideMenuController {
             centerViewController.willMoveToParentViewController(nil)
             addChildViewController(controller)
             
-            let completion: () -> () = {
+            let block: () -> () = { _ in
                 self.centerViewController.view.removeFromSuperview()
                 self.centerViewController.removeFromParentViewController()
                 controller.didMoveToParentViewController(self)
                 self.centerViewController = controller
             }
             
-            let animator = self.dynamicType.preferences.animating.transitionAnimator
-            animator.animateTransition(forView: controller.view, completion: completion)
+            if let animation = self.dynamicType.preferences.animating.transitionAnimator?.transitionAnimation {
+                CATransaction.begin()
+                CATransaction.setCompletionBlock(block)
+                controller.view.layer.addAnimation(animation, forKey: nil)
+                CATransaction.commit()
+            } else {
+                block()
+            }
             
             if sidePanelVisible {
-                animate(toReveal: false, statusUpdateAnimated: false)
+                animate(toReveal: false)
             }
         }
     }
@@ -116,9 +122,11 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     public enum StatusBarBehaviour {
-        case SlideOut
-        case FadeOut
+        case None
+        case Fade
         case ShowUnderlay
+        case VerticalSlide
+        case HorizontalSlide
     }
     
     public struct Preferences {
@@ -133,10 +141,10 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         public struct Animating {
-            public var statusBarBehaviour = StatusBarBehaviour.SlideOut
+            public var statusBarBehaviour = StatusBarBehaviour.VerticalSlide
             public var reavealDuration = 0.3
             public var hideDuration = 0.2
-            public var transitionAnimator: TransitionAnimatable.Type = FadeAnimator.self
+            public var transitionAnimator: TransitionAnimatable.Type? = FadeAnimator.self
         }
         
         public var drawing = Drawing()
@@ -147,6 +155,8 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties -
     
+    private let navigationObservedKey = "barTintColor"
+    
     // MARK: Public
     
     public static var preferences: Preferences = Preferences()
@@ -154,7 +164,10 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Private
     
-    private var centerViewController: UIViewController!
+    private var sttusBarHidden: Bool = false
+    private var snapshotView: UIView?
+    private var navigationBar: UINavigationBar!
+    private var centerViewController: UINavigationController!
     private var sideViewController: UIViewController!
     private var statusBarUnderlay: UIView!
     private var centerPanel: UIView!
@@ -190,8 +203,8 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private var hidesStatusBar: Bool {
-        return self.dynamicType.preferences.animating.statusBarBehaviour == .SlideOut ||
-            self.dynamicType.preferences.animating.statusBarBehaviour == .FadeOut
+        return [.VerticalSlide, .Fade, .HorizontalSlide].contains(self.dynamicType.preferences.animating.statusBarBehaviour)
+
     }
     
     private var showsStatusUnderlay: Bool {
@@ -255,15 +268,12 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         screenSize = size
         
         coordinator.animateAlongsideTransition({ _ in
-            // reposition center panel
+    
             self.centerPanel.frame = self.centerPanelFrame
-            // reposition side panel
             self.sidePanel.frame = self.sidePanelFrame
             
-            // hide or show the view under the status bar
-            self.setStatusUnderlay(alpha: self.sidePanelVisible ? 1 : 0)
+            self.statusBarUnderlay.hidden = !self.showsStatusUnderlay
             
-            // reposition the center shadow view
             if let overlay = self.centerPanelOverlay {
                 overlay.frame = self.centerPanelFrame
             }
@@ -273,12 +283,28 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }, completion: nil)
     }
     
-    // MARK: - Configurations -
+    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if let navBar = object as? UINavigationBar where context == &navigationContext {
+            configureNavigation(withBar: navBar)
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+        }
+    }
     
+    deinit{
+        centerViewController?.navigationBar.removeObserver(self, forKeyPath: navigationObservedKey)
+    }
+    
+    // MARK: - Configurations -
+
     private func configureViews(){
 
         centerPanel = UIView(frame: CGRectMake(0, 0, screenSize.width, screenSize.height))
         view.addSubview(centerPanel)
+        
+        navigationBar = UINavigationBar(frame: CGRectMake(0, 0, screenSize.width, statusBarHeight))
+        centerPanel.addSubview(navigationBar)
+        navigationBar.removeHairline()
         
         statusBarUnderlay = UIView(frame: CGRectMake(0, 0, screenSize.width, statusBarHeight))
         view.addSubview(statusBarUnderlay)
@@ -336,19 +362,62 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func setStatusBar(hidden hidden: Bool, animated: Bool = true) {
+    private func configureNavigation(withBar bar: UINavigationBar) {
+        
+        bar.translucent = false
+        let animation = self.dynamicType.preferences.animating.transitionAnimator?.transitionAnimation
+        navigationBar.removeFromSuperview()
+        
+        let block : () -> () = { _ in
+            self.navigationBar.tintColor = bar.tintColor
+            self.navigationBar.backgroundColor = bar.backgroundColor
+            self.navigationBar.barTintColor = bar.barTintColor
+            self.navigationBar.translucent = bar.translucent
+        }
+        
+        if let animation = animation where animation.duration > 0 {
+            let transition = CATransition()
+            transition.duration = animation.duration
+            transition.type = kCATransitionFade
+            transition.timingFunction = animation.timingFunction
+            block()
+            navigationBar.layer.addAnimation(transition, forKey: nil)
+        } else {
+            block()
+        }
+        
+        centerPanel.addSubview(navigationBar)
+    }
+    
+    private var statusBarWindow: UIWindow? {
+        return UIApplication.sharedApplication().valueForKey("statusBarWindow") as? UIWindow
+    }
+    
+    private func setStatusBar(hidden hidden: Bool) {
         
         guard hidesStatusBar else {
             return
         }
         
         let setting = self.dynamicType.preferences.animating.statusBarBehaviour
-        let animation: UIStatusBarAnimation = animated ? (setting == .FadeOut ? .Fade : .Slide) : .None
         
-        let size = UIScreen.mainScreen().applicationFrame.size
-        self.view.window?.frame = CGRectMake(0, 0, size.width, size.height)
-        UIApplication.sharedApplication().setStatusBarHidden(hidden, withAnimation: animation)
-        
+        if setting == .HorizontalSlide {
+//            if hidden == false {
+//                snapshotView?.removeFromSuperview()
+//                snapshotView = nil
+//                UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: .Fade)
+//            } else {
+//                UIApplication.sharedApplication().statusBarHidden = hidden
+//                if snapshotView == nil {
+//                    snapshotView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+//                    centerPanel.addSubview(snapshotView!)
+//                }
+//            }
+//            
+        } else {
+            let animation: UIStatusBarAnimation = setting == .Fade ? .Fade : .Slide
+            UIApplication.sharedApplication().setStatusBarHidden(hidden, withAnimation: animation)
+        }
     }
     
     private func setStatusUnderlay(alpha alpha: CGFloat) {
@@ -356,20 +425,32 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             return
         }
         
-        if let color = (centerViewController as? UINavigationController)?.navigationBar.barTintColor where statusBarUnderlay.backgroundColor != color {
+        if let color = centerViewController.navigationBar.barTintColor where statusBarUnderlay.backgroundColor != color {
             statusBarUnderlay.backgroundColor = color
         }
         
         statusBarUnderlay.alpha = alpha
     }
     
-    // MARK:- Containment -
-
-    private func prepareCenterControllerForContainment (controller: UINavigationController){
+    // MARK:- Containment =
+    
+    
+    private func prepareCenterControllerForContainment(controller: UINavigationController){
+        
         addMenuButtonToController(controller)
-        controller.view.frame = centerPanel.bounds
+        
+        centerViewController?.navigationBar.removeObserver(self, forKeyPath: navigationObservedKey)
+        controller.navigationBar.addObserver(self, forKeyPath: navigationObservedKey, options: .New, context: &navigationContext)
+        
+        var frame = centerPanel.bounds
+        frame.origin.y = statusBarHeight
+        frame.size.height -= statusBarHeight
+        controller.view.frame = frame
+        
+        configureNavigation(withBar: controller.navigationBar)
     }
     
+    private var navigationContext = 1
     private func addMenuButtonToController(controller: UINavigationController) {
         
         guard let image = self.dynamicType.preferences.drawing.menuButtonImage else {
@@ -409,15 +490,18 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    private func animate(toReveal reveal: Bool, statusUpdateAnimated: Bool = true){
+    private func animate(toReveal reveal: Bool){
         
         transitionInProgress = true
         sidePanelVisible = reveal
-        setStatusBar(hidden: reveal, animated: statusUpdateAnimated)
+        if reveal {
+            setStatusBar(hidden: reveal)
+        }
         
         let hide = sidePanelPosition.isPositionedUnder ? setUnderSidePanelHidden : setAboveSidePanelHidden
         hide(!reveal) { _ in
             if !reveal {
+                self.setStatusBar(hidden: reveal)
                 self.prepareSidePanel(forDisplay: false)
             }
             self.transitionInProgress = false
@@ -466,9 +550,9 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             duration = min(newDuration, duration)
         }
         
-        
         UIView.panelAnimation( duration, animations: { _ in
             self.centerPanel.frame = centerPanelFrame
+            self.statusBarWindow?.frame = centerPanelFrame
             self.setStatusUnderlay(alpha: hidden ? 0 : 1)
         }) { _ in
             if hidden {
