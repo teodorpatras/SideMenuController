@@ -15,6 +15,16 @@ class ContentViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = randomColor
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        print("\(#function) -- \(self)")
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("\(#function) -- \(self)")
+    }
+    
     @IBAction func presentAction() {
         presentViewController(ViewController.fromStoryboard, animated: true, completion: nil)
     }

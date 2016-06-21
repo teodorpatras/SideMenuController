@@ -31,7 +31,36 @@ extension UIView {
     }
 }
 
+public extension UINavigationController {
+    public func addSideMenuButton() {
+        guard let image = SideMenuController.preferences.drawing.menuButtonImage else {
+            return
+        }
+        
+        guard let sideMenuController = self.sideMenuController else {
+            return
+        }
+        
+        let button = UIButton(frame: CGRectMake(0, 0, 40, 40))
+        button.setImage(image, forState: UIControlState.Normal)
+        button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), forControlEvents: UIControlEvents.TouchUpInside)
+        
+        let item:UIBarButtonItem = UIBarButtonItem()
+        item.customView = button
+        
+        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
+        spacer.width = -10
+        
+        if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
+            self.topViewController?.navigationItem.leftBarButtonItems = [spacer, item]
+        }else{
+            self.topViewController?.navigationItem.rightBarButtonItems = [spacer, item]
+        }
+    }
+}
+
 public extension UIViewController {
+    
     public var sideMenuController: SideMenuController? {
         return sideMenuControllerForViewController(self)
     }
@@ -44,7 +73,7 @@ public extension UIViewController {
         
         if let parent = controller.parentViewController {
             return sideMenuControllerForViewController(parent)
-        }else{
+        } else {
             return nil
         }
     }

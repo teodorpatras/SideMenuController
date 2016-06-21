@@ -25,30 +25,39 @@ class RootViewController: UIViewController {
         
         let sideMenuViewController = SideMenuController()
         
-        let viewController1 = UIViewController()
-        viewController1.view.backgroundColor = UIColor.redColor()
-        viewController1.title = "first"
-        let nc1 = UINavigationController(rootViewController: viewController1)
+        // create the view controllers for center containment
+        let vc1 = UIViewController()
+        vc1.view.backgroundColor = UIColor.redColor()
+        vc1.title = "first"
+        let nc1 = UINavigationController(rootViewController: vc1)
+        vc1.navigationItem.title = "first"
         
-        let viewController2 = UIViewController()
-        viewController2.view.backgroundColor = UIColor.yellowColor()
-        viewController2.title = "second"
-        let nc2 = UINavigationController(rootViewController: viewController2)
+        let vc2 = UIViewController()
+        vc2.view.backgroundColor = UIColor.yellowColor()
+        vc2.title = "second"
+        let nc2 = UINavigationController(rootViewController: vc2)
+        vc2.navigationItem.title = "second"
         
-        let viewController3 = UIViewController()
-        viewController3.view.backgroundColor = UIColor.blueColor()
-        viewController3.title = "third"
-        let nc3 = UINavigationController(rootViewController: viewController3)
+        let vc3 = UIViewController()
+        vc3.view.backgroundColor = UIColor.blueColor()
+        vc3.title = "third"
+        let nc3 = UINavigationController(rootViewController: vc3)
+        vc3.navigationItem.title = "third"
         
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [nc1, nc2, nc3]
-        let nav = UINavigationController(rootViewController: tabBarController)
         
-        let left = UITableViewController()
+        // create the side controller
+        let sideController = UITableViewController()
         
+        // embed the side and center controllers
+        sideMenuViewController.embed(sideViewController: sideController)
+        sideMenuViewController.embed(centerViewController: tabBarController)
         
-        sideMenuViewController.embedSideController(left)
-        sideMenuViewController.embedCenterController(nav)
+        // add the menu button to each view controller embedded in the tab bar controller
+        [nc1, nc2, nc3].forEach({ controller in
+            controller.addSideMenuButton()
+        })
         
         showViewController(sideMenuViewController, sender: nil)
     }
