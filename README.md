@@ -77,7 +77,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'SideMenuController', '~> 0.1.0'
+pod 'SideMenuController', '~> 0.1.1'
 ```
 
 Then, run the following command:
@@ -216,7 +216,7 @@ sideMenuViewController.embed(centerViewController: tabBarController)
 
 // add the menu button to each view controller embedded in the tab bar controller
 [nc1, nc2, nc3].forEach({ controller in
-    controller.addSideMenuControlButton()
+    controller.addSideMenuButton()
 })
 
 showViewController(sideMenuViewController, sender: nil)
@@ -252,7 +252,7 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 * ```Animating``` - encapsulates customisable properties specifying which animations will be used for different components.
 
 
-| `Drawing` property   |      Description      |
+| `Drawing` attribute   |      Description      |
 |----------|-------------|------|
 | `menuButtonImage` |    In case this attribute is set, `SideMenuController` will add a button on the left or right side of the navigation bar of the center view controller (**in case it is a subclass of UINavigationController**) in order to trigger the slide animation. If the attribute is missing, or the center view controller is not a subclass of `UINavigationController`, you'll have to add the menu button by yourself to all the `UINavigationControllers` that will be embedded.   |
 | `sidePanelPosition` |  Specifies the positioning of the side panel. This attribute can take one of the four values:         `.UnderCenterPanelLeft`, `.UnderCenterPanelRight`, `.OverCenterPanelLeft`, `. OverCenterPanelRight` |
@@ -262,7 +262,7 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 | `swipingEnabled` | Enable or disable the swiping gesture. Default value is `true` |
 | `drawSideShadow` | When the side panel is either `. UnderCenterPanelRight ` or `. UnderCenterPanelLeft` you can opt in or out to draw a side shadow for the center panel.  |
     
-| `Animating` property   |      Description      |
+| `Animating` attribute   |      Description      |
 |----------|-------------|------|
 | `statusBarBehaviour` | The animating style of the status bar when the side panel is revealed. This can be: <br /> **+** `.SlideAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.Slide` animation<br /> **+** `.FadeAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.Fade` animation<br /> **+** `.HorizontalPan`: the status bar will slide along with the center panel horizontally.<br /> **+** `.ShowUnderlay`: a layer with the same color as the navigation bar will be displayed under the status bar  |
 | `reavealDuration` | Reveal animation duration. |
