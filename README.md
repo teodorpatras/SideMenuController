@@ -33,8 +33,9 @@ Description
 6. [Customisation](#customisation)
 7. [Implementing custom transitions](#custom-transitions)
 8. [Public interface](#public-interface)
-9. [License](#license)
-10. [Contact](#contact)
+9. [Delegation] (#delegation)
+10. [License](#license)
+11. [Contact](#contact)
 
 ##<a name="features"> Features </a>
 
@@ -137,7 +138,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
     SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
     SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
     SideMenuController.preferences.drawing.sidePanelWidth = 300
-    SideMenuController.preferences.drawing.drawSideShadow = true
+    SideMenuController.preferences.drawing.centerPanelShadow = true
     SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
 }
 ```
@@ -246,10 +247,11 @@ override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPat
 
 <a name="customisation"> Customisation </a>
 --------------
-In order to customise the `SideMenuController` appearance and behaviour, you can play with the `SideMenuController .Preferences` structure. It is split into two sub structures:
+In order to customise the `SideMenuController` appearance and behaviour, you can play with the `SideMenuController .Preferences` structure. It is split into three sub structures:
 
-* ```Drawing``` - encapsulates customisable properties specifying how ```SideMenuController``` will adjust its layout, positioning on screen.
-* ```Animating``` - encapsulates customisable properties specifying which animations will be used for different components.
+* ```Drawing``` - encapsulates custom attributes specifying how ```SideMenuController``` will adjust its layout, positioning on screen.
+* ```Animating``` - encapsulates custom attributes specifying which animations will be used for different components.
+* ```Interaction``` - encapsulates custom attributes specifying how the user is allowed to interract with the side panel
 
 
 | `Drawing` attribute   |      Description      |
@@ -258,9 +260,7 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 | `sidePanelPosition` |  Specifies the positioning of the side panel. This attribute can take one of the four values:         `.UnderCenterPanelLeft`, `.UnderCenterPanelRight`, `.OverCenterPanelLeft`, `. OverCenterPanelRight` |
 | `sidePanelWidth` | The width of the side panel. |
 | `centerPanelOverlayColor` | When the side panel is either `.OverCenterPanelLeft` or `. OverCenterPanelRight`, an overlay will be shown on top of the center panel when the side is revealed. Pass the preferred color of this overlay. |
-| `panningEnabled` | Enable or disable the panning gesture. Default value is `true` |
-| `swipingEnabled` | Enable or disable the swiping gesture. Default value is `true` |
-| `drawSideShadow` | When the side panel is either `. UnderCenterPanelRight ` or `. UnderCenterPanelLeft` you can opt in or out to draw a side shadow for the center panel.  |
+| `centerPanelShadow` | When the side panel is either `. UnderCenterPanelRight ` or `. UnderCenterPanelLeft` you can opt in or out to draw a side shadow for the center panel.  |
     
 | `Animating` attribute   |      Description      |
 |----------|-------------|------|
@@ -269,6 +269,11 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 | `hideDuration` | Hide animation duration. |
 | `transitionAnimator` | `TransitionAnimatable` subtype which defines how the new center view controller will be animated on screen. |
 
+| `Interaction` attribute   |      Description      |
+|----------|-------------|------|
+| `panningEnabled` | Enable or disable the panning gesture. Default value is `true` |
+| `swipingEnabled` | Enable or disable the swiping gesture. Default value is `true` |
+| `menuButtonAccessibilityIdentifier` | Accessibility identifier to be set on the menu button. |
 
 <a name="custom-transitions"> Implementing custom transitions </a>
 --------------
@@ -321,6 +326,20 @@ public func embed(centerViewController: UIViewController)
 
 `public static var preferences: Preferences` - use this static variable to customise the `SideMenuController` preferences
 `private(set) public var sidePanelVisible` - use this instance variable to check at any time if the side panel is visible or not.
+
+<a name="delegation"> Delegation </a>
+--------------
+
+`SideMenuController` defines a delegate protocol which you can use if you want to be announced when the side panel has been revealed or hidden:
+
+```
+public protocol SideMenuControllerDelegate: class {
+    func sideMenuControllerDidHide(sideMenuController: SideMenuController)
+    func sideMenuControllerDidReveal(sideMenuController: SideMenuController)
+}
+```
+
+In order to receive the aforementioned callbacks, simply assign the delegate property to the `SideMenuController` instance.
 
 <a name="license"> License </a>
 --------------

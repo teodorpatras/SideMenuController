@@ -23,6 +23,11 @@
 
 import UIKit
 
+public protocol SideMenuControllerDelegate: class {
+    func sideMenuControllerDidHide(sideMenuController: SideMenuController)
+    func sideMenuControllerDidReveal(sideMenuController: SideMenuController)
+}
+
 // MARK: - Public methods -
 
 public extension SideMenuController {
@@ -143,9 +148,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             public var sidePanelPosition = SidePanelPosition.UnderCenterPanelLeft
             public var sidePanelWidth: CGFloat = 300
             public var centerPanelOverlayColor = UIColor(hue:0.15, saturation:0.21, brightness:0.17, alpha:0.6)
-            public var panningEnabled = true
-            public var swipingEnabled = true
-            public var drawSideShadow = true
+            public var centerPanelShadow = false
         }
         
         public struct Animating {
@@ -155,8 +158,15 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             public var transitionAnimator: TransitionAnimatable.Type? = FadeAnimator.self
         }
         
+        public struct Interaction {
+            public var panningEnabled = true
+            public var swipingEnabled = true
+            public var menuButtonAccessibilityIdentifier: String?
+        }
+        
         public var drawing = Drawing()
         public var animating = Animating()
+        public var interaction = Interaction()
         
         public init() {}
     }
@@ -165,6 +175,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Public
     
+    public weak var delegate: SideMenuControllerDelegate?
     public static var preferences: Preferences = Preferences()
     private(set) public var sidePanelVisible = false
     
@@ -448,6 +459,8 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             }
             self.transitionInProgress = false
             self.centerViewController.view.userInteractionEnabled = !reveal
+            let delegateMethod = reveal ? self.delegate?.sideMenuControllerDidReveal : self.delegate?.sideMenuControllerDidHide
+            delegateMethod?(self)
         }
     }
     
@@ -459,7 +472,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     private func set(sideShadowHidden hidden: Bool) {
         
-        guard _preferences.drawing.drawSideShadow else {
+        guard _preferences.drawing.centerPanelShadow else {
             return
         }
         
@@ -705,12 +718,12 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         switch gestureRecognizer {
         case panRecognizer:
-            return _preferences.drawing.panningEnabled
+            return _preferences.interaction.panningEnabled
         case tapRecognizer:
             return sidePanelVisible
         default:
             if gestureRecognizer is UISwipeGestureRecognizer {
-                return _preferences.drawing.swipingEnabled
+                return _preferences.interaction.swipingEnabled
             }
             return true
         }

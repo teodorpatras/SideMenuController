@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import SideMenuController
 
-class ContentViewController: UIViewController {
+class ContentViewController: UIViewController, SideMenuControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = randomColor
+        sideMenuController?.delegate = self
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -37,5 +39,13 @@ class ContentViewController: UIViewController {
         
         let index = Int(arc4random_uniform(UInt32(colors.count)))
         return colors[index]
+    }
+    
+    func sideMenuControllerDidHide(sideMenuController: SideMenuController) {
+        print(#function)
+    }
+    
+    func sideMenuControllerDidReveal(sideMenuController: SideMenuController) {
+        print(#function)
     }
 }
