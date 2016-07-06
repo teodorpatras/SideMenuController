@@ -25,7 +25,7 @@ Description
   </tr>
 </table>
 
-# Table of Contents
+# Contents
 1. [Features](#features)
 3. [Installation](#installation)
 4. [Supported OS & SDK versions](#supported-versions)
@@ -71,7 +71,7 @@ CocoaPods 0.36 adds supports for Swift and embedded frameworks. You can install 
 $ gem install cocoapods
 ```
 
-To integrate EasyTipView into your Xcode project using CocoaPods, specify it in your `Podfile`:
+To integrate `SideMenuController` into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
 ```ruby
 source 'https://github.com/CocoaPods/Specs.git'
