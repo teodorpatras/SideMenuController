@@ -30,6 +30,8 @@ public protocol SideMenuControllerDelegate: class {
 
 // MARK: - Public methods -
 
+public let screenWidth: CGFloat = UIScreen.mainScreen().bounds.size.width
+
 public extension SideMenuController {
     
     /**
@@ -146,15 +148,15 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         public struct Drawing {
             public var menuButtonImage: UIImage?
             public var sidePanelPosition = SidePanelPosition.UnderCenterPanelLeft
-            public var sidePanelWidth: CGFloat = 300
+            public var widthRatio: CGFloat = 0.85            
             public var centerPanelOverlayColor = UIColor(hue:0.15, saturation:0.21, brightness:0.17, alpha:0.6)
             public var centerPanelShadow = false
         }
         
         public struct Animating {
             public var statusBarBehaviour = StatusBarBehaviour.SlideAnimation
-            public var reavealDuration = 0.3
-            public var hideDuration = 0.2
+            public var reavealDuration = 1.3
+            public var hideDuration = 1.0
             public var transitionAnimator: TransitionAnimatable.Type? = FadeAnimator.self
         }
         
@@ -202,6 +204,10 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     private var transitionInProgress = false
     private var flickVelocity: CGFloat = 0
     
+    private lazy var widthRatio: CGFloat = {
+        return self._preferences.drawing.widthRatio
+    }()
+    
     private lazy var screenSize: CGSize = {
         return UIScreen.mainScreen().bounds.size
     }()
@@ -244,7 +250,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         if sidePanelPosition.isPositionedUnder && sidePanelVisible {
             
-            let sidePanelWidth = _preferences.drawing.sidePanelWidth
+            let sidePanelWidth = screenSize.width * widthRatio
             return CGRectMake(sidePanelPosition.isPositionedLeft ? sidePanelWidth : -sidePanelWidth, 0, screenSize.width, screenSize.height)
 
         } else {
@@ -253,22 +259,25 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private var sidePanelFrame: CGRect {
-        var sidePanelFrame: CGRect
         
-        let panelWidth = _preferences.drawing.sidePanelWidth
+        return CGRectMake(0, 0, screenSize.width, screenSize.height)
         
-        if sidePanelPosition.isPositionedUnder {
-            sidePanelFrame = CGRectMake(sidePanelPosition.isPositionedLeft ? 0 :
-                screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
-        } else {
-            if sidePanelVisible {
-                sidePanelFrame = CGRectMake(sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
-            } else {
-                sidePanelFrame = CGRectMake(sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, 0, panelWidth, screenSize.height)
-            }
-        }
-        
-        return sidePanelFrame
+//        var sidePanelFrame: CGRect
+//        
+//        let panelWidth = _preferences.drawing.sidePanelWidth
+//        
+//        if sidePanelPosition.isPositionedUnder {
+//            sidePanelFrame = CGRectMake(sidePanelPosition.isPositionedLeft ? 0 :
+//                screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
+//        } else {
+//            if sidePanelVisible {
+//                sidePanelFrame = CGRectMake(sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, 0, panelWidth, screenSize.height)
+//            } else {
+//                sidePanelFrame = CGRectMake(sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, 0, panelWidth, screenSize.height)
+//            }
+//        }
+//        
+//        return sidePanelFrame
     }
     
     private var statusBarWindow: UIWindow? {
@@ -489,12 +498,17 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         if !hidden {
             if sidePanelPosition.isPositionedLeft {
-                centerPanelFrame.origin.x = CGRectGetMaxX(sidePanel.frame)
+                centerPanelFrame.origin.x = screenSize.width * widthRatio
             }else{
-                centerPanelFrame.origin.x = CGRectGetMinX(sidePanel.frame) - CGRectGetWidth(centerPanel.frame)
+                centerPanelFrame.origin.x = -screenSize.width * widthRatio
             }
+            
+            centerPanelFrame.size.height = screenSize.height * widthRatio
+            centerPanelFrame.origin.y = screenSize.height/2 - centerPanelFrame.size.height/2
+            
         } else {
             centerPanelFrame.origin = CGPointZero
+            centerPanelFrame.size.height = screenSize.height
         }
         
         var duration = hidden ? _preferences.animating.hideDuration : _preferences.animating.reavealDuration

@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
         SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = 300
+        SideMenuController.preferences.drawing.widthRatio = 0.85
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
         SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self

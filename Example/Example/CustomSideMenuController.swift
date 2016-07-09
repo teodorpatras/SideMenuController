@@ -13,6 +13,7 @@ class CustomSideMenuController: SideMenuController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.yellowColor()
         performSegueWithIdentifier("showCenterController1", sender: nil)
         performSegueWithIdentifier("containSideMenu", sender: nil)
     }
