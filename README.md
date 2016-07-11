@@ -269,11 +269,11 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 | `hideDuration` | Hide animation duration. |
 | `transitionAnimator` | `TransitionAnimatable` subtype which defines how the new center view controller will be animated on screen. |
 
-| `Interaction` attribute   |      Description      |
+| `Interaction` attribute |      Description      | Discussion |
 |----------|-------------|------|
-| `panningEnabled` | Enable or disable the panning gesture. Default value is `true` |
-| `swipingEnabled` | Enable or disable the swiping gesture. Default value is `true` |
-| `menuButtonAccessibilityIdentifier` | Accessibility identifier to be set on the menu button. |
+| `panningEnabled` |  Default value is `true` | When the side panel is positioned *under the center panel*, the panning is recognized on the center panel. When the side panel is positoned *over the center panel*, the panning is recognized on the side panel. |
+| `swipingEnabled` |  Default value is `true` | There is *no swipe gesture recognizer* instantiated when the side panel is positioned *under the center panel*. When the side panel is positioned *over the center panel*, the swipe is going to recognized on the center panel. |
+| `menuButtonAccessibilityIdentifier` | Accessibility identifier to be set on the menu button. | 
 
 <a name="custom-transitions"> Implementing custom transitions </a>
 --------------
