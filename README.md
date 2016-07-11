@@ -271,8 +271,8 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 
 | `Interaction` attribute |      Description      | Discussion |
 |----------|-------------|------|
-| `panningEnabled` |  Default value is `true` | When the side panel is positioned *under the center panel*, the panning is recognized on the center panel. When the side panel is positoned *over the center panel*, the panning is recognized on the side panel. |
-| `swipingEnabled` |  Default value is `true` | There is *no swipe gesture recognizer* instantiated when the side panel is positioned *under the center panel*. When the side panel is positioned *over the center panel*, the swipe is going to recognized on the center panel. |
+| `panningEnabled` |  Default value is `true` | When the side panel is positioned **under the center panel**, the panning is recognized on the center panel. When the side panel is positoned **over the center panel**, the panning is recognized on the side panel. |
+| `swipingEnabled` |  Default value is `true` | There is **no swipe gesture recognizer** instantiated when the side panel is positioned *under the center panel*. When the side panel is positioned **over the center panel**, the swipe is going to recognized on the center panel. |
 | `menuButtonAccessibilityIdentifier` | Accessibility identifier to be set on the menu button. | 
 
 <a name="custom-transitions"> Implementing custom transitions </a>
