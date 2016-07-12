@@ -25,7 +25,11 @@ import Foundation
 
 extension UIView {
     class func panelAnimation(duration : NSTimeInterval, animations : (()->()), completion : (()->())? = nil) {
-        UIView.animateWithDuration(duration, animations: animations) { _ -> Void in
+        
+        UIView.animateWithDuration(duration,
+                                   delay: 0.0,
+                                   options: UIViewAnimationOptions.CurveEaseInOut,
+                                   animations: animations) { _ -> Void in
             completion?()
         }
     }
