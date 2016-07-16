@@ -25,7 +25,7 @@ import Foundation
 
 extension UIView {
     class func panelAnimation(duration : NSTimeInterval, animations : (()->()), completion : (()->())? = nil) {
-        UIView.animateWithDuration(duration, animations: animations) { _ -> Void in
+        UIView.animateWithDuration(duration, delay: 0, options: .CurveEaseOut, animations: animations) { _ in
             completion?()
         }
     }
@@ -56,6 +56,31 @@ public extension UINavigationController {
             self.topViewController?.navigationItem.leftBarButtonItems = [spacer, item]
         }else{
             self.topViewController?.navigationItem.rightBarButtonItems = [spacer, item]
+        }
+    }
+}
+
+extension UIWindow {
+    func set(hidden: Bool, withBehaviour behaviour: SideMenuController.StatusBarBehaviour) {
+        let animations: () -> ()
+        
+        switch behaviour {
+        case .FadeAnimation, .HorizontalPan:
+            animations = {
+                self.alpha = hidden ? 0 : 1
+            }
+        case .SlideAnimation:
+            animations = {
+                self.transform = hidden ? CGAffineTransformMakeTranslation(0, -20) : CGAffineTransformIdentity
+            }
+        default:
+            return
+        }
+        
+        if behaviour == .HorizontalPan {
+            animations()
+        } else {
+            UIView.animateWithDuration(0.25, animations: animations)
         }
     }
 }
