@@ -18,6 +18,12 @@
 		13A758731D12D10B004488DA /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758721D12D10B004488DA /* CustomSideMenuController.swift */; };
 		13A758761D12D161004488DA /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758751D12D161004488DA /* ContentViewController.swift */; };
 		13A758781D12D176004488DA /* MenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A758771D12D176004488DA /* MenuController.swift */; };
+		13AC233D1D390E970087E25F /* CacheableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AC233C1D390E970087E25F /* CacheableViewController.swift */; };
+		13AC233F1D390ECC0087E25F /* FCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AC233E1D390ECC0087E25F /* FCViewController.swift */; };
+		13AC23411D390F100087E25F /* SCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AC23401D390F100087E25F /* SCViewController.swift */; };
+		13AC23431D390F1F0087E25F /* TCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AC23421D390F1F0087E25F /* TCViewController.swift */; };
+		13AC23451D39107F0087E25F /* CachingSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AC23441D39107F0087E25F /* CachingSideMenuController.swift */; };
+		13AC23471D3910C60087E25F /* CachingSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AC23461D3910C60087E25F /* CachingSideViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +77,12 @@
 		13A758721D12D10B004488DA /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
 		13A758751D12D161004488DA /* ContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
 		13A758771D12D176004488DA /* MenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuController.swift; sourceTree = "<group>"; };
+		13AC233C1D390E970087E25F /* CacheableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheableViewController.swift; sourceTree = "<group>"; };
+		13AC233E1D390ECC0087E25F /* FCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FCViewController.swift; sourceTree = "<group>"; };
+		13AC23401D390F100087E25F /* SCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SCViewController.swift; sourceTree = "<group>"; };
+		13AC23421D390F1F0087E25F /* TCViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCViewController.swift; sourceTree = "<group>"; };
+		13AC23441D39107F0087E25F /* CachingSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachingSideMenuController.swift; sourceTree = "<group>"; };
+		13AC23461D3910C60087E25F /* CachingSideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachingSideViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +139,7 @@
 		13A758741D12D130004488DA /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				13AC23341D3907C50087E25F /* Caching */,
 				13A758421D12A3F5004488DA /* ViewController.swift */,
 				13A758721D12D10B004488DA /* CustomSideMenuController.swift */,
 				13A758751D12D161004488DA /* ContentViewController.swift */,
@@ -134,6 +147,19 @@
 				1379ACD91D18793300FD3629 /* RootViewController.swift */,
 			);
 			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		13AC23341D3907C50087E25F /* Caching */ = {
+			isa = PBXGroup;
+			children = (
+				13AC233C1D390E970087E25F /* CacheableViewController.swift */,
+				13AC233E1D390ECC0087E25F /* FCViewController.swift */,
+				13AC23401D390F100087E25F /* SCViewController.swift */,
+				13AC23421D390F1F0087E25F /* TCViewController.swift */,
+				13AC23441D39107F0087E25F /* CachingSideMenuController.swift */,
+				13AC23461D3910C60087E25F /* CachingSideViewController.swift */,
+			);
+			name = Caching;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,8 +259,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				13A758781D12D176004488DA /* MenuController.swift in Sources */,
+				13AC233F1D390ECC0087E25F /* FCViewController.swift in Sources */,
 				13A758761D12D161004488DA /* ContentViewController.swift in Sources */,
+				13AC23471D3910C60087E25F /* CachingSideViewController.swift in Sources */,
+				13AC23411D390F100087E25F /* SCViewController.swift in Sources */,
 				1379ACDA1D18793300FD3629 /* RootViewController.swift in Sources */,
+				13AC23431D390F1F0087E25F /* TCViewController.swift in Sources */,
+				13AC23451D39107F0087E25F /* CachingSideMenuController.swift in Sources */,
+				13AC233D1D390E970087E25F /* CacheableViewController.swift in Sources */,
 				13A758731D12D10B004488DA /* CustomSideMenuController.swift in Sources */,
 				13A758431D12A3F5004488DA /* ViewController.swift in Sources */,
 				13A758411D12A3F5004488DA /* AppDelegate.swift in Sources */,

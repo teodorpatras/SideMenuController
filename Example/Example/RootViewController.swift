@@ -11,6 +11,11 @@ import SideMenuController
 
 class RootViewController: UIViewController {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print(#function)
+    }
+    
     override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
         if motion == .MotionShake {
             dismissViewControllerAnimated(true, completion: { 
@@ -19,6 +24,10 @@ class RootViewController: UIViewController {
                 }
             })
         }
+    }
+    
+    @IBAction func cachingAction() {
+        
     }
     
     @IBAction func programmaticAction() {

@@ -20,12 +20,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.applicationSupportsShakeToEdit = true
         // Override point for customization after application launch.
         
+        print(#function)
+        
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
         SideMenuController.preferences.drawing.sidePanelPosition = .UnderCenterPanelLeft
         SideMenuController.preferences.drawing.sidePanelWidth = 300
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .HorizontalPan
-        SideMenuController.preferences.animating.transitionAnimator = CircleMaskAnimator.self
+        SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
         
         return true
     }
