@@ -13,7 +13,7 @@ class CustomSideMenuController: SideMenuController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        performSegueWithIdentifier("showCenterController1", sender: nil)
-        performSegueWithIdentifier("containSideMenu", sender: nil)
+        performSegue(withIdentifier: "showCenterController1", sender: nil)
+        performSegue(withIdentifier: "containSideMenu", sender: nil)
     }
 }
