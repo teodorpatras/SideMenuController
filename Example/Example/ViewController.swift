@@ -12,7 +12,7 @@ import SideMenuController
 class ViewController: UIViewController {
 
     static var fromStoryboard: ViewController {
-        return UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ViewController") as! ViewController
+        return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
     }
     
     override func viewDidLoad() {
@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func dismissAction() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 
