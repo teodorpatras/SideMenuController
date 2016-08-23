@@ -55,7 +55,7 @@ extension SideMenuController {
         handleCenterPanelPan(gesture)
     }
     
-    func set(sideShadowHidden hidden: Bool) {
+    func setSideShadow(hidden hidden: Bool) {
         
         guard _preferences.drawing.centerPanelShadow else {
             return
@@ -97,7 +97,7 @@ extension SideMenuController {
             self.set(statusUnderlayAlpha: hidden ? 0 : 1)
         }) { _ in
             if hidden {
-                self.set(sideShadowHidden: hidden)
+                self.setSideShadow(hidden: hidden)
             }
             completion?(updated)
         }
@@ -118,7 +118,7 @@ extension SideMenuController {
             if !sidePanelVisible {
                 sidePanelVisible = true
                 prepare(sidePanelForDisplay: true)
-                set(sideShadowHidden: false)
+                setSideShadow(hidden: false)
             }
             
             set(statusBarHidden: true)

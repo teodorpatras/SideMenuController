@@ -285,7 +285,7 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 centerPanelOverlay.removeFromSuperview()
             }
         } else {
-            set(sideShadowHidden: display)
+            setSideShadow(hidden: !display)
         }
     }
     
