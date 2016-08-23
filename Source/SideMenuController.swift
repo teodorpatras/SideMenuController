@@ -138,11 +138,11 @@ public class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         return self.dynamicType.preferences
     }()
     
-    var centerViewController: UIViewController!
+    private(set) public var centerViewController: UIViewController!
+    private(set) public var sideViewController: UIViewController!
     var centerNavController: UINavigationController? {
         return centerViewController as? UINavigationController
     }
-    var sideViewController: UIViewController!
     var statusBarUnderlay: UIView!
     var centerPanel: UIView!
     var sidePanel: UIView!
