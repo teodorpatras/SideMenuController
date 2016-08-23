@@ -126,7 +126,7 @@ You can get started using `SideMenuController` in 3 simple steps:
 ###Step 1
 First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well. This can be achieved in two ways:
 
-#### If the SideMenuController subclass is the initial view controller in your main storyboard:
+### 1) If the SideMenuController subclass is the initial view controller in your main storyboard:
 
 Subclass `SideMenuController` and override `init(coder:)` where you can change the preferences according to your own style:
 
@@ -146,7 +146,9 @@ class CustomSideMenuController: SideMenuController {
 
 Next, go to the Storyboard, and change the class of the SideMenuController to the custom subclass you just created.
 
-#### In all other cases:
+### 2) In all other cases:
+
+In `AppDelegate.swift`, override `application:didFinishLaunchingWithOptions:`:
 
 ```
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -159,7 +161,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
     SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
 }
 ```
-_If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
+⚠️_If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
 
 ###Step 2
 `SideMenuController` can be used with storyboard segues, or you can programmatically transition to a new center view controller. 
