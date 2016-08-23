@@ -79,7 +79,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'SideMenuController', '~> 0.1.5'
+pod 'SideMenuController', '~> 0.1.6'
 ```
 
 Then, run the following command:
