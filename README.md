@@ -30,6 +30,7 @@ Description
 3. [Installation](#installation)
 4. [Supported OS & SDK versions](#supported-versions)
 5. [Usage](#usage)
+6. [Caching](#caching)
 6. [Customisation](#customisation)
 7. [Implementing custom transitions](#custom-transitions)
 8. [Public interface](#public-interface)
@@ -120,16 +121,32 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 <a name="usage"> Usage </a>
 --------------
 
-You can get started using `SideMenuController` in 4 basic steps:
+You can get started using `SideMenuController` in 3 simple steps:
 
-**Step 1.** In case you want the status bar to be automatically hidden when the side panel is revealed, you should append the following to your `Info.plist`:
+###Step 1
+First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well. This can be achieved in two ways:
+
+#### If the SideMenuController subclass is the initial view controller in your main storyboard:
+
+Subclass `SideMenuController` and override `init(coder:)` where you can change the preferences according to your own style:
 
 ```
-<key>UIViewControllerBasedStatusBarAppearance</key>
-<false/>
+class CustomSideMenuController: SideMenuController {
+
+    required init?(coder aDecoder: NSCoder) {
+        SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
+    	SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
+    	SideMenuController.preferences.drawing.sidePanelWidth = 300
+    	SideMenuController.preferences.drawing.centerPanelShadow = true
+    	SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
+        super.init(coder: aDecoder)
+    }
+}
 ```
 
-**Step 2.**  First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well:
+Next, go to the Storyboard, and change the class of the SideMenuController to the custom subclass you just created.
+
+#### In all other cases:
 
 ```
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -144,7 +161,8 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
 ```
 _If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
 
-**Step 3.** `SideMenuController` can be used with storyboard segues, or you can programmatically transition to a new center view controller. 
+###Step 2
+`SideMenuController` can be used with storyboard segues, or you can programmatically transition to a new center view controller. 
 
 ####Using storyboard segues####
 
@@ -223,7 +241,8 @@ sideMenuViewController.embed(centerViewController: tabBarController)
 showViewController(sideMenuViewController, sender: nil)
 ```
 
-**Step 4.** You're almost set now. Last step is to know how to transition to new center view controllers.
+###Step 3
+You're almost set now. Last step is to know how to transition to new center view controllers.
 
 **Important Note:** `SideMenuController` defines an extension to `UIViewController` in order to make it more accessible via the computed property `public var sideMenuController: SideMenuController?`. From any `UIViewController` instance, you can access the `SideMenuController` by typing: `self.sideMenuController`. This will return the `SideMenuController` if the caller is one of its child view controllers or otherwise `nil`.
 
@@ -244,6 +263,37 @@ override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPat
 	sideMenuController?.embedCenterController(someUIViewControllerInstance)
 }
 ```
+
+<a name="caching"> Caching </a>
+--------------
+
+`SideMenuController` offers you the possibility to cache center view controllers instead of always instantiating new ones when changing them.
+
+**To transition to a new center view controller and cache it**, call ``embed(centerViewController:, cacheIdentifier:)`` on the ``SideMenuController``.
+
+**To retrieve a cached center view controller based on a cache identifier**, call ``viewController(forCacheIdentifier:)`` on the ``SideMenuController``.
+
+###Example
+
+In your side view controller (a.k.a the menu controller):
+
+```
+override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+    // retrieve your identifier
+    let cacheIdentifier = ...
+    // retrieve your view controller
+    let viewController = ... 
+        
+    if let controller = sideMenuController?.viewController(forCacheIdentifier: cacheIdentifier) {
+        sideMenuController?.embed(centerViewController: controller)
+    } else {
+        sideMenuController?.embed(centerViewController: UINavigationController(rootViewController: viewController), cacheIdentifier: cacheIdentifier)
+    }
+}
+```
+
+For a more detailed example, check the Example project.
 
 <a name="customisation"> Customisation </a>
 --------------
@@ -309,23 +359,45 @@ For more examples, check `TransitionAnimator.swift`.
 /**
  Toggles the side pannel visible or not.
 */
-public func toggle()
+public func toggle() {
+
+
+/**
+ Returns a view controller for the specified cache identifier
+     
+ - parameter identifier: cache identifier
+     
+ - returns: Cached UIViewController or nil
+*/
+public func viewController(forCacheIdentifier identifier: String) -> UIViewController? {
+
 
 /**
  Embeds a new side controller
+     
+ - parameter sideViewController: controller to be embedded
 */
-public func embed(sideViewController: UIViewController)
+public func embed(sideViewController controller: UIViewController) {
+
 
 /**
- Embeds a new side controller
-*/
-public func embed(centerViewController: UIViewController)
+ Embeds a new center controller.
+     
+ - parameter centerViewController: controller to be embedded
+ - parameter cacheIdentifier: identifier for the view controllers cache
+ */
+public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil) {
 ```
 
 ##Public properties##
 
-`public static var preferences: Preferences` - use this static variable to customise the `SideMenuController` preferences
-`private(set) public var sidePanelVisible` - use this instance variable to check at any time if the side panel is visible or not.
+| Property   |      Type      | Description |
+|----------|-------------|------|
+|`preferences`| `SideMenuController.Preferences` | use to customise the `SideMenuController` preferences |
+| `sidePanelVisible` | `Bool` | use to check at any time if the side panel is visible or not |
+| `centerViewController` | `UIViewController` | use to access the currently embedded center view controller. |
+| `sideViewController` | `UIViewController` | use to access the currently embedded side view controller. |
+| `delegate` | `SideMenuControllerDelegate` | use to set the delegate to be notified about certain events. |
 
 <a name="delegation"> Delegation </a>
 --------------
