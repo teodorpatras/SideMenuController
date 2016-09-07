@@ -9,34 +9,34 @@
 // MARK: - Extension for implementing the custom nested types
 public extension SideMenuController {
     public enum SidePanelPosition {
-        case UnderCenterPanelLeft
-        case UnderCenterPanelRight
-        case OverCenterPanelLeft
-        case OverCenterPanelRight
+        case underCenterPanelLeft
+        case underCenterPanelRight
+        case overCenterPanelLeft
+        case overCenterPanelRight
         
         var isPositionedUnder: Bool {
-            return self == UnderCenterPanelLeft || self == UnderCenterPanelRight
+            return self == SidePanelPosition.underCenterPanelLeft || self == SidePanelPosition.underCenterPanelRight
         }
         
         var isPositionedLeft: Bool {
-            return self == UnderCenterPanelLeft || self == OverCenterPanelLeft
+            return self == SidePanelPosition.underCenterPanelLeft || self == SidePanelPosition.overCenterPanelLeft
         }
     }
     
     public enum StatusBarBehaviour {
-        case SlideAnimation
-        case FadeAnimation
-        case HorizontalPan
-        case ShowUnderlay
+        case slideAnimation
+        case fadeAnimation
+        case horizontalPan
+        case showUnderlay
         
         var statusBarAnimation: UIStatusBarAnimation {
             switch self {
-            case FadeAnimation:
-                return .Fade
-            case .SlideAnimation:
-                return .Slide
+            case .fadeAnimation:
+                return .fade
+            case .slideAnimation:
+                return .slide
             default:
-                return .None
+                return .none
             }
         }
     }
@@ -44,14 +44,14 @@ public extension SideMenuController {
     public struct Preferences {
         public struct Drawing {
             public var menuButtonImage: UIImage?
-            public var sidePanelPosition = SidePanelPosition.UnderCenterPanelLeft
+            public var sidePanelPosition = SidePanelPosition.underCenterPanelLeft
             public var sidePanelWidth: CGFloat = 300
             public var centerPanelOverlayColor = UIColor(hue:0.15, saturation:0.21, brightness:0.17, alpha:0.6)
             public var centerPanelShadow = false
         }
         
         public struct Animating {
-            public var statusBarBehaviour = StatusBarBehaviour.SlideAnimation
+            public var statusBarBehaviour = StatusBarBehaviour.slideAnimation
             public var reavealDuration = 0.3
             public var hideDuration = 0.2
             public var transitionAnimator: TransitionAnimatable.Type? = FadeAnimator.self

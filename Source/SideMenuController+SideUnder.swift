@@ -29,11 +29,11 @@ extension SideMenuController {
     func configureGestureRecognizersForPositionUnder() {
         
         let panLeft = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleCenterPanelPanLeft))
-        panLeft.edges = .Left
+        panLeft.edges = .left
         panLeft.delegate = self
         
         let panRight = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleCenterPanelPanRight))
-        panRight.edges = .Right
+        panRight.edges = .right
         panRight.delegate = self
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -47,15 +47,15 @@ extension SideMenuController {
         centerPanel.addGestureRecognizer(tapRecognizer)
     }
     
-    @inline(__always) func handleCenterPanelPanLeft(gesture: UIScreenEdgePanGestureRecognizer) {
+    @inline(__always) func handleCenterPanelPanLeft(_ gesture: UIScreenEdgePanGestureRecognizer) {
         handleCenterPanelPan(gesture)
     }
     
-    @inline(__always) func handleCenterPanelPanRight(gesture: UIScreenEdgePanGestureRecognizer) {
+    @inline(__always) func handleCenterPanelPanRight(_ gesture: UIScreenEdgePanGestureRecognizer) {
         handleCenterPanelPan(gesture)
     }
     
-    func setSideShadow(hidden hidden: Bool) {
+    func setSideShadow(hidden: Bool) {
         
         guard _preferences.drawing.centerPanelShadow else {
             return
@@ -68,24 +68,24 @@ extension SideMenuController {
         }
     }
     
-    func setUnderSidePanel(hidden hidden: Bool, completion: ((Bool) -> ())? = nil) {
+    func setUnderSidePanel(hidden: Bool, completion: ((Bool) -> ())? = nil) {
         
         var centerPanelFrame = centerPanel.frame
         
         if !hidden {
             if sidePanelPosition.isPositionedLeft {
-                centerPanelFrame.origin.x = CGRectGetMaxX(sidePanel.frame)
+                centerPanelFrame.origin.x = sidePanel.frame.maxX
             }else{
-                centerPanelFrame.origin.x = CGRectGetMinX(sidePanel.frame) - CGRectGetWidth(centerPanel.frame)
+                centerPanelFrame.origin.x = sidePanel.frame.minX - centerPanel.frame.width
             }
         } else {
-            centerPanelFrame.origin = CGPointZero
+            centerPanelFrame.origin = CGPoint.zero
         }
         
         var duration = hidden ? _preferences.animating.hideDuration : _preferences.animating.reavealDuration
         
         if abs(flickVelocity) > 0 {
-            let newDuration = NSTimeInterval(sidePanel.frame.size.width / abs(flickVelocity))
+            let newDuration = TimeInterval(sidePanel.frame.size.width / abs(flickVelocity))
             flickVelocity = 0
             duration = min(newDuration, duration)
         }
@@ -103,18 +103,18 @@ extension SideMenuController {
         }
     }
     
-    func handleCenterPanelPan(recognizer: UIPanGestureRecognizer){
+    func handleCenterPanelPan(_ recognizer: UIPanGestureRecognizer){
         
         guard canDisplaySideController else {
             return
         }
         
-        self.flickVelocity = recognizer.velocityInView(recognizer.view).x
+        self.flickVelocity = recognizer.velocity(in: recognizer.view).x
         let leftToRight = flickVelocity > 0
         
         switch(recognizer.state) {
             
-        case .Began:
+        case .began:
             if !sidePanelVisible {
                 sidePanelVisible = true
                 prepare(sidePanelForDisplay: true)
@@ -123,32 +123,32 @@ extension SideMenuController {
             
             set(statusBarHidden: true)
             
-        case .Changed:
-            let translation = recognizer.translationInView(view).x
+        case .changed:
+            let translation = recognizer.translation(in: view).x
             let sidePanelFrame = sidePanel.frame
             
             // origin.x or origin.x + width
             let xPoint: CGFloat = centerPanel.center.x + translation +
-                (sidePanelPosition.isPositionedLeft ? -1  : 1 ) * CGRectGetWidth(centerPanel.frame) / 2
+                (sidePanelPosition.isPositionedLeft ? -1  : 1 ) * centerPanel.frame.width / 2
             
             
-            if xPoint < CGRectGetMinX(sidePanelFrame) || xPoint > CGRectGetMaxX(sidePanelFrame){
+            if xPoint < sidePanelFrame.minX || xPoint > sidePanelFrame.maxX{
                 return
             }
             
             var alpha: CGFloat
             
             if sidePanelPosition.isPositionedLeft {
-                alpha = xPoint / CGRectGetWidth(sidePanelFrame)
+                alpha = xPoint / sidePanelFrame.width
             }else{
-                alpha = 1 - (xPoint - CGRectGetMinX(sidePanelFrame)) / CGRectGetWidth(sidePanelFrame)
+                alpha = 1 - (xPoint - sidePanelFrame.minX) / sidePanelFrame.width
             }
             
             set(statusUnderlayAlpha: alpha)
             var frame = centerPanel.frame
             frame.origin.x += translation
             centerPanel.frame = frame
-            recognizer.setTranslation(CGPointZero, inView: view)
+            recognizer.setTranslation(CGPoint.zero, in: view)
             
         default:
             if sidePanelVisible {
@@ -163,18 +163,18 @@ extension SideMenuController {
                 if sidePanelPosition.isPositionedLeft {
                     if leftToRight {
                         // opening
-                        reveal = CGRectGetMinX(centerFrame) > CGRectGetWidth(sideFrame) * shouldOpenPercentage
+                        reveal = centerFrame.minX > sideFrame.width * shouldOpenPercentage
                     } else{
                         // closing
-                        reveal = CGRectGetMinX(centerFrame) > CGRectGetWidth(sideFrame) * shouldHidePercentage
+                        reveal = centerFrame.minX > sideFrame.width * shouldHidePercentage
                     }
                 }else{
                     if leftToRight {
                         //closing
-                        reveal = CGRectGetMaxX(centerFrame) < CGRectGetMinX(sideFrame) + shouldOpenPercentage * CGRectGetWidth(sideFrame)
+                        reveal = centerFrame.maxX < sideFrame.minX + shouldOpenPercentage * sideFrame.width
                     }else{
                         // opening
-                        reveal = CGRectGetMaxX(centerFrame) < CGRectGetMinX(sideFrame) + shouldHidePercentage * CGRectGetWidth(sideFrame)
+                        reveal = centerFrame.maxX < sideFrame.minX + shouldHidePercentage * sideFrame.width
                     }
                 }
                 
