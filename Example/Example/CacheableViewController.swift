@@ -14,23 +14,23 @@ class CacheableViewController: UIViewController {
         fatalError("To be overriden")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(self.dynamicType.cacheIdentifier + " : " + #function + " <\(self)>")
+        print(type(of: self).cacheIdentifier + " : " + #function + " <\(self)>")
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print(self.dynamicType.cacheIdentifier + " : " + #function + " <\(self)>")
+        print(type(of: self).cacheIdentifier + " : " + #function + " <\(self)>")
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print(self.dynamicType.cacheIdentifier + " : " + #function + " <\(self)>")
+        print(type(of: self).cacheIdentifier + " : " + #function + " <\(self)>")
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        print(self.dynamicType.cacheIdentifier + " : " + #function + " <\(self)>")
+        print(type(of: self).cacheIdentifier + " : " + #function + " <\(self)>")
     }
 }
