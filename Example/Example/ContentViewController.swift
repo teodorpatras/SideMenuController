@@ -17,18 +17,18 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
         sideMenuController?.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("\(#function) -- \(self)")
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("\(#function) -- \(self)")
     }
     
     @IBAction func presentAction() {
-        presentViewController(ViewController.fromStoryboard, animated: true, completion: nil)
+        present(ViewController.fromStoryboard, animated: true, completion: nil)
     }
     
     var randomColor: UIColor {
@@ -41,11 +41,11 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
         return colors[index]
     }
     
-    func sideMenuControllerDidHide(sideMenuController: SideMenuController) {
+    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
         print(#function)
     }
     
-    func sideMenuControllerDidReveal(sideMenuController: SideMenuController) {
+    func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
     }
 }

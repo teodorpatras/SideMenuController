@@ -24,8 +24,8 @@
 import Foundation
 
 extension UIView {
-    class func panelAnimation(duration : NSTimeInterval, animations : (()->()), completion : (()->())? = nil) {
-        UIView.animateWithDuration(duration, delay: 0, options: .CurveEaseOut, animations: animations) { _ in
+    class func panelAnimation(_ duration : TimeInterval, animations : @escaping (()->()), completion : (()->())? = nil) {
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseOut, animations: animations) { _ in
             completion?()
         }
     }
@@ -41,15 +41,15 @@ public extension UINavigationController {
             return
         }
         
-        let button = UIButton(frame: CGRectMake(0, 0, 40, 40))
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.accessibilityIdentifier = SideMenuController.preferences.interaction.menuButtonAccessibilityIdentifier
-        button.setImage(image, forState: UIControlState.Normal)
-        button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), forControlEvents: UIControlEvents.TouchUpInside)
+        button.setImage(image, for: UIControlState())
+        button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), for: UIControlEvents.touchUpInside)
         
         let item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
         
-        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FixedSpace, target: nil, action: nil)
+        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
         spacer.width = -10
         
         if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
@@ -61,26 +61,26 @@ public extension UINavigationController {
 }
 
 extension UIWindow {
-    func set(hidden: Bool, withBehaviour behaviour: SideMenuController.StatusBarBehaviour) {
+    func set(_ hidden: Bool, withBehaviour behaviour: SideMenuController.StatusBarBehaviour) {
         let animations: () -> ()
         
         switch behaviour {
-        case .FadeAnimation, .HorizontalPan:
+        case .fadeAnimation, .horizontalPan:
             animations = {
                 self.alpha = hidden ? 0 : 1
             }
-        case .SlideAnimation:
+        case .slideAnimation:
             animations = {
-                self.transform = hidden ? CGAffineTransformMakeTranslation(0, -20) : CGAffineTransformIdentity
+                self.transform = hidden ? CGAffineTransform(translationX: 0, y: -20) : CGAffineTransform.identity
             }
         default:
             return
         }
         
-        if behaviour == .HorizontalPan {
+        if behaviour == .horizontalPan {
             animations()
         } else {
-            UIView.animateWithDuration(0.25, animations: animations)
+            UIView.animate(withDuration: 0.25, animations: animations)
         }
     }
 }
@@ -91,13 +91,13 @@ public extension UIViewController {
         return sideMenuControllerForViewController(self)
     }
     
-    private func sideMenuControllerForViewController(controller : UIViewController) -> SideMenuController?
+    fileprivate func sideMenuControllerForViewController(_ controller : UIViewController) -> SideMenuController?
     {
         if let sideController = controller as? SideMenuController {
             return sideController
         }
         
-        if let parent = controller.parentViewController {
+        if let parent = controller.parent {
             return sideMenuControllerForViewController(parent)
         } else {
             return nil

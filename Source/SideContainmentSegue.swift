@@ -21,11 +21,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-public class SideContainmentSegue: UIStoryboardSegue{
+open class SideContainmentSegue: UIStoryboardSegue{
     
-    override public func perform() {
-        if let sideController = self.sourceViewController as? SideMenuController {
-            sideController.embed(sideViewController: destinationViewController)
+    override open func perform() {
+        if let sideController = self.source as? SideMenuController {
+            sideController.embed(sideViewController: destination)
         } else {
             fatalError("This type of segue must only be used from a SideMenuController")
         }

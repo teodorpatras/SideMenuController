@@ -11,31 +11,31 @@ import UIKit
 class MenuController: UITableViewController {
     
     let segues = ["showCenterController1", "showCenterController2", "showCenterController3"]
-    private var previousIndex: NSIndexPath?
+    fileprivate var previousIndex: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return segues.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell")!
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell")!
         cell.textLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15)
-        cell.textLabel?.text = "Switch to controller \(indexPath.row + 1)"
+        cell.textLabel?.text = "Switch to controller \((indexPath as NSIndexPath).row + 1)"
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let index = previousIndex {
-            tableView.deselectRowAtIndexPath(index, animated: true)
+            tableView.deselectRow(at: index, animated: true)
         }
         
-        sideMenuController?.performSegueWithIdentifier(segues[indexPath.row], sender: nil)
+        sideMenuController?.performSegue(withIdentifier: segues[indexPath.row], sender: nil)
         previousIndex = indexPath
     }
     
