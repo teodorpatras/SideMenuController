@@ -17,26 +17,28 @@ class MenuController: UITableViewController {
         super.viewDidLoad()
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return segues.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("menuCell")!
+        override func tableView(_ tableView: UITableView,
+                                cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell")!
         cell.textLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15)
         cell.textLabel?.text = "Switch to controller \(indexPath.row + 1)"
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        override func tableView(_ tableView: UITableView,
+                                didSelectRowAt indexPath: IndexPath)  {
         
         if let index = previousIndex {
-            tableView.deselectRowAtIndexPath(index, animated: true)
+            tableView.deselectRow(at: index as IndexPath, animated: true)
         }
         
-        sideMenuController?.performSegueWithIdentifier(segues[indexPath.row], sender: nil)
-        previousIndex = indexPath
+        sideMenuController?.performSegue(withIdentifier: segues[indexPath.row], sender: nil)
+        previousIndex = indexPath as NSIndexPath?
     }
     
 }

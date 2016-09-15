@@ -35,11 +35,11 @@ extension SideMenuController {
         
         let leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe))
         leftSwipeRecognizer.delegate = self
-        leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.Left
+        leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.left
         
         let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleRightSwipe))
         rightSwipeGesture.delegate = self
-        rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.Right
+        rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.right
         
         centerPanelOverlay.addGestureRecognizer(tapRecognizer)
         
@@ -52,34 +52,34 @@ extension SideMenuController {
         }
     }
     
-    func handleSidePanelPan(recognizer: UIPanGestureRecognizer){
+    func handleSidePanelPan(_ recognizer: UIPanGestureRecognizer){
         
         guard canDisplaySideController else {
             return
         }
         
-        flickVelocity = recognizer.velocityInView(recognizer.view).x
+        flickVelocity = recognizer.velocity(in: recognizer.view).x
         
         let leftToRight = flickVelocity > 0
-        let sidePanelWidth = CGRectGetWidth(sidePanel.frame)
+        let sidePanelWidth = sidePanel.frame.width
         
         switch recognizer.state {
-        case .Began:
+        case .began:
             
             prepare(sidePanelForDisplay: true)
             set(statusBarHidden: true)
             
-        case .Changed:
+        case .changed:
             
-            let translation = recognizer.translationInView(view).x
+            let translation = recognizer.translation(in: view).x
             let xPoint: CGFloat = sidePanel.center.x + translation + (sidePanelPosition.isPositionedLeft ? 1 : -1) * sidePanelWidth / 2
             var alpha: CGFloat
             
             if sidePanelPosition.isPositionedLeft {
-                if xPoint <= 0 || xPoint > CGRectGetWidth(sidePanel.frame) {
+                if xPoint <= 0 || xPoint > sidePanel.frame.width {
                     return
                 }
-                alpha = xPoint / CGRectGetWidth(sidePanel.frame)
+                alpha = xPoint / sidePanel.frame.width
             }else{
                 if xPoint <= screenSize.width - sidePanelWidth || xPoint >= screenSize.width {
                     return
@@ -90,43 +90,43 @@ extension SideMenuController {
             set(statusUnderlayAlpha: alpha)
             centerPanelOverlay.alpha = alpha
             sidePanel.center.x = sidePanel.center.x + translation
-            recognizer.setTranslation(CGPointZero, inView: view)
+            recognizer.setTranslation(CGPoint.zero, in: view)
             
         default:
             
             let shouldClose: Bool
             if sidePanelPosition.isPositionedLeft {
-                shouldClose = !leftToRight && CGRectGetMaxX(sidePanel.frame) < sidePanelWidth
+                shouldClose = !leftToRight && sidePanel.frame.maxX < sidePanelWidth
             } else {
-                shouldClose = leftToRight && CGRectGetMinX(sidePanel.frame) >  (screenSize.width - sidePanelWidth)
+                shouldClose = leftToRight && sidePanel.frame.minX >  (screenSize.width - sidePanelWidth)
             }
             
             animate(toReveal: !shouldClose)
         }
     }
     
-    func setAboveSidePanel(hidden hidden: Bool, completion: ((Bool) -> ())? = nil){
+    func setAboveSidePanel(hidden: Bool, completion: ((Bool) -> ())? = nil){
         
         var destinationFrame = sidePanel.frame
         
         if sidePanelPosition.isPositionedLeft {
             if hidden {
-                destinationFrame.origin.x = -CGRectGetWidth(destinationFrame)
+                destinationFrame.origin.x = -destinationFrame.width
             } else {
-                destinationFrame.origin.x = CGRectGetMinX(view.frame)
+                destinationFrame.origin.x = view.frame.minX
             }
         } else {
             if hidden {
-                destinationFrame.origin.x = CGRectGetMaxX(view.frame)
+                destinationFrame.origin.x = view.frame.maxX
             } else {
-                destinationFrame.origin.x = CGRectGetMaxX(view.frame) - CGRectGetWidth(destinationFrame)
+                destinationFrame.origin.x = view.frame.maxX - destinationFrame.width
             }
         }
         
         var duration = hidden ? _preferences.animating.hideDuration : _preferences.animating.reavealDuration
         
         if abs(flickVelocity) > 0 {
-            let newDuration = NSTimeInterval (destinationFrame.size.width / abs(flickVelocity))
+            let newDuration = TimeInterval (destinationFrame.size.width / abs(flickVelocity))
             flickVelocity = 0
             
             if newDuration < duration {

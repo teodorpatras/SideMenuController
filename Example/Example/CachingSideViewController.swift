@@ -11,30 +11,32 @@ import SideMenuController
 
 class CachingSideViewController: UITableViewController, SideMenuControllerDelegate {
 
-    let dataSource = [FCViewController.self, SCViewController.self, TCViewController.self]
+    let dataSource = [FCViewController.self, SCViewController.self, TCViewController.self] as [Any]
     let cellIdentifier = "cachingSideCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.white
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         sideMenuController?.delegate = self
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
         cell?.textLabel?.text = "Switch to: " + (dataSource[indexPath.row] as! CacheableViewController.Type).cacheIdentifier
         return cell!
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
         let controllerType = dataSource[indexPath.row] as! CacheableViewController.Type
         
         if let controller = sideMenuController?.viewController(forCacheIdentifier: controllerType.cacheIdentifier) {
@@ -44,11 +46,11 @@ class CachingSideViewController: UITableViewController, SideMenuControllerDelega
         }
     }
     
-    func sideMenuControllerDidHide(sideMenuController: SideMenuController) {
+    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
         print(#function)
     }
     
-    func sideMenuControllerDidReveal(sideMenuController: SideMenuController) {
+    func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
     }
 }

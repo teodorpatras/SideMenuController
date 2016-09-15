@@ -16,11 +16,11 @@ class RootViewController: UIViewController {
         print(#function)
     }
     
-    override func motionEnded(motion: UIEventSubtype, withEvent event: UIEvent?) {
-        if motion == .MotionShake {
-            dismissViewControllerAnimated(true, completion: { 
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            dismiss(animated: true, completion: { 
                 if self.presentedViewController != nil {
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
             })
         }
@@ -36,19 +36,19 @@ class RootViewController: UIViewController {
         
         // create the view controllers for center containment
         let vc1 = UIViewController()
-        vc1.view.backgroundColor = UIColor.redColor()
+        vc1.view.backgroundColor = UIColor.red
         vc1.title = "first"
         let nc1 = UINavigationController(rootViewController: vc1)
         vc1.navigationItem.title = "first"
         
         let vc2 = UIViewController()
-        vc2.view.backgroundColor = UIColor.yellowColor()
+        vc2.view.backgroundColor = UIColor.yellow
         vc2.title = "second"
         let nc2 = UINavigationController(rootViewController: vc2)
         vc2.navigationItem.title = "second"
         
         let vc3 = UIViewController()
-        vc3.view.backgroundColor = UIColor.blueColor()
+        vc3.view.backgroundColor = UIColor.blue
         vc3.title = "third"
         let nc3 = UINavigationController(rootViewController: vc3)
         vc3.navigationItem.title = "third"
@@ -68,6 +68,6 @@ class RootViewController: UIViewController {
             controller.addSideMenuButton()
         })
         
-        showViewController(sideMenuViewController, sender: nil)
+        show(sideMenuViewController, sender: nil)
     }
 }

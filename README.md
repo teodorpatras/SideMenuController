@@ -1,11 +1,12 @@
 
 <img src="https://raw.githubusercontent.com/teodorpatras/SideMenuController/master/assets/smc_logo.png" alt="SideMenuController" width=900/>
 
+![Swift3](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat")
+[![Platform](https://img.shields.io/cocoapods/p/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
+[![Build Status](https://travis-ci.org/teodorpatras/SideMenuController.svg)](https://travis-ci.org/teodorpatras/SideMenuController)
 [![Version](https://img.shields.io/cocoapods/v/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
 [![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
-[![Platform](https://img.shields.io/cocoapods/p/SideMenuController.svg?style=flat)](http://cocoapods.org/pods/SideMenuController)
-[![Build Status](https://travis-ci.org/teodorpatras/SideMenuController.svg)](https://travis-ci.org/teodorpatras/SideMenuController)
 
 
 Description
@@ -79,7 +80,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'SideMenuController', '~> 0.1.6'
+pod 'SideMenuController', '~> 0.2.0'
 ```
 
 Then, run the following command:
@@ -115,7 +116,7 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 <a name="supported-versions"> Supported OS & SDK Versions </a>
 -----------------------------
 
-* Supported build target - iOS 8.0 (Xcode 7.x)
+* Supported build target - iOS 8.0+ (Xcode 7+)
 
 
 <a name="usage"> Usage </a>
@@ -135,10 +136,10 @@ class CustomSideMenuController: SideMenuController {
 
     required init?(coder aDecoder: NSCoder) {
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
-    	SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
-    	SideMenuController.preferences.drawing.sidePanelWidth = 300
-    	SideMenuController.preferences.drawing.centerPanelShadow = true
-    	SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
+        SideMenuController.preferences.drawing.sidePanelPosition = .overCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelWidth = 300
+        SideMenuController.preferences.drawing.centerPanelShadow = true
+        SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
         super.init(coder: aDecoder)
     }
 }
@@ -151,14 +152,14 @@ Next, go to the Storyboard, and change the class of the SideMenuController to th
 In `AppDelegate.swift`, override `application:didFinishLaunchingWithOptions:`:
 
 ```
-func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+func func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
         
     SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
-    SideMenuController.preferences.drawing.sidePanelPosition = .OverCenterPanelLeft
+    SideMenuController.preferences.drawing.sidePanelPosition = .overCenterPanelLeft
     SideMenuController.preferences.drawing.sidePanelWidth = 300
     SideMenuController.preferences.drawing.centerPanelShadow = true
-    SideMenuController.preferences.animating.statusBarBehaviour = .ShowUnderlay
+    SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
 }
 ```
 ⚠️_If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
@@ -185,8 +186,8 @@ In order to embed the inital view controlles inside the `SideMenuController` you
 ```
 override func viewDidLoad() {
     super.viewDidLoad()
-    performSegueWithIdentifier("embedInitialCenterController", sender: nil)
-    performSegueWithIdentifier("embedSideController", sender: nil)
+    performSegue(withIdentifier: "embedInitialCenterController", sender: nil)
+    performSegue(withIdentifier: "embedSideController", sender: nil)
 }
 ```
 
@@ -204,43 +205,41 @@ public func embed(centerViewController: UViewController)
 Example with `UITabBarController`:
 
 ```
-let sideMenuViewController = SideMenuController()
-
 // create the view controllers for center containment
 let vc1 = UIViewController()
-vc1.view.backgroundColor = UIColor.redColor()
+vc1.view.backgroundColor = UIColor.red
 vc1.title = "first"
 let nc1 = UINavigationController(rootViewController: vc1)
 vc1.navigationItem.title = "first"
-
+        
 let vc2 = UIViewController()
-vc2.view.backgroundColor = UIColor.yellowColor()
+vc2.view.backgroundColor = UIColor.yellow
 vc2.title = "second"
 let nc2 = UINavigationController(rootViewController: vc2)
 vc2.navigationItem.title = "second"
-
+        
 let vc3 = UIViewController()
-vc3.view.backgroundColor = UIColor.blueColor()
+vc3.view.backgroundColor = UIColor.blue
 vc3.title = "third"
 let nc3 = UINavigationController(rootViewController: vc3)
 vc3.navigationItem.title = "third"
-
+        
 let tabBarController = UITabBarController()
 tabBarController.viewControllers = [nc1, nc2, nc3]
-
+        
 // create the side controller
 let sideController = UITableViewController()
-
+        
 // embed the side and center controllers
 sideMenuViewController.embed(sideViewController: sideController)
 sideMenuViewController.embed(centerViewController: tabBarController)
-
+        
 // add the menu button to each view controller embedded in the tab bar controller
 [nc1, nc2, nc3].forEach({ controller in
-    controller.addSideMenuButton()
+  controller.addSideMenuButton()
 })
-
-showViewController(sideMenuViewController, sender: nil)
+        
+show(sideMenuViewController, sender: nil)
 ```
 
 ###Step 3
@@ -253,16 +252,18 @@ From here onwards, whenever the user selects an option in the side menu controll
 ####Using storyboard segues####
 
 ```
-override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-	sideMenuController?.performSegueWithIdentifier(segues[indexPath.row], sender: nil)
+override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath)  {
+	sideMenuController?.performSegue(withIdentifier: segues[indexPath.row], sender: nil)
 }
 ```
 
 ####Programmatically####
 
 ```
-override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-	sideMenuController?.embedCenterController(someUIViewControllerInstance)
+override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath)  {
+	sideMenuController?.embed(centerViewController: someUIViewControllerInstance)
 }
 ```
 
@@ -280,7 +281,8 @@ override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPat
 In your side view controller (a.k.a the menu controller):
 
 ```
-override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath)  {
 
     // retrieve your identifier
     let cacheIdentifier = ...
@@ -309,14 +311,14 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 | `Drawing` attribute   |      Description      |
 |----------|-------------|------|
 | `menuButtonImage` |    In case this attribute is set, `SideMenuController` will add a button on the left or right side of the navigation bar of the center view controller (**in case it is a subclass of UINavigationController**) in order to trigger the slide animation. If the attribute is missing, or the center view controller is not a subclass of `UINavigationController`, you'll have to add the menu button by yourself to all the `UINavigationControllers` that will be embedded.   |
-| `sidePanelPosition` |  Specifies the positioning of the side panel. This attribute can take one of the four values:         `.UnderCenterPanelLeft`, `.UnderCenterPanelRight`, `.OverCenterPanelLeft`, `. OverCenterPanelRight` |
+| `sidePanelPosition` |  Specifies the positioning of the side panel. This attribute can take one of the four values:         `.underCenterPanelLeft`, `.underCenterPanelRight`, `.overCenterPanelLeft`, `.overCenterPanelRight` |
 | `sidePanelWidth` | The width of the side panel. |
-| `centerPanelOverlayColor` | When the side panel is either `.OverCenterPanelLeft` or `. OverCenterPanelRight`, an overlay will be shown on top of the center panel when the side is revealed. Pass the preferred color of this overlay. |
-| `centerPanelShadow` | When the side panel is either `. UnderCenterPanelRight ` or `. UnderCenterPanelLeft` you can opt in or out to draw a side shadow for the center panel.  |
+| `centerPanelOverlayColor` | When the side panel is either `.overCenterPanelLeft` or `.overCenterPanelRight`, an overlay will be shown on top of the center panel when the side is revealed. Pass the preferred color of this overlay. |
+| `centerPanelShadow` | When the side panel is either `.underCenterPanelRight ` or `.underCenterPanelLeft` you can opt in or out to draw a side shadow for the center panel.  |
     
 | `Animating` attribute   |      Description      |
 |----------|-------------|------|
-| `statusBarBehaviour` | The animating style of the status bar when the side panel is revealed. This can be: <br /> **+** `.SlideAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.Slide` animation<br /> **+** `.FadeAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.Fade` animation<br /> **+** `.HorizontalPan`: the status bar will slide along with the center panel horizontally.<br /> **+** `.ShowUnderlay`: a layer with the same color as the navigation bar will be displayed under the status bar  |
+| `statusBarBehaviour` | The animating style of the status bar when the side panel is revealed. This can be: <br /> **+** `.slideAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.slide` animation<br /> **+** `.fadeAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.fade` animation<br /> **+** `.horizontalPan`: the status bar will slide along with the center panel horizontally.<br /> **+** `.showUnderlay`: a layer with the same color as the navigation bar will be displayed under the status bar  |
 | `reavealDuration` | Reveal animation duration. |
 | `hideDuration` | Hide animation duration. |
 | `transitionAnimator` | `TransitionAnimatable` subtype which defines how the new center view controller will be animated on screen. |
@@ -336,8 +338,9 @@ In order to implement custom transition animations for the center view controlle
 Example:
 
 ```
-public struct FadeAnimator: TransitionAnimatable { 
-    public static func performTransition(forView view: UIView, completion: () -> Void) {
+public struct FadeAnimator: TransitionAnimatable {
+    
+    public static func performTransition(forView view: UIView, completion: @escaping () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         let fadeAnimation = CABasicAnimation(keyPath: "opacity")
@@ -345,8 +348,8 @@ public struct FadeAnimator: TransitionAnimatable {
         fadeAnimation.fromValue = 0
         fadeAnimation.toValue = 1
         fadeAnimation.fillMode = kCAFillModeForwards
-        fadeAnimation.removedOnCompletion = true
-        view.layer.addAnimation(fadeAnimation, forKey: "fade")
+        fadeAnimation.isRemovedOnCompletion = true
+        view.layer.add(fadeAnimation, forKey: "fade")
         CATransaction.commit()
     }
 }
@@ -361,9 +364,8 @@ For more examples, check `TransitionAnimator.swift`.
 /**
  Toggles the side pannel visible or not.
 */
-public func toggle() {
-
-
+public func toggle()
+    
 /**
  Returns a view controller for the specified cache identifier
      
@@ -371,24 +373,23 @@ public func toggle() {
      
  - returns: Cached UIViewController or nil
 */
-public func viewController(forCacheIdentifier identifier: String) -> UIViewController? {
-
-
+public func viewController(forCacheIdentifier identifier: String) -> UIViewController?
+    
 /**
  Embeds a new side controller
      
  - parameter sideViewController: controller to be embedded
 */
-public func embed(sideViewController controller: UIViewController) {
-
+public func embed(sideViewController controller: UIViewController)
 
 /**
  Embeds a new center controller.
      
  - parameter centerViewController: controller to be embedded
  - parameter cacheIdentifier: identifier for the view controllers cache
- */
-public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil) {
+*/
+public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil)
+
 ```
 
 ##Public properties##
@@ -408,8 +409,8 @@ public func embed(centerViewController controller: UIViewController, cacheIdenti
 
 ```
 public protocol SideMenuControllerDelegate: class {
-    func sideMenuControllerDidHide(sideMenuController: SideMenuController)
-    func sideMenuControllerDidReveal(sideMenuController: SideMenuController)
+    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController)
+    func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController)
 }
 ```
 
