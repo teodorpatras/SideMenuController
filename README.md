@@ -111,7 +111,7 @@ Run `carthage update` to build the framework and drag the built `SideMenuControl
 
 ### Manually
 
-If you prefer not to use either of the aforementioned dependency managers, you can integrate EasyTipView into your project manually.
+If you prefer not to use either of the aforementioned dependency managers, you can integrate sources in Source folder into your project manually.
 
 <a name="supported-versions"> Supported OS & SDK Versions </a>
 -----------------------------
