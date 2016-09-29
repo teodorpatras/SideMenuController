@@ -26,6 +26,8 @@ import UIKit
 public protocol SideMenuControllerDelegate: class {
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController)
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController)
+    func sideMenuControllerWillHide(_ sideMenuController: SideMenuController)
+    func sideMenuControllerWillReveal(_ sideMenuController: SideMenuController)
 }
 
 // MARK: - Public methods -
@@ -299,6 +301,9 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         if reveal {
             set(statusBarHidden: reveal)
         }
+        
+        let delegateMethod = reveal ? self.delegate?.sideMenuControllerWillReveal : self.delegate?.sideMenuControllerWillHide
+        delegateMethod?(self)
         
         let setFunction = sidePanelPosition.isPositionedUnder ? setUnderSidePanel : setAboveSidePanel
         setFunction(!reveal) { updated in

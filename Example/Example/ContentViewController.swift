@@ -10,6 +10,8 @@ import UIKit
 import SideMenuController
 
 class ContentViewController: UIViewController, SideMenuControllerDelegate {
+ 
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,5 +49,12 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
+    }
+    public func sideMenuControllerWillHide(_ sideMenuController: SideMenuController) {
+         print(#function)
+    }
+    
+    public func sideMenuControllerWillReveal(_ sideMenuController: SideMenuController) {
+         print(#function)
     }
 }
