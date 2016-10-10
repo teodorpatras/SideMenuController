@@ -32,13 +32,13 @@ extension UIView {
 }
 
 public extension UINavigationController {
-    public func addSideMenuButton() {
+    public func addSideMenuButton() -> UIButton? {
         guard let image = SideMenuController.preferences.drawing.menuButtonImage else {
-            return
+            return nil
         }
         
         guard let sideMenuController = self.sideMenuController else {
-            return
+            return nil
         }
         
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
@@ -57,6 +57,7 @@ public extension UINavigationController {
         }else{
             self.topViewController?.navigationItem.rightBarButtonItems = [spacer, item]
         }
+        return button
     }
 }
 
