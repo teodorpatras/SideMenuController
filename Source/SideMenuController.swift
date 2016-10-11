@@ -269,7 +269,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     // MARK:- Containment -
 
     func prepare(centerControllerForContainment controller: UINavigationController){
-        let _ = controller.addSideMenuButton()
+        controller.addSideMenuButton()
         controller.view.frame = centerPanel.bounds
     }
     
