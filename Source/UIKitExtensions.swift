@@ -32,7 +32,7 @@ extension UIView {
 }
 
 public extension UINavigationController {
-    public func addSideMenuButton(completion: ((UIButton) -> Void)? = nil) {
+    public func addSideMenuButton(completion: ((UIButton) -> ())? = nil) {
         guard let image = SideMenuController.preferences.drawing.menuButtonImage else {
             return
         }
