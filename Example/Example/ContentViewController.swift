@@ -48,4 +48,12 @@ class ContentViewController: UIViewController, SideMenuControllerDelegate {
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
     }
+
+    func sideMenuControllerWillHide(_ sideMenuController: SideMenuController) {
+        print(#function)
+    }
+
+    func sideMenuControllerWillReveal(_ sideMenuController: SideMenuController) {
+        print(#function)
+    }
 }
