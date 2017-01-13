@@ -60,6 +60,7 @@ public extension SideMenuController {
         public struct Interaction {
             public var panningEnabled = true
             public var swipingEnabled = true
+            public var closeOnViewDisappear = true
             public var menuButtonAccessibilityIdentifier: String?
         }
         
