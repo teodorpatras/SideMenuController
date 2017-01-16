@@ -18,6 +18,7 @@
 		13F653271D3E007300700656 /* SideMenuController+CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F653241D3E007300700656 /* SideMenuController+CustomTypes.swift */; };
 		13F653281D3E007300700656 /* SideMenuController+SideOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F653251D3E007300700656 /* SideMenuController+SideOver.swift */; };
 		13F653291D3E007300700656 /* SideMenuController+SideUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F653261D3E007300700656 /* SideMenuController+SideUnder.swift */; };
+		B27075BE1E2D07E100E3D41A /* SideMenuController+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27075BD1E2D07E100E3D41A /* SideMenuController+Animation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		13F653241D3E007300700656 /* SideMenuController+CustomTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+CustomTypes.swift"; path = "Source/SideMenuController+CustomTypes.swift"; sourceTree = SOURCE_ROOT; };
 		13F653251D3E007300700656 /* SideMenuController+SideOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+SideOver.swift"; path = "Source/SideMenuController+SideOver.swift"; sourceTree = SOURCE_ROOT; };
 		13F653261D3E007300700656 /* SideMenuController+SideUnder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+SideUnder.swift"; path = "Source/SideMenuController+SideUnder.swift"; sourceTree = SOURCE_ROOT; };
+		B27075BD1E2D07E100E3D41A /* SideMenuController+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+Animation.swift"; path = "Source/SideMenuController+Animation.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		13AC23481D39187A0087E25F /* SideMenuController */ = {
 			isa = PBXGroup;
 			children = (
+				B27075BD1E2D07E100E3D41A /* SideMenuController+Animation.swift */,
 				13F653241D3E007300700656 /* SideMenuController+CustomTypes.swift */,
 				13F653251D3E007300700656 /* SideMenuController+SideOver.swift */,
 				13F653261D3E007300700656 /* SideMenuController+SideUnder.swift */,
@@ -248,6 +251,7 @@
 				134E94E11D159C4B001C1F7D /* TransitionAnimator.swift in Sources */,
 				13A7586D1D12A61B004488DA /* SideContainmentSegue.swift in Sources */,
 				134E94E21D159C4B001C1F7D /* UIKitExtensions.swift in Sources */,
+				B27075BE1E2D07E100E3D41A /* SideMenuController+Animation.swift in Sources */,
 				13F653281D3E007300700656 /* SideMenuController+SideOver.swift in Sources */,
 				13F653291D3E007300700656 /* SideMenuController+SideUnder.swift in Sources */,
 				13F653271D3E007300700656 /* SideMenuController+CustomTypes.swift in Sources */,
