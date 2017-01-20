@@ -39,6 +39,10 @@ public extension SideMenuController {
         
         if !transitionInProgress {
             if !sidePanelVisible {
+                
+                // Dismiss any showing keyboard in the centerViewController
+                self.centerViewController.view.endEditing(true)
+                
                 prepare(sidePanelForDisplay: true)
             }
             
