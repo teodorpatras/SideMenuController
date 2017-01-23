@@ -80,7 +80,7 @@ public extension SideMenuController {
             sidePanel.isHidden = true
         }
     }
-
+    
     /**
      Embeds a new center controller.
      
@@ -152,20 +152,21 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     var sidePanel: UIView!
     var centerPanelOverlay: UIView!
     var centerPanelSShot: UIView?
-
+    
     var transitionInProgress = false
     var flickVelocity: CGFloat = 0
     
-    lazy var screenSize: CGSize = {
-        return UIScreen.main.bounds.size
-    }()
-    
+
     lazy var sidePanelPosition: SidePanelPosition = {
         return self._preferences.drawing.sidePanelPosition
     }()
     
+    var screenSize: CGSize {
+        return self.view.frame.size
+    }
+    
     // MARK:- View lifecycle -
-
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setUpViewHierarchy()
@@ -181,8 +182,14 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         configureViews()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(SideMenuController.repositionViews), name: .UIApplicationWillChangeStatusBarFrame, object: UIApplication.shared)
+    }
+    
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
         if sidePanelVisible {
             toggle()
         }
@@ -191,10 +198,20 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
-        screenSize = size
-        
         coordinator.animate(alongsideTransition: { _ in
-            // reposition center panel
+            self.repositionViews()
+        }, completion: nil)
+    }
+    
+    // MARK: - Configurations -
+    
+    func repositionViews() {
+        
+        if sidePanelVisible {
+            toggle()
+        }
+        
+        UIView.animate(withDuration: 0.35) {
             self.centerPanel.frame = self.centerPanelFrame
             // reposition side panel
             self.sidePanel.frame = self.sidePanelFrame
@@ -208,15 +225,10 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             }
             
             self.view.layoutIfNeeded()
-            
-        }, completion: nil)
-        
-        if sidePanelVisible {
-            toggle()
         }
+        
+        previousStatusBarHeight = statusBarHeight
     }
-    
-    // MARK: - Configurations -
     
     func configureViews(){
         
@@ -257,6 +269,11 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             return
         }
         
+        // also return if the status bar is higher and wants to hide
+        if statusBarHeight > DefaultStatusBarHeight && hidden == true {
+            return
+        }
+        
         sbw?.set(hidden, withBehaviour: _preferences.animating.statusBarBehaviour)
         
         if _preferences.animating.statusBarBehaviour == StatusBarBehaviour.horizontalPan {
@@ -271,7 +288,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     // MARK:- Containment -
-
+    
     func prepare(centerControllerForContainment controller: UINavigationController){
         controller.addSideMenuButton()
         controller.view.frame = centerPanel.bounds
@@ -324,7 +341,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             return
         }
         
-        if let color = centerNavController?.navigationBar.barTintColor , statusBarUnderlay.backgroundColor != color {
+        if let color = centerNavController?.navigationBar.barTintColor, statusBarUnderlay.backgroundColor != color {
             statusBarUnderlay.backgroundColor = color
         }
         
@@ -393,8 +410,9 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         return sideViewController != nil
     }
     
+    fileprivate var previousStatusBarHeight: CGFloat = DefaultStatusBarHeight
     fileprivate var statusBarHeight: CGFloat {
-        return UIApplication.shared.statusBarFrame.size.height > 0 ? UIApplication.shared.statusBarFrame.size.height : 20
+        return UIApplication.shared.statusBarFrame.size.height > 0 ? UIApplication.shared.statusBarFrame.size.height : DefaultStatusBarHeight
     }
     
     fileprivate var hidesStatusBar: Bool {
@@ -403,29 +421,32 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     fileprivate var centerPanelFrame: CGRect {
         
+        let diff: CGFloat = previousStatusBarHeight - statusBarHeight
+        
         if sidePanelPosition.isPositionedUnder && sidePanelVisible {
             
             let sidePanelWidth = _preferences.drawing.sidePanelWidth
-            return CGRect(x: sidePanelPosition.isPositionedLeft ? sidePanelWidth : -sidePanelWidth, y: 0, width: screenSize.width, height: screenSize.height)
+            return CGRect(x: sidePanelPosition.isPositionedLeft ? sidePanelWidth : -sidePanelWidth, y: 0, width: screenSize.width, height: screenSize.height + diff)
             
         } else {
-            return CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
+            return CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height + diff)
         }
     }
     
     fileprivate var sidePanelFrame: CGRect {
         var sidePanelFrame: CGRect
         
+        let diff: CGFloat = previousStatusBarHeight - statusBarHeight
         let panelWidth = _preferences.drawing.sidePanelWidth
         
         if sidePanelPosition.isPositionedUnder {
             sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 :
-                screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height)
+                screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height + diff)
         } else {
             if sidePanelVisible {
-                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height)
+                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height + diff)
             } else {
-                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, y: 0, width: panelWidth, height: screenSize.height)
+                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, y: 0, width: panelWidth, height: screenSize.height + diff)
             }
         }
         
