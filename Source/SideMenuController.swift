@@ -216,6 +216,12 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    // MARK: - Refresh Preferences -
+    
+    open func refreshPreferences(preferences: Preferences){
+        self._preferences = preferences
+    }
+    
     // MARK: - Configurations -
     
     func configureViews(){
