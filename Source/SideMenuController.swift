@@ -278,7 +278,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func prepare(sidePanelForDisplay display: Bool){
-        
+        sideViewController.beginAppearanceTransition(display, animated: true)
         sidePanel.isHidden = !display
         
         if !sidePanelPosition.isPositionedUnder {
@@ -316,6 +316,8 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 let delegateMethod = reveal ? self.delegate?.sideMenuControllerDidReveal : self.delegate?.sideMenuControllerDidHide
                 delegateMethod?(self)
             }
+            
+            self.sideViewController.endAppearanceTransition()
         }
     }
     
