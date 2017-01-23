@@ -183,7 +183,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if sidePanelVisible {
+        if sidePanelVisible && self._preferences.interaction.closeOnViewDisappear {
             toggle()
         }
     }
