@@ -55,8 +55,12 @@ public extension UINavigationController {
         spacer.width = -10
         
         if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
-            self.topViewController?.navigationItem.leftBarButtonItems = [spacer, item]
-        }else{
+            var items = self.topViewController?.navigationItem.leftBarButtonItems ?? []
+            items.append(contentsOf: [spacer, item])
+            self.topViewController?.navigationItem.leftBarButtonItems = items
+        } else {
+            var items = self.topViewController?.navigationItem.rightBarButtonItems ?? []
+            items.append(contentsOf: [spacer, item])
             self.topViewController?.navigationItem.rightBarButtonItems = [spacer, item]
         }
         

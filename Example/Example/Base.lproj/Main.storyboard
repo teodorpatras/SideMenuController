@@ -317,7 +317,9 @@
                             <constraint firstItem="HLk-4Z-o0z" firstAttribute="centerY" secondItem="K8N-yE-sqN" secondAttribute="centerY" id="pI6-Bj-GEb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="BAy-79-RNM"/>
+                    <navigationItem key="navigationItem" id="BAy-79-RNM">
+                        <barButtonItem key="leftBarButtonItem" systemItem="compose" id="y44-ei-t9t"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Cz-uu-Njd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
