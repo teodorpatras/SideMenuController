@@ -48,23 +48,37 @@ public extension UINavigationController {
         button.setImage(image, for: .normal)
         button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), for: UIControlEvents.touchUpInside)
         
+        if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
+            let newItems = computeNewItems(sideMenuController: sideMenuController, button: button, controller: self.topViewController, positionLeft: true)
+            self.topViewController?.navigationItem.leftBarButtonItems = newItems
+        } else {
+            let newItems = computeNewItems(sideMenuController: sideMenuController, button: button, controller: self.topViewController, positionLeft: false)
+            self.topViewController?.navigationItem.rightBarButtonItems = newItems
+        }
+        
+        completion?(button)
+    }
+    
+    private func computeNewItems(sideMenuController: SideMenuController, button: UIButton, controller: UIViewController?, positionLeft: Bool) -> [UIBarButtonItem] {
+        
+        var items: [UIBarButtonItem] = (positionLeft ? self.topViewController?.navigationItem.leftBarButtonItems :
+            self.topViewController?.navigationItem.rightBarButtonItems) ?? []
+        
+        for item in items {
+            if let button = item.customView as? UIButton,
+                button.allTargets.contains(sideMenuController) {
+                return items
+            }
+        }
+        
         let item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
         
         let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
         spacer.width = -10
         
-        if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
-            var items = self.topViewController?.navigationItem.leftBarButtonItems ?? []
-            items.append(contentsOf: [spacer, item])
-            self.topViewController?.navigationItem.leftBarButtonItems = items
-        } else {
-            var items = self.topViewController?.navigationItem.rightBarButtonItems ?? []
-            items.append(contentsOf: [spacer, item])
-            self.topViewController?.navigationItem.rightBarButtonItems = [spacer, item]
-        }
-        
-        completion?(button)
+        items.append(contentsOf: positionLeft ? [spacer, item] : [item, spacer])
+        return items
     }
 }
 
