@@ -282,6 +282,9 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 centerPanelSShot = nil
             } else if centerPanelSShot == nil {
                 centerPanelSShot = UIScreen.main.snapshotView(afterScreenUpdates: false)
+                centerPanelSShot?.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 24)
+                centerPanelSShot?.subviews[0].contentMode = .top
+                centerPanelSShot?.clipsToBounds = true
                 centerPanel.addSubview(centerPanelSShot!)
             }
         }
