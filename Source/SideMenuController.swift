@@ -406,7 +406,10 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         return screenSize.width < screenSize.height
     }
     
+    open var sidePanelDisabled = false
+    
     var canDisplaySideController: Bool {
+        guard !sidePanelDisabled else { return false }
         return sideViewController != nil
     }
     
