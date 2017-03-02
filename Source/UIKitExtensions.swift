@@ -78,7 +78,7 @@ public extension UINavigationController {
         spacer.width = -10
         
         if positionLeft {
-            items.append(contentsOf: positionLeft ? [spacer, item] : [item, spacer])
+            items.append(contentsOf: [spacer, item])
         } else {
             items.insert(contentsOf: [spacer, item], at: 0)
         }
