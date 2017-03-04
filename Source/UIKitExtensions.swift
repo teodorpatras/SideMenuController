@@ -43,7 +43,8 @@ public extension UINavigationController {
             return
         }
         
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        let buttonSize = SideMenuController.preferences.drawing.menuButtonSize
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: buttonSize.width, height: buttonSize.height))
         button.accessibilityIdentifier = SideMenuController.preferences.interaction.menuButtonAccessibilityIdentifier
         button.setImage(image, for: .normal)
         button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), for: UIControlEvents.touchUpInside)
@@ -75,7 +76,7 @@ public extension UINavigationController {
         item.customView = button
         
         let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
-        spacer.width = -10
+        spacer.width = SideMenuController.preferences.drawing.menuButtonSeparatorWidth
         
         items.append(contentsOf: positionLeft ? [spacer, item] : [item, spacer])
         return items

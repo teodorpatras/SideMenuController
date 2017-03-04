@@ -205,6 +205,17 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Configurations -
     
+    func configureSideMenuShadow() {
+        guard _preferences.drawing.sidePanelShadow else {
+            return
+        }
+        sidePanel.layer.shadowOffset = CGSize(width: 18, height: 0)
+        sidePanel.layer.shadowRadius = 20
+        sidePanel.layer.shadowOpacity = 0.9
+        sidePanel.layer.shadowColor = UIColor.black.cgColor
+        sidePanel.layer.masksToBounds = false
+    }
+    
     func repositionViews() {
         
         if sidePanelVisible {
@@ -242,6 +253,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         sidePanel = UIView(frame: sidePanelFrame)
         view.addSubview(sidePanel)
         sidePanel.clipsToBounds = true
+        configureSideMenuShadow()
         
         if sidePanelPosition.isPositionedUnder {
             view.sendSubview(toBack: sidePanel)
@@ -305,6 +317,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
             }else if !display {
                 centerPanelOverlay.removeFromSuperview()
             }
+            setShadowFromSideMenu(hidden: !display)
         } else {
             setSideShadow(hidden: !display)
         }
