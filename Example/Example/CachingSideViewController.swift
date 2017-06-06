@@ -11,6 +11,8 @@ import SideMenuController
 
 class CachingSideViewController: UITableViewController, SideMenuControllerDelegate {
 
+
+
     let dataSource = [FCViewController.self, SCViewController.self, TCViewController.self] as [Any]
     let cellIdentifier = "cachingSideCell"
     
@@ -52,5 +54,12 @@ class CachingSideViewController: UITableViewController, SideMenuControllerDelega
     
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
+    }
+    
+    public func sideMenuControllerWillHide(_ sideMenuController: SideMenuController) {
+        print(#function)
+    }
+    public func sideMenuControllerWillReveal(_ sideMenuController: SideMenuController) {
+         print(#function)
     }
 }
