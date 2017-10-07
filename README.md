@@ -198,7 +198,7 @@ public func embed(sideViewController: UIViewController)
 public func embed(centerViewController: UViewController)
 ```
 
-**Important Note:** In case you want the center view controller to be of different type than `UINavigationController`, you'll have to add the menu button to one/all of its children navigation controllers programmatically. `SideMenuController` defines an extension to `UINavigationController` in order to make it easy to do that. Just call `navigationController.addSideMenuButton()`. **Before calling that method, make sure the navigation controller is already embedded inside the `SideMenuController`'s child controller hierarchy.**
+**Important Note:** In case you want the center view controller to be of a different type than `UINavigationController`, you'll have to add the menu button to one/all of its children navigation controllers programmatically. `SideMenuController` defines an extension to `UINavigationController` in order to make it easy to do that. Just call `navigationController.addSideMenuButton()`. **Before calling that method, make sure the navigation controller is already embedded inside the `SideMenuController`'s child controller hierarchy.**
 
 Example with `UITabBarController`:
 
@@ -241,7 +241,7 @@ show(sideMenuViewController, sender: nil)
 ```
 
 ### Step 3
-You're almost set now. Last step is to know how to transition to new center view controllers.
+You're almost set now. The last step is to know how to transition to new center view controllers.
 
 **Important Note:** `SideMenuController` defines an extension to `UIViewController` in order to make it more accessible via the computed property `public var sideMenuController: SideMenuController?`. From any `UIViewController` instance, you can access the `SideMenuController` by typing: `self.sideMenuController`. This will return the `SideMenuController` if the caller is one of its child view controllers or otherwise `nil`.
 
@@ -304,7 +304,7 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 
 * ```Drawing``` - encapsulates custom attributes specifying how ```SideMenuController``` will adjust its layout, positioning on screen.
 * ```Animating``` - encapsulates custom attributes specifying which animations will be used for different components.
-* ```Interaction``` - encapsulates custom attributes specifying how the user is allowed to interract with the side panel
+* ```Interaction``` - encapsulates custom attributes specifying how the user is allowed to interact with the side panel
 
 
 | `Drawing` attribute   |      Description      |
@@ -324,8 +324,8 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 
 | `Interaction` attribute |      Description      | Discussion |
 |-------------------------|-----------------------|------------|
-| `panningEnabled` |  Default value is `true` | When the side panel is positioned **under the center panel**, the panning is recognized on the center panel. When the side panel is positoned **over the center panel**, the panning is recognized on the side panel. |
-| `swipingEnabled` |  Default value is `true` | There is **no swipe gesture recognizer** instantiated when the side panel is positioned *under the center panel*. When the side panel is positioned **over the center panel**, the swipe is going to recognized on the center panel. |
+| `panningEnabled` |  Default value is `true` | When the side panel is positioned **under the center panel**, the panning is recognized on the center panel. When the side panel is positioned **over the center panel**, the panning is recognized on the side panel. |
+| `swipingEnabled` |  Default value is `true` | There is **no swipe gesture recognizer** instantiated when the side panel is positioned *under the center panel*. When the side panel is positioned **over the center panel**, the swipe is recognized on the center panel. |
 | `menuButtonAccessibilityIdentifier` | Accessibility identifier to be set on the menu button. |
 
 <a name="custom-transitions"> Implementing custom transitions </a>
