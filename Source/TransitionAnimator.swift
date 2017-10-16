@@ -57,7 +57,7 @@ public struct CircleMaskAnimator: TransitionAnimatable {
         
         let screenSize = UIScreen.main.bounds.size
         let dim = max(screenSize.width, screenSize.height)
-        let circleDiameter : CGFloat = 50.0
+        let circleDiameter: CGFloat = 50.0
         let circleFrame = CGRect(x: (screenSize.width - circleDiameter) / 2, y: (screenSize.height - circleDiameter) / 2, width: circleDiameter, height: circleDiameter)
         let circleCenter = CGPoint(x: circleFrame.origin.x + circleDiameter / 2, y: circleFrame.origin.y + circleDiameter / 2)
         
