@@ -35,7 +35,7 @@ public extension SideMenuController {
     /**
      Toggles the side pannel visible or not.
      */
-    public func toggle() {
+    @objc public func toggle() {
         
         if !transitionInProgress {
             if !sidePanelVisible {
@@ -213,7 +213,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Configurations -
     
-    func repositionViews() {
+    @objc func repositionViews() {
         
         if sidePanelVisible {
             toggle()
@@ -356,7 +356,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         statusBarUnderlay.alpha = alpha
     }
     
-    func handleTap() {
+    @objc func handleTap() {
         animate(toReveal: false)
     }
     
