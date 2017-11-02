@@ -46,6 +46,13 @@ public extension UINavigationController {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.accessibilityIdentifier = SideMenuController.preferences.interaction.menuButtonAccessibilityIdentifier
         button.setImage(image, for: .normal)
+        
+        // fix navigation button stretch issue: 
+        // https://stackoverflow.com/questions/44442573/navigation-bar-rightbaritem-image-button-bug-ios-11
+        if #available(iOS 9.0, *) {
+            button.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
+        }
         button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), for: UIControlEvents.touchUpInside)
         
         if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
