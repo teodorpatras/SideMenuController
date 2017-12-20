@@ -356,7 +356,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         statusBarUnderlay.alpha = alpha
     }
     
-    func handleTap() {
+    @IBAction func handleTap() {
         animate(toReveal: false)
     }
     
