@@ -67,7 +67,7 @@ Description
 
 [CocoaPods](http://cocoapods.org) is a dependency manager for Cocoa projects.
 
-CocoaPods 0.36 adds supports for Swift and embedded frameworks. You can install it with the following command:
+CocoaPods 0.37 adds supports for Swift and embedded frameworks. You can install it with the following command:
 
 ```bash
 $ gem install cocoapods
