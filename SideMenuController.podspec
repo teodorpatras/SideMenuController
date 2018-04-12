@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/teodorpatras/SideMenuController'
   s.social_media_url = 'http://twitter.com/teodorpatras'
   s.authors = { 'Teodor Patraș' => 'me@teodorpatras.com' }
-  s.source = { :git => 'https://github.com/teodorpatras/SideMenuController.git', :tag => s.version }
+  s.source = { :git => 'https://github.com/nikano1991/SideMenuController.git' }
 
   s.ios.deployment_target = '8.0'
 

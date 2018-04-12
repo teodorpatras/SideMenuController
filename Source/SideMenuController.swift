@@ -35,7 +35,7 @@ public extension SideMenuController {
     /**
      Toggles the side pannel visible or not.
      */
-    public func toggle() {
+    @objc public func toggle() {
         
         if !transitionInProgress {
             if !sidePanelVisible {
@@ -87,7 +87,7 @@ public extension SideMenuController {
      - parameter centerViewController: controller to be embedded
      - parameter cacheIdentifier: identifier for the view controllers cache
      */
-    public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil) {
+    public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil, closeMenu: Bool = true) {
         
         guard controller !== centerViewController else {
             if sidePanelVisible {
@@ -126,7 +126,7 @@ public extension SideMenuController {
                 completion()
             }
             
-            if sidePanelVisible {
+            if sidePanelVisible && closeMenu {
                 animate(toReveal: false)
             }
         }
@@ -213,7 +213,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Configurations -
     
-    func repositionViews() {
+    @objc func repositionViews() {
         
         if sidePanelVisible {
             toggle()
@@ -356,7 +356,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         statusBarUnderlay.alpha = alpha
     }
     
-    func handleTap() {
+    @objc func handleTap() {
         animate(toReveal: false)
     }
     
