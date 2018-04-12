@@ -87,7 +87,7 @@ public extension SideMenuController {
      - parameter centerViewController: controller to be embedded
      - parameter cacheIdentifier: identifier for the view controllers cache
      */
-    public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil) {
+    public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil, closeMenu: Bool = true) {
         
         guard controller !== centerViewController else {
             if sidePanelVisible {
@@ -126,7 +126,7 @@ public extension SideMenuController {
                 completion()
             }
             
-            if sidePanelVisible {
+            if sidePanelVisible && closeMenu {
                 animate(toReveal: false)
             }
         }
