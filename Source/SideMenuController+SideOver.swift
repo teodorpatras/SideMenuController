@@ -35,11 +35,11 @@ extension SideMenuController {
         
         let leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe))
         leftSwipeRecognizer.delegate = self
-        leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.left
+        leftSwipeRecognizer.direction = UISwipeGestureRecognizer.Direction.left
         
         let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleRightSwipe))
         rightSwipeGesture.delegate = self
-        rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.right
+        rightSwipeGesture.direction = UISwipeGestureRecognizer.Direction.right
         
         centerPanelOverlay.addGestureRecognizer(tapRecognizer)
         

@@ -42,7 +42,7 @@ public struct FadeAnimator: TransitionAnimatable {
         fadeAnimation.duration = 0.35
         fadeAnimation.fromValue = 0
         fadeAnimation.toValue = 1
-        fadeAnimation.fillMode = kCAFillModeForwards
+        fadeAnimation.fillMode = CAMediaTimingFillMode.forwards
         fadeAnimation.isRemovedOnCompletion = true
         view.layer.add(fadeAnimation, forKey: "fade")
         CATransaction.commit()
