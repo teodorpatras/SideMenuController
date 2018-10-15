@@ -16,7 +16,7 @@ class RootViewController: UIViewController {
         print(#function)
     }
     
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         if motion == .motionShake {
             dismiss(animated: true, completion: { 
                 if self.presentedViewController != nil {
