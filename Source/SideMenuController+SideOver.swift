@@ -26,8 +26,8 @@ extension SideMenuController {
     
     func configureGestureRecognizersForPositionOver() {
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        tapRecognizer.delegate = self
+//        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+//        tapRecognizer.delegate = self
         
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleSidePanelPan))
         panRecognizer.delegate = self
@@ -35,13 +35,13 @@ extension SideMenuController {
         
         let leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleLeftSwipe))
         leftSwipeRecognizer.delegate = self
-        leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirection.left
+        leftSwipeRecognizer.direction = UISwipeGestureRecognizer.Direction.left
         
         let rightSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleRightSwipe))
         rightSwipeGesture.delegate = self
-        rightSwipeGesture.direction = UISwipeGestureRecognizerDirection.right
+        rightSwipeGesture.direction = UISwipeGestureRecognizer.Direction.right
         
-        centerPanelOverlay.addGestureRecognizer(tapRecognizer)
+        centerPanelOverlay.addGestureRecognizer(panRecognizer)
         
         if sidePanelPosition.isPositionedLeft {
             centerPanel.addGestureRecognizer(rightSwipeGesture)
@@ -52,7 +52,7 @@ extension SideMenuController {
         }
     }
     
-    func handleSidePanelPan(_ recognizer: UIPanGestureRecognizer){
+    @objc func handleSidePanelPan(_ recognizer: UIPanGestureRecognizer){
         
         guard canDisplaySideController else {
             return
@@ -141,20 +141,20 @@ extension SideMenuController {
             self.centerPanelOverlay.alpha = alpha
             self.set(statusUnderlayAlpha: alpha)
             self.sidePanel.frame = destinationFrame
-            }, completion: { _ in
+            }, completion: {
                 completion?(updated)
         })
     }
     
-    func handleLeftSwipe(){
+    @objc func handleLeftSwipe(){
         handleHorizontalSwipe(toLeft: true)
     }
     
-    func handleRightSwipe(){
+    @objc func handleRightSwipe(){
         handleHorizontalSwipe(toLeft: false)
     }
     
-    func handleHorizontalSwipe(toLeft left: Bool) {
+   @objc  func handleHorizontalSwipe(toLeft left: Bool) {
         if (left && sidePanelPosition.isPositionedLeft) ||
             (!left && !sidePanelPosition.isPositionedLeft) {
             if sidePanelVisible {
