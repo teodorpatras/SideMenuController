@@ -105,6 +105,19 @@ extension SideMenuController {
         }
     }
     
+    func setShadowFromSideMenu(hidden: Bool) {
+        
+        guard _preferences.drawing.sidePanelShadow else {
+            return
+        }
+        
+        if hidden {
+            sidePanel.layer.shadowOpacity = 0.0
+        } else {
+            sidePanel.layer.shadowOpacity = 0.8
+        }
+    }
+    
     func setAboveSidePanel(hidden: Bool, completion: ((Bool) -> ())? = nil){
         
         var destinationFrame = sidePanel.frame
