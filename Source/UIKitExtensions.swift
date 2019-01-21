@@ -77,7 +77,12 @@ public extension UINavigationController {
         let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
         spacer.width = -10
         
-        items.append(contentsOf: positionLeft ? [spacer, item] : [item, spacer])
+        if positionLeft {
+            items.append(contentsOf: [spacer, item])
+        } else {
+            items.insert(contentsOf: [spacer, item], at: 0)
+        }
+        
         return items
     }
 }
