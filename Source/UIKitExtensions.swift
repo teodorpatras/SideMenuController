@@ -46,7 +46,7 @@ public extension UINavigationController {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.accessibilityIdentifier = SideMenuController.preferences.interaction.menuButtonAccessibilityIdentifier
         button.setImage(image, for: .normal)
-        button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), for: UIControlEvents.touchUpInside)
+        button.addTarget(sideMenuController, action: #selector(SideMenuController.toggle), for: UIControl.Event.touchUpInside)
         
         if SideMenuController.preferences.drawing.sidePanelPosition.isPositionedLeft {
             let newItems = computeNewItems(sideMenuController: sideMenuController, button: button, controller: self.topViewController, positionLeft: true)
@@ -74,7 +74,7 @@ public extension UINavigationController {
         let item:UIBarButtonItem = UIBarButtonItem()
         item.customView = button
         
-        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fixedSpace, target: nil, action: nil)
+        let spacer = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.fixedSpace, target: nil, action: nil)
         spacer.width = -10
         
         items.append(contentsOf: positionLeft ? [spacer, item] : [item, spacer])
