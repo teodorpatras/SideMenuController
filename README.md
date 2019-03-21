@@ -148,7 +148,7 @@ Next, go to the Storyboard, and change the class of the SideMenuController to th
 In `AppDelegate.swift`, override `application:didFinishLaunchingWithOptions:`:
 
 ```swift
-func func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
 
     SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menu")
@@ -156,6 +156,8 @@ func func application(_ application: UIApplication, didFinishLaunchingWithOption
     SideMenuController.preferences.drawing.sidePanelWidth = 300
     SideMenuController.preferences.drawing.centerPanelShadow = true
     SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
+
+    return true
 }
 ```
 ⚠️_If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
