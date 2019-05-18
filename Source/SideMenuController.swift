@@ -290,6 +290,8 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
                 centerPanelSShot = nil
             } else if centerPanelSShot == nil {
                 centerPanelSShot = UIScreen.main.snapshotView(afterScreenUpdates: false)
+                // We must reset the frame to the actual bounds, because a "zoomed" Plus device might screw this up
+                centerPanelSShot!.frame = self.view.bounds
                 centerPanel.addSubview(centerPanelSShot!)
             }
         }
