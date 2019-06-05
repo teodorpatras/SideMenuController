@@ -21,14 +21,20 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+import UIKit
+
 open class CenterContainmentSegue: UIStoryboardSegue{
+
+    var needCloseSidePanel: Bool {
+	    return true
+    }
     
     override open func perform() {
         if let sideController = self.source as? SideMenuController {
             guard let destinationController = destination as? UINavigationController else {
                 fatalError("Destination controller needs to be an instance of UINavigationController")
             }
-            sideController.embed(centerViewController: destinationController)
+            sideController.embed(centerViewController: destinationController, hideSidePanel: needCloseSidePanel)
         } else {
             fatalError("This type of segue must only be used from a SideMenuController")
         }

@@ -18,6 +18,7 @@
 		13F653271D3E007300700656 /* SideMenuController+CustomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F653241D3E007300700656 /* SideMenuController+CustomTypes.swift */; };
 		13F653281D3E007300700656 /* SideMenuController+SideOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F653251D3E007300700656 /* SideMenuController+SideOver.swift */; };
 		13F653291D3E007300700656 /* SideMenuController+SideUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F653261D3E007300700656 /* SideMenuController+SideUnder.swift */; };
+		5E4FD4E9A8CF329050F77FD9 /* CenterReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FDD3F512CE5D638BB4D6E /* CenterReplaceSegue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		13F653241D3E007300700656 /* SideMenuController+CustomTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+CustomTypes.swift"; path = "Source/SideMenuController+CustomTypes.swift"; sourceTree = SOURCE_ROOT; };
 		13F653251D3E007300700656 /* SideMenuController+SideOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+SideOver.swift"; path = "Source/SideMenuController+SideOver.swift"; sourceTree = SOURCE_ROOT; };
 		13F653261D3E007300700656 /* SideMenuController+SideUnder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SideMenuController+SideUnder.swift"; path = "Source/SideMenuController+SideUnder.swift"; sourceTree = SOURCE_ROOT; };
+		5E4FDD3F512CE5D638BB4D6E /* CenterReplaceSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CenterReplaceSegue.swift; path = Source/CenterReplaceSegue.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 			children = (
 				134E94E31D159C56001C1F7D /* CenterContainmentSegue.swift */,
 				13A7586C1D12A61B004488DA /* SideContainmentSegue.swift */,
+				5E4FDD3F512CE5D638BB4D6E /* CenterReplaceSegue.swift */,
 			);
 			name = Segues;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				13F653291D3E007300700656 /* SideMenuController+SideUnder.swift in Sources */,
 				13F653271D3E007300700656 /* SideMenuController+CustomTypes.swift in Sources */,
 				134E94E51D159C56001C1F7D /* CenterContainmentSegue.swift in Sources */,
+				5E4FD4E9A8CF329050F77FD9 /* CenterReplaceSegue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
