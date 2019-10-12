@@ -398,7 +398,11 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         let b = "Bar"
         let w = "Window"
         
-        return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+        if #available(iOS 13, *) {
+            return nil
+        } else {
+            return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+        }
     }
     
     fileprivate var showsStatusUnderlay: Bool {
