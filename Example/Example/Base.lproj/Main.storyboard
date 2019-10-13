@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3p5-t4-N33">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="3p5-t4-N33">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -46,7 +44,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UIn-9m-edW">
-                                <rect key="frame" x="88" y="240" width="198" height="187"/>
+                                <rect key="frame" x="88.5" y="240" width="198" height="187"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TpW-3R-PDd">
                                         <rect key="frame" x="20" y="58" width="158" height="30"/>
@@ -63,7 +61,7 @@
                                         <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="14"/>
                                         <state key="normal" title="Storyboard example"/>
                                         <connections>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="oXn-qK-eX4"/>
+                                            <segue destination="BYZ-38-t0r" kind="presentation" modalPresentationStyle="fullScreen" id="oXn-qK-eX4"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Shake to get back here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOr-47-4lM">
@@ -79,7 +77,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Example with caching"/>
                                         <connections>
-                                            <segue destination="yzP-h6-q44" kind="show" id="fDt-rg-Uy1"/>
+                                            <segue destination="yzP-h6-q44" kind="presentation" modalPresentationStyle="fullScreen" id="fDt-rg-Uy1"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -135,7 +133,7 @@
                                 <rect key="frame" x="0.0" y="55.5" width="300" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DRt-4r-tyL" id="xs6-AI-spU">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -166,7 +164,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XDm-bu-Gb0">
-                                <rect key="frame" x="70" y="281" width="235" height="104"/>
+                                <rect key="frame" x="70" y="281.5" width="235" height="104"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gFE-GT-LlM">
                                         <rect key="frame" x="36" y="54" width="162" height="30"/>
@@ -219,7 +217,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fcr-Oh-OzE">
-                                <rect key="frame" x="70" y="281" width="235" height="104"/>
+                                <rect key="frame" x="70" y="281.5" width="235" height="104"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ssr-yQ-C04">
                                         <rect key="frame" x="36" y="54" width="162" height="30"/>
@@ -283,7 +281,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLk-4Z-o0z">
-                                <rect key="frame" x="70" y="281" width="235" height="104"/>
+                                <rect key="frame" x="70" y="281.5" width="235" height="104"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYz-qQ-qoh">
                                         <rect key="frame" x="36" y="54" width="162" height="30"/>
@@ -338,7 +336,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ag6-4V-eJh">
-                                <rect key="frame" x="67" y="278" width="240" height="110"/>
+                                <rect key="frame" x="67.5" y="278.5" width="240" height="110"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lch-wz-SR8">
                                         <rect key="frame" x="93" y="60" width="54" height="30"/>
@@ -381,7 +379,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="22K-a2-nlp" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="CIj-gh-hpo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -399,7 +397,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="CVi-rj-cH2" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="U5f-Cc-i4l">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -417,7 +415,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="thz-H5-xnH" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RO7-pT-WVT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -442,7 +440,7 @@
                                 <rect key="frame" x="0.0" y="28" width="300" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="boh-hd-zfO" id="75f-3S-UPU">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

@@ -35,7 +35,7 @@ public extension SideMenuController {
     /**
      Toggles the side pannel visible or not.
      */
-    public func toggle() {
+    @objc func toggle() {
         
         if !transitionInProgress {
             if !sidePanelVisible {
@@ -57,7 +57,7 @@ public extension SideMenuController {
      
      - returns: Cached UIViewController or nil
      */
-    public func viewController(forCacheIdentifier identifier: String) -> UIViewController? {
+    func viewController(forCacheIdentifier identifier: String) -> UIViewController? {
         return controllersCache[identifier]
     }
     
@@ -66,7 +66,7 @@ public extension SideMenuController {
      
      - parameter sideViewController: controller to be embedded
      */
-    public func embed(sideViewController controller: UIViewController) {
+    func embed(sideViewController controller: UIViewController) {
         if sideViewController == nil {
             
             sideViewController = controller
@@ -74,8 +74,8 @@ public extension SideMenuController {
             
             sidePanel.addSubview(sideViewController.view)
             
-            addChildViewController(sideViewController)
-            sideViewController.didMove(toParentViewController: self)
+            addChild(sideViewController)
+            sideViewController.didMove(toParent: self)
             
             sidePanel.isHidden = true
         }
@@ -87,7 +87,7 @@ public extension SideMenuController {
      - parameter centerViewController: controller to be embedded
      - parameter cacheIdentifier: identifier for the view controllers cache
      */
-    public func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil) {
+    func embed(centerViewController controller: UIViewController, cacheIdentifier: String? = nil) {
         
         guard controller !== centerViewController else {
             if sidePanelVisible {
@@ -101,7 +101,7 @@ public extension SideMenuController {
             controllersCache[id] = controller
         }
         
-        addChildViewController(controller)
+        addChild(controller)
         if let controller = controller as? UINavigationController {
             prepare(centerControllerForContainment: controller)
         }
@@ -109,14 +109,14 @@ public extension SideMenuController {
         
         if centerViewController == nil {
             centerViewController = controller
-            centerViewController.didMove(toParentViewController: self)
+            centerViewController.didMove(toParent: self)
         } else {
-            centerViewController.willMove(toParentViewController: nil)
+            centerViewController.willMove(toParent: nil)
             
             let completion: () -> () = {
                 self.centerViewController.view.removeFromSuperview()
-                self.centerViewController.removeFromParentViewController()
-                controller.didMove(toParentViewController: self)
+                self.centerViewController.removeFromParent()
+                controller.didMove(toParent: self)
                 self.centerViewController = controller
             }
             
@@ -140,7 +140,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: Public
     
     open weak var delegate: SideMenuControllerDelegate?
-    open static var preferences: Preferences = Preferences()
+    public static var preferences: Preferences = Preferences()
     internal(set) open var sidePanelVisible = false
     
     // MARK: Internal
@@ -192,7 +192,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(SideMenuController.repositionViews), name: .UIApplicationWillChangeStatusBarFrame, object: UIApplication.shared)
+        NotificationCenter.default.addObserver(self, selector: #selector(SideMenuController.repositionViews), name: UIApplication.willChangeStatusBarFrameNotification, object: UIApplication.shared)
     }
     
     override open func viewWillDisappear(_ animated: Bool) {
@@ -213,7 +213,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Configurations -
     
-    func repositionViews() {
+    @objc func repositionViews() {
         
         if sidePanelVisible {
             toggle()
@@ -252,15 +252,15 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         sidePanel.clipsToBounds = true
         
         if sidePanelPosition.isPositionedUnder {
-            view.sendSubview(toBack: sidePanel)
+            view.sendSubviewToBack(sidePanel)
         } else {
             centerPanelOverlay = UIView(frame: centerPanel.frame)
             centerPanelOverlay.backgroundColor = _preferences.drawing.centerPanelOverlayColor
-            view.bringSubview(toFront: sidePanel)
+            view.bringSubviewToFront(sidePanel)
         }
         
         configureGestureRecognizers()
-        view.bringSubview(toFront: statusBarUnderlay)
+        view.bringSubviewToFront(statusBarUnderlay)
     }
     
     func configureGestureRecognizers() {
@@ -356,7 +356,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         statusBarUnderlay.alpha = alpha
     }
     
-    func handleTap() {
+    @objc func handleTap() {
         animate(toReveal: false)
     }
     
@@ -398,7 +398,11 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         let b = "Bar"
         let w = "Window"
         
-        return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+        if #available(iOS 13, *) {
+            return nil
+        } else {
+            return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+        }
     }
     
     fileprivate var showsStatusUnderlay: Bool {
@@ -448,12 +452,12 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         if sidePanelPosition.isPositionedUnder {
             sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 :
-                screenSize.width - panelWidth, y: statusBarHeight, width: panelWidth, height: screenSize.height - statusBarHeight)
+                screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height)
         } else {
             if sidePanelVisible {
-                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, y: statusBarHeight, width: panelWidth, height: screenSize.height - statusBarHeight)
+                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height - statusBarHeight)
             } else {
-                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, y: statusBarHeight, width: panelWidth, height: screenSize.height - statusBarHeight)
+                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, y: 0, width: panelWidth, height: screenSize.height)
             }
         }
         
