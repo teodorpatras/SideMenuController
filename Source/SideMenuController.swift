@@ -35,7 +35,7 @@ public extension SideMenuController {
     /**
      Toggles the side pannel visible or not.
      */
-    public func toggle() {
+    @objc public func toggle() {
         
         if !transitionInProgress {
             if !sidePanelVisible {
@@ -213,7 +213,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Configurations -
     
-    func repositionViews() {
+    @objc func repositionViews() {
         
         if sidePanelVisible {
             toggle()
@@ -356,7 +356,7 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         statusBarUnderlay.alpha = alpha
     }
     
-    func handleTap() {
+    @objc func handleTap() {
         animate(toReveal: false)
     }
     
@@ -398,7 +398,15 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         let b = "Bar"
         let w = "Window"
         
-        return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+        if #available(iOS 13.0, *) {
+            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+            UIApplication.shared.keyWindow?.addSubview(statusBar)
+            return statusBar as? UIWindow
+        } else {
+            return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+            // Fallback on earlier versions
+        }
+        
     }
     
     fileprivate var showsStatusUnderlay: Bool {
@@ -448,12 +456,12 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         
         if sidePanelPosition.isPositionedUnder {
             sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 :
-                screenSize.width - panelWidth, y: statusBarHeight, width: panelWidth, height: screenSize.height - statusBarHeight)
+                screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height)
         } else {
             if sidePanelVisible {
-                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, y: statusBarHeight, width: panelWidth, height: screenSize.height - statusBarHeight)
+                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? 0 : screenSize.width - panelWidth, y: 0, width: panelWidth, height: screenSize.height)
             } else {
-                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, y: statusBarHeight, width: panelWidth, height: screenSize.height - statusBarHeight)
+                sidePanelFrame = CGRect(x: sidePanelPosition.isPositionedLeft ? -panelWidth : screenSize.width, y: 0, width: panelWidth, height: screenSize.height)
             }
         }
         
