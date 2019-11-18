@@ -398,7 +398,15 @@ open class SideMenuController: UIViewController, UIGestureRecognizerDelegate {
         let b = "Bar"
         let w = "Window"
         
-        return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+        if #available(iOS 13.0, *) {
+            let statusBar = UIView(frame: UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero)
+            UIApplication.shared.keyWindow?.addSubview(statusBar)
+            return statusBar as? UIWindow
+        } else {
+            return UIApplication.shared.value(forKey: s+b+w) as? UIWindow
+            // Fallback on earlier versions
+        }
+        
     }
     
     fileprivate var showsStatusUnderlay: Bool {
