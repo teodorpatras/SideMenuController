@@ -39,7 +39,7 @@ Description
 10. [License](#license)
 11. [Contact](#contact)
 
-##<a name="features"> Features </a>
+## Features
 
 
 - [x] Easy to use, fully customisable
@@ -120,7 +120,7 @@ If you prefer not to use either of the aforementioned dependency managers, you c
 
 You can get started using `SideMenuController` in 3 simple steps:
 
-###Step 1
+### Step 1
 First of all, you should **add a menu button image** and **specify the position of the side panel**. Optionally, you can customise other preferences as well. This can be achieved in two ways:
 
 ### 1) If the SideMenuController subclass is the initial view controller in your main storyboard:
@@ -160,10 +160,10 @@ func func application(_ application: UIApplication, didFinishLaunchingWithOption
 ```
 ⚠️_If you **do not** specify a menu button image, `SideMenuController` **will not add one by default** and you will have to manually add one whenever transitioning to a new center view controller._
 
-###Step 2
+### Step 2
 `SideMenuController` can be used with storyboard segues, or you can programmatically transition to a new center view controller.
 
-####Using storyboard segues####
+#### Using storyboard segues
 
 ``SideMenuController`` defines two custom segues:
 > - `SideContainmentSegue` - which transitions to a new side controller (triggers `embedSideController`)<br />
@@ -187,7 +187,7 @@ override func viewDidLoad() {
 }
 ```
 
-####Programmatically####
+#### Programmatically
 
 You can perform all the above mentioned transitions programmatically, without using segues, by calling one of the two public methods:
 
@@ -238,14 +238,14 @@ sideMenuViewController.embed(centerViewController: tabBarController)
 show(sideMenuViewController, sender: nil)
 ```
 
-###Step 3
+### Step 3
 You're almost set now. Last step is to know how to transition to new center view controllers.
 
 **Important Note:** `SideMenuController` defines an extension to `UIViewController` in order to make it more accessible via the computed property `public var sideMenuController: SideMenuController?`. From any `UIViewController` instance, you can access the `SideMenuController` by typing: `self.sideMenuController`. This will return the `SideMenuController` if the caller is one of its child view controllers or otherwise `nil`.
 
 From here onwards, whenever the user selects an option in the side menu controller, you can easily perform the segue like so:
 
-####Using storyboard segues####
+#### Using storyboard segues
 
 ```swift
 override func tableView(_ tableView: UITableView,
@@ -254,7 +254,7 @@ override func tableView(_ tableView: UITableView,
 }
 ```
 
-####Programmatically####
+#### Programmatically
 
 ```swift
 override func tableView(_ tableView: UITableView,
@@ -272,7 +272,7 @@ override func tableView(_ tableView: UITableView,
 
 **To retrieve a cached center view controller based on a cache identifier**, call ``viewController(forCacheIdentifier:)`` on the ``SideMenuController``.
 
-###Example
+### Example
 
 In your side view controller (a.k.a the menu controller):
 
@@ -305,7 +305,7 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 
 
 | `Drawing` attribute   |      Description      |
-|----------|-------------|------|
+|----------|-------------|
 | `menuButtonImage` |    In case this attribute is set, `SideMenuController` will add a button on the left or right side of the navigation bar of the center view controller (**in case it is a subclass of UINavigationController**) in order to trigger the slide animation. If the attribute is missing, or the center view controller is not a subclass of `UINavigationController`, you'll have to add the menu button by yourself to all the `UINavigationControllers` that will be embedded.   |
 | `sidePanelPosition` |  Specifies the positioning of the side panel. This attribute can take one of the four values:         `.underCenterPanelLeft`, `.underCenterPanelRight`, `.overCenterPanelLeft`, `.overCenterPanelRight` |
 | `sidePanelWidth` | The width of the side panel. |
@@ -313,7 +313,7 @@ In order to customise the `SideMenuController` appearance and behaviour, you can
 | `centerPanelShadow` | When the side panel is either `.underCenterPanelRight ` or `.underCenterPanelLeft` you can opt in or out to draw a side shadow for the center panel.  |
 
 | `Animating` attribute   |      Description      |
-|----------|-------------|------|
+|----------|-------------|
 | `statusBarBehaviour` | The animating style of the status bar when the side panel is revealed. This can be: <br /> **+** `.slideAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.slide` animation<br /> **+** `.fadeAnimation`: the status bar will be hidden using the `UIStatusBarAnimation.fade` animation<br /> **+** `.horizontalPan`: the status bar will slide along with the center panel horizontally.<br /> **+** `.showUnderlay`: a layer with the same color as the navigation bar will be displayed under the status bar  |
 | `reavealDuration` | Reveal animation duration. |
 | `hideDuration` | Hide animation duration. |
@@ -355,7 +355,7 @@ For more examples, check `TransitionAnimator.swift`.
 <a name="public-interface"> Public interface </a>
 --------------
 
-##Public methods##
+## Public methods
 ```swift
 /**
  Toggles the side pannel visible or not.
@@ -388,7 +388,7 @@ public func embed(centerViewController controller: UIViewController, cacheIdenti
 
 ```
 
-##Public properties##
+## Public properties
 
 | Property   |      Type      | Description |
 |----------|-------------|------|
